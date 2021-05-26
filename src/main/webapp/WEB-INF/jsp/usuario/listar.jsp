@@ -70,7 +70,7 @@
 								<li class="breadcrumb-item"><a class="link-fx"
 									href="<c:url value="/dashboard"/>">Dashboard</a></li>
 								<li class="breadcrumb-item" aria-current="page"><a
-									class="link-fx" href="<c:url value="/usuarios"/>">Usuários</a></li>
+									class="link-fx" href="<c:url value="/usuarios/listar"/>">Usuários</a></li>
 							</ol>
 						</nav>
 					</div>
@@ -98,79 +98,45 @@
 										class="far fa-user"></i></th>
 									<th>Nome</th>
 									<th class="d-none d-md-table-cell" style="width: 30%;">Email</th>
-									<th class="d-none d-sm-table-cell" style="width: 15%;">Grupo</th>
-									<th class="text-center" style="width: 100px;">Ações</th>
+									<th class="d-none d-sm-table-cell" style="width: 15%;">Tipo</th>
+									<c:if test="${usuarioSession.usuario.tipo.administrador}">
+										<th class="text-center" style="width: 100px;">Ações</th>
+									</c:if>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td class="text-center"><img
-										class="img-avatar img-avatar48"
-										src="assets/media/avatars/avatar8.jpg" alt=""></td>
-									<td class="font-w600 font-size-sm"><a href="">João</a></td>
-									<td class="d-none d-md-table-cell font-size-sm">client1<em
-										class="text-muted">@example.com</em></td>
-									<td class="d-none d-sm-table-cell"><span
-										class="badge badge-success">Atendente</span></td>
-									<td class="text-center">
-										<div class="btn-group">
-											<button type="button" class="btn btn-sm btn-alt-primary"
-												data-toggle="tooltip" title="Editar">
-												<i class="fa fa-fw fa-pencil-alt"></i>
-											</button>
-											<button type="button" class="btn btn-sm btn-alt-primary"
-												data-toggle="tooltip" title="Excluir">
-												<i class="fa fa-fw fa-times"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td class="text-center"><img
-										class="img-avatar img-avatar48"
-										src="assets/media/avatars/avatar5.jpg" alt=""></td>
-									<td class="font-w600 font-size-sm"><a href="">Susan
-											Day</a></td>
-									<td class="d-none d-md-table-cell font-size-sm">client2<em
-										class="text-muted">@example.com</em></td>
-									<td class="d-none d-sm-table-cell"><span
-										class="badge badge-primary">Administrador</span></td>
-									<td class="text-center">
-										<div class="btn-group">
-											<button type="button" class="btn btn-sm btn-alt-primary"
-												data-toggle="tooltip" title="Editar">
-												<i class="fa fa-fw fa-pencil-alt"></i>
-											</button>
-											<button type="button" class="btn btn-sm btn-alt-primary"
-												data-toggle="tooltip" title="Excluir">
-												<i class="fa fa-fw fa-times"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td class="text-center"><img
-										class="img-avatar img-avatar48"
-										src="assets/media/avatars/avatar5.jpg" alt=""></td>
-									<td class="font-w600 font-size-sm"><a href="">Sara
-											Fields</a></td>
-									<td class="d-none d-md-table-cell font-size-sm">client5<em
-										class="text-muted">@example.com</em></td>
-									<td class="d-none d-sm-table-cell"><span
-										class="badge badge-info">Financeiro</span></td>
-									<td class="text-center">
-										<div class="btn-group">
-											<button type="button" class="btn btn-sm btn-alt-primary"
-												data-toggle="tooltip" title="Editar">
-												<i class="fa fa-fw fa-pencil-alt"></i>
-											</button>
-											<button type="button" class="btn btn-sm btn-alt-primary"
-												data-toggle="tooltip" title="Excluir">
-												<i class="fa fa-fw fa-times"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
+								<c:forEach items="${usuarioList}" var="u">
+									<tr>
+										<td class="text-center"><img
+											class="img-avatar img-avatar48" alt=""
+											src="<c:url value="/assets/media/avatars/avatar8.jpg"/>"></td>
+										<td class="font-w600 font-size-sm"><a href="">${u.nome}</a></td>
+										<td class="d-none d-md-table-cell font-size-sm"><em
+											class="text-muted">${u.email}</em></td>
+
+
+										<td class="d-none d-sm-table-cell"><c:if
+												test="${u.tipo.administrador}">
+												<span class="badge badge-success">Administrador</span>
+											</c:if> <c:if test="${!u.tipo.administrador}">
+												<span class="badge badge-primary">Padrão</span>
+											</c:if></td>
+										<c:if test="${usuarioSession.usuario.tipo.administrador}">
+											<td class="text-center">
+												<div class="btn-group">
+													<button type="button" class="btn btn-sm btn-alt-primary"
+														data-toggle="tooltip" title="Visualizar">
+														<i class="fa fa-fw fa fa-eye"></i>
+													</button>
+													<button type="button" class="btn btn-sm btn-alt-primary"
+														data-toggle="tooltip" title="Excluir">
+														<i class="fa fa-fw fa-times"></i>
+													</button>
+												</div>
+											</td>
+										</c:if>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>

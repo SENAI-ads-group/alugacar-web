@@ -71,8 +71,8 @@ public class ConnectionFactory {
 		 */
 
 		Properties props = new Properties();
-		props.put("user", "postgres");
-		props.put("password", "321qaZX@");
+		props.put("user", "alugacar");
+		props.put("password", "senai");
 		props.put("dburl", "jdbc:postgresql://localhost:5432/alugacar");
 		props.put("driver", "org.postgresql.Driver");
 

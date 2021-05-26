@@ -71,18 +71,12 @@
 						class="nav-main-link-name">Usuários</span>
 				</a>
 					<ul class="nav-main-submenu">
-						<li class="nav-main-item"><a class="nav-main-link" href="<c:url value="/usuarios"/>"> <i
+						<li class="nav-main-item"><a class="nav-main-link"
+							href="<c:url value="/usuarios/listar"/>"> <i
 								class="nav-main-link-icon fa fa-eye"></i> <span
 								class="nav-main-link-name">Visualizar</span>
 						</a></li>
-					</ul>
-					<ul class="nav-main-submenu">
-						<li class="nav-main-item"><a class="nav-main-link"> <i
-								class="nav-main-link-icon fa fa-users"></i> <span
-								class="nav-main-link-name">Grupos</span>
-						</a></li>
-					</ul>
-					</li>
+					</ul></li>
 				<!-- END Cadastro -->
 			</ul>
 		</div>

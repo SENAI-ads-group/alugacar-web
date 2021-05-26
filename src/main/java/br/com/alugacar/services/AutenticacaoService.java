@@ -21,15 +21,21 @@ public class AutenticacaoService {
 	private UsuarioSession session;
 
 	public Map<Boolean, String> tryLogin(Usuario usuario) {
-		Usuario usuarioEncontrado = dao.buscarEmail(usuario.getEmail());
+		try {
+			Usuario usuarioEncontrado = dao.buscarEmail(usuario.getEmail());
 
-		if (usuarioEncontrado == null)
-			return Map.of(Boolean.FALSE, "Usuário não encontrado");
-		if (usuarioEncontrado.getSenha().equals(usuario.getSenha())) {
-			session.setUsuario(usuarioEncontrado);
-			return Map.of(Boolean.TRUE, "Sessão iniciado com sucesso");
+			if (usuarioEncontrado == null)
+				return Map.of(Boolean.FALSE, "Usuário não encontrado");
+
+			if (usuarioEncontrado.getSenha().equals(usuario.getSenha())) {
+				session.setUsuario(usuarioEncontrado);
+				return Map.of(Boolean.TRUE, "Sessão iniciado com sucesso");
+			}
+
+			return Map.of(Boolean.FALSE, "Senha incorreta");
+		} catch (DAOException e) {
+			return Map.of(Boolean.FALSE, e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
-		return Map.of(Boolean.FALSE, "Senha incorreta");
 	}
 
 	public Map<Boolean, String> criarConta(Usuario usuario) {
@@ -39,9 +45,9 @@ public class AutenticacaoService {
 
 			return Map.of(Boolean.TRUE, "Usuário inserido com sucesso");
 		} catch (DAOException e) {
-			return Map.of(Boolean.FALSE, e.getMessage());
+			return Map.of(Boolean.FALSE, e.getClass().getSimpleName() + " -> " + e.getMessage());
 		} catch (IllegalStateException e) {
-			return Map.of(Boolean.FALSE, e.getMessage());
+			return Map.of(Boolean.FALSE, e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
 	}
 

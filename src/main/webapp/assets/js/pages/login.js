@@ -35,6 +35,7 @@
                             rules: {
                                 "usuario.email": {
                                     required: true,
+                                    email: true
                                 },
                                 "usuario.senha": {
                                     required: true,
@@ -42,10 +43,11 @@
                             },
                             messages: {
                                 "usuario.email": {
-                                    required: "Informe seu email",
+                                    required: "É necessário informar seu email",
+                                    email: "Informe um email válido"
                                 },
                                 "usuario.senha": {
-                                    required: "Informe sua senha",
+                                    required: "É necessário informar sua senha",
                                 }
                             }
                         })
