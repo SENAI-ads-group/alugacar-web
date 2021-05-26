@@ -75,9 +75,11 @@
 					class="btn btn-sm btn-dual d-flex align-items-center"
 					id="page-header-user-dropdown" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false">
-					<img class="rounded-circle" src="assets/media/avatars/avatar10.jpg"
+					<img class="rounded-circle"
+						src="<c:url value="/assets/media/avatars/avatar10.jpg"/>"
 						alt="Header Avatar" style="width: 21px;"> <span
-						class="d-none d-sm-inline-block ml-2">${ usuarioSession.usuario.nome }</span> <i
+						class="d-none d-sm-inline-block ml-2">${ usuarioSession.usuario.nome }</span>
+					<i
 						class="fa fa-fw fa-angle-down d-none d-sm-inline-block ml-1 mt-1"></i>
 				</button>
 				<div
@@ -85,18 +87,22 @@
 					aria-labelledby="page-header-user-dropdown">
 					<div class="p-3 text-center bg-primary-dark rounded-top">
 						<img class="img-avatar img-avatar48 img-avatar-thumb"
-							src="assets/media/avatars/avatar10.jpg" alt="">
-						<p class="mt-2 mb-0 text-white font-w500">Adam Smith</p>
-						<p class="mb-0 text-white-50 font-size-sm">Atendente</p>
+							src="<c:url value="/assets/media/avatars/avatar10.jpg"/>" alt="">
+						<p class="mt-2 mb-0 text-white font-w500">${ usuarioSession.usuario.nome }</p>
+						<p class="mb-0 text-white-50 font-size-sm">Usuário ${ usuarioSession.usuario.tipo.valor }</p>
 					</div>
 					<div class="p-2">
 						<a
 							class="dropdown-item d-flex align-items-center justify-content-between"
 							href=""> <span class="font-size-sm font-w500">Perfil</span>
-						</a> <a
-							class="dropdown-item d-flex align-items-center justify-content-between"
-							href=""> <span class="font-size-sm font-w500">Configurações</span>
 						</a>
+						<c:if
+							test="${ usuarioSession.usuario.tipo.administrador }">
+							<a
+								class="dropdown-item d-flex align-items-center justify-content-between"
+								href=""> <span class="font-size-sm font-w500">Configurações</span>
+							</a>
+						</c:if>
 						<div role="separator" class="dropdown-divider"></div>
 						<a
 							class="dropdown-item d-flex align-items-center justify-content-between"
@@ -104,7 +110,8 @@
 								Tela</span>
 						</a> <a
 							class="dropdown-item d-flex align-items-center justify-content-between"
-							href="<c:url value="/autenticacao/sair"/>"> <span class="font-size-sm font-w500">Sair</span>
+							href="<c:url value="/autenticacao/sair"/>"> <span
+							class="font-size-sm font-w500">Sair</span>
 						</a>
 					</div>
 				</div>

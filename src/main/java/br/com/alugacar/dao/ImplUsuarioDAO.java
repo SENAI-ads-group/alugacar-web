@@ -34,14 +34,19 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 			ps.setString(4, usuario.getDicaSenha());
 			ps.setString(5, usuario.getTipo().name());
 
+			Usuario usuarioInserido = null;
+
 			int linhasAfetadas = ps.executeUpdate();
+			ResultSet rs = null;
 			if (linhasAfetadas > 0) {
-				ResultSet rs = ps.getGeneratedKeys();
-				if (rs.next())
-					usuario.setId(rs.getLong(1));
-				return usuario;
-			} else
-				return null;
+				rs = ps.getGeneratedKeys();
+				if (rs.next()) {
+					usuarioInserido = usuario;
+					usuarioInserido.setId(rs.getLong(1));
+				}
+			}
+			ConnectionFactory.closeConnection(connection, ps, rs);
+			return usuarioInserido;
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}
@@ -62,14 +67,19 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 			ps.setString(5, usuario.getTipo().name());
 			ps.setLong(6, id);
 
+			Usuario usuarioAtualizado = null;
+
 			int linhasAfetadas = ps.executeUpdate();
+			ResultSet rs = null;
 			if (linhasAfetadas > 0) {
-				ResultSet rs = ps.getGeneratedKeys();
-				if (rs.next())
-					usuario.setId(rs.getLong(1));
-				return usuario;
-			} else
-				return null;
+				rs = ps.getGeneratedKeys();
+				if (rs.next()) {
+					usuarioAtualizado = usuario;
+					usuarioAtualizado.setId(rs.getLong(1));
+				}
+			}
+			ConnectionFactory.closeConnection(connection, ps, rs);
+			return usuarioAtualizado;
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}
@@ -89,6 +99,7 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 			if (rs.next())
 				usuarioEncontrado = instanciarUsuario(rs);
 
+			ConnectionFactory.closeConnection(connection, ps, rs);
 			return usuarioEncontrado;
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
@@ -109,6 +120,7 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 			if (rs.next())
 				usuarioEncontrado = instanciarUsuario(rs);
 
+			ConnectionFactory.closeConnection(connection, ps, rs);
 			return usuarioEncontrado;
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
@@ -127,6 +139,7 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 			while (rs.next())
 				usuariosEncontrados.add(instanciarUsuario(rs));
 
+			ConnectionFactory.closeConnection(connection, st, rs);
 			return usuariosEncontrados;
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
@@ -142,8 +155,10 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 
 			ps.setLong(1, id);
 			ResultSet rs = ps.executeQuery();
+			boolean existe = rs.next();
 
-			return rs.next();
+			ConnectionFactory.closeConnection(connection, ps, rs);
+			return existe;
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}

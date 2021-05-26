@@ -82,7 +82,8 @@
 										<!-- jQuery Validation (.js-validation-signup class is initialized in js/pages/op_auth_signup.min.js which was auto compiled from _es6/pages/op_auth_signup.js) -->
 										<!-- For more info and examples you can check out https://github.com/jzaefferer/jquery-validation -->
 										<form class="js-validation-cadastrar"
-											action="<c:url value="/autenticacao/criarconta"/>" method="post">
+											action="<c:url value="/autenticacao/criarconta"/>"
+											method="post">
 											<div class="py-3">
 												<div class="form-group">
 													<input type="text"
@@ -215,6 +216,23 @@
 
 	<!-- Page JS Code -->
 	<script src="<c:url value="/assets/js/pages/cadastrar.js"/>"></script>
+
+	<!-- Notifications JS Plugin -->
+	<script
+		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
+
+	<c:forEach var="error" items="${errors}">
+		<script>
+			$.notify({
+				title : '<b>Erro ao criar conta</b>',
+				icon : 'fa fa-times mr-1',
+				message : '<br>${error.message}'
+			}, {
+				type : 'danger'
+			});
+		</script>
+	</c:forEach>
+
 </body>
 
 </html>

@@ -112,7 +112,8 @@
 				</div>
 				<div
 					class="content content-full font-size-sm text-muted text-center">
-					<strong>Gerenciador de Locações de Veículos</strong> &copy; <span data-toggle="year-copy"></span>
+					<strong>Gerenciador de Locações de Veículos</strong> &copy; <span
+						data-toggle="year-copy"></span>
 				</div>
 			</div>
 			<!-- END Page Content -->
@@ -130,6 +131,23 @@
 		src="<c:url value="/assets/js/plugins/jquery-validation/jquery.validate.min.js"/>"></script>
 
 	<!-- Page JS Code -->
-	<script src="<c:url value="/assets/js/pages/op_auth_signin.min.js"/>"></script>
+	<script src="<c:url value="/assets/js/pages/login.js"/>"></script>
+
+	<!-- Notifications JS Plugin -->
+	<script
+		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
+
+	<c:forEach var="error" items="${errors}">
+		<script>
+			$.notify({
+				title : '<b>Erro ao tentar realizar login</b>',
+				icon : 'fa fa-times mr-1',
+				message : '<br>${error.message}'
+			}, {
+				type : 'danger'
+			});
+		</script>
+	</c:forEach>
+
 </body>
 </html>
