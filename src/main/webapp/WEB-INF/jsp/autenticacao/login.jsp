@@ -137,12 +137,12 @@
 	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
 
-	<c:forEach var="error" items="${errors}">
+	<c:forEach var="error" items="${ errors }">
 		<script>
 			$.notify({
-				title : '<b>Erro ao tentar realizar login</b>',
+				title : '<b>${ error.category }</b>',
 				icon : 'fa fa-times mr-1',
-				message : '<br>${error.message}'
+				message : '<br>${ error.message }'
 			}, {
 				type : 'danger'
 			});

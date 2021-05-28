@@ -23,16 +23,17 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 			throw new DAOException("O usuário com o email " + usuario.getEmail() + " já existe");
 		}
 
-		final String SQL = "INSERT INTO usuario (nome, email, senha, dica_senha, tipo_usuario) VALUES(?,?,?,?,?)";
+		final String SQL = "INSERT INTO usuario (nome, email, senha, dica_senha, tipo_usuario, ativo) VALUES(?,?,?,?,?,?)";
 
 		try (Connection connection = ConnectionFactory.getConnection();
-				PreparedStatement ps = connection.prepareStatement(SQL)) {
+				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
 			ps.setString(1, usuario.getNome());
 			ps.setString(2, usuario.getEmail());
 			ps.setString(3, usuario.getSenha());
 			ps.setString(4, usuario.getDicaSenha());
 			ps.setString(5, usuario.getTipo().name());
+			ps.setBoolean(6, usuario.getAtivo());
 
 			Usuario usuarioInserido = null;
 
@@ -55,17 +56,18 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 	@Override
 	public Usuario atualizar(Long id, Usuario usuario) {
 		final String SQL = "UPDATE usuario SET nome = ?, email = ?, "
-				+ "senha = ?, dica_usuario = ?, tipo_usuario = ? WHERE id_usuario = ?";
+				+ "senha = ?, dica_senha = ?, tipo_usuario = ?, ativo = ? WHERE id_usuario = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
-				PreparedStatement ps = connection.prepareStatement(SQL)) {
+				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
 			ps.setString(1, usuario.getNome());
 			ps.setString(2, usuario.getEmail());
 			ps.setString(3, usuario.getSenha());
 			ps.setString(4, usuario.getDicaSenha());
 			ps.setString(5, usuario.getTipo().name());
-			ps.setLong(6, id);
+			ps.setBoolean(6, usuario.getAtivo());
+			ps.setLong(7, id);
 
 			Usuario usuarioAtualizado = null;
 
@@ -173,6 +175,7 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 		u.setSenha(rs.getString("senha"));
 		u.setDicaSenha(rs.getString("dica_senha"));
 		u.setTipo(TipoUsuario.valueOf(rs.getString("tipo_usuario")));
+		u.setAtivo(rs.getBoolean("ativo"));
 
 		return u;
 	}

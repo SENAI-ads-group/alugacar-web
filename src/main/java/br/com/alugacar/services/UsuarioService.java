@@ -15,4 +15,21 @@ public class UsuarioService {
 	public List<Usuario> getTodos() {
 		return dao.buscarTodos();
 	}
+
+	public Usuario getId(Long id) {
+		return dao.buscarId(id);
+	}
+
+	public Usuario atualizar(Long id, Usuario usuario) {
+		Usuario obj = dao.buscarId(id);
+		atualizarDados(usuario, obj);
+		return dao.atualizar(id, obj);
+	}
+
+	private void atualizarDados(Usuario origem, Usuario destino) {
+		destino.setNome(origem.getNome());
+		destino.setEmail(origem.getEmail());
+		destino.setTipo(origem.getTipo());
+		destino.setAtivo(origem.getAtivo());
+	}
 }

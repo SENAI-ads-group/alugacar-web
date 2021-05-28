@@ -99,42 +99,42 @@
 									<th>Nome</th>
 									<th class="d-none d-md-table-cell" style="width: 30%;">Email</th>
 									<th class="d-none d-sm-table-cell" style="width: 15%;">Tipo</th>
-									<c:if test="${usuarioSession.usuario.tipo.administrador}">
-										<th class="text-center" style="width: 100px;">Ações</th>
-									</c:if>
+									<th class="text-center" style="width: 100px;">Ações</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${usuarioList}" var="u">
+								<c:forEach items="${ usuarioList }" var="u">
 									<tr>
 										<td class="text-center"><img
 											class="img-avatar img-avatar48" alt=""
 											src="<c:url value="/assets/media/avatars/avatar8.jpg"/>"></td>
-										<td class="font-w600 font-size-sm"><a href="">${u.nome}</a></td>
+										<td class="font-w600 font-size-sm"><a href="<c:url value="${ u.id }"/>">${ u.nome }</a></td>
 										<td class="d-none d-md-table-cell font-size-sm"><em
-											class="text-muted">${u.email}</em></td>
+											class="text-muted">${ u.email }</em></td>
 
 
 										<td class="d-none d-sm-table-cell"><c:if
-												test="${u.tipo.administrador}">
+												test="${ u.tipo.administrador }">
 												<span class="badge badge-success">Administrador</span>
-											</c:if> <c:if test="${!u.tipo.administrador}">
+											</c:if> <c:if test="${ !u.tipo.administrador }">
 												<span class="badge badge-primary">Padrão</span>
 											</c:if></td>
-										<c:if test="${usuarioSession.usuario.tipo.administrador}">
-											<td class="text-center">
-												<div class="btn-group">
-													<button type="button" class="btn btn-sm btn-alt-primary"
-														data-toggle="tooltip" title="Visualizar">
-														<i class="fa fa-fw fa fa-eye"></i>
-													</button>
-													<button type="button" class="btn btn-sm btn-alt-primary"
-														data-toggle="tooltip" title="Excluir">
-														<i class="fa fa-fw fa-times"></i>
-													</button>
-												</div>
-											</td>
-										</c:if>
+
+										<td class="text-center">
+											<div class="btn-group">
+												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
+													title="Visualizar" href="<c:url value="${ u.id }"/>"> <i
+													class="fa fa-fw fa fa-eye"></i>
+												</a>
+												<c:if test="${ usuarioSession.usuario.tipo.administrador }">
+													<a type="button" class="btn btn-sm btn-alt-primary"
+														data-toggle="tooltip" title="Excluir"> <i
+														class="fa fa-fw fa-times"></i>
+													</a>
+												</c:if>
+											</div>
+										</td>
+
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -154,6 +154,22 @@
 
 	<script src="<c:url value="/assets/js/oneui.core.min.js"/>"></script>
 	<script src="<c:url value="/assets/js/oneui.app.min.js"/>"></script>
+	
+	<!-- Notifications JS Plugin -->
+	<script
+		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
+
+	<c:forEach var="error" items="${errors}">
+		<script>
+			$.notify({
+				title : '<b>${ error.category }</b>',
+				icon : 'fa fa-times mr-1',
+				message : '<br>${ error.message }'
+			}, {
+				type : 'danger'
+			});
+		</script>
+	</c:forEach>
 
 </body>
 

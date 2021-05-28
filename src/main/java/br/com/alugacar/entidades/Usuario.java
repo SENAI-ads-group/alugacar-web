@@ -13,17 +13,20 @@ public class Usuario implements Serializable {
 	private String senha;
 	private String dicaSenha;
 	private TipoUsuario tipo;
+	private Boolean ativo;
 
 	public Usuario() {
 	}
 
-	public Usuario(Long id, String nome, String email, String senha, String dicaSenha, TipoUsuario tipo) {
+	public Usuario(Long id, String nome, String email, String senha, String dicaSenha, TipoUsuario tipo,
+			Boolean ativo) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
 		this.dicaSenha = dicaSenha;
 		this.tipo = tipo;
+		this.ativo = ativo;
 	}
 
 	public Long getId() {
@@ -72,6 +75,14 @@ public class Usuario implements Serializable {
 
 	public void setTipo(TipoUsuario tipo) {
 		this.tipo = tipo;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	@Override

@@ -43,7 +43,7 @@ public class AutenticacaoController {
 		if (resultado.containsKey(Boolean.TRUE))
 			result.redirectTo(DashboardController.class).dashboard();
 		else {
-			validator.add(new SimpleMessage("login", resultado.get(Boolean.FALSE)));
+			validator.add(new SimpleMessage("Erro ao tentar entrar", resultado.get(Boolean.FALSE)));
 			validator.onErrorRedirectTo(this).login();
 		}
 	}
@@ -55,7 +55,7 @@ public class AutenticacaoController {
 		if (resultado.containsKey(Boolean.TRUE))
 			result.redirectTo(this).login();
 		else {
-			validator.add(new SimpleMessage("criarconta", resultado.get(Boolean.FALSE)));
+			validator.add(new SimpleMessage("Erro ao criar conta", resultado.get(Boolean.FALSE)));
 			validator.onErrorRedirectTo(this).cadastrar();
 		}
 	}

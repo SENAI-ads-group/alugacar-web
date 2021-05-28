@@ -27,9 +27,13 @@ public class AutenticacaoService {
 			if (usuarioEncontrado == null)
 				return Map.of(Boolean.FALSE, "Usuário não encontrado");
 
+			if (!usuarioEncontrado.getAtivo())
+				return Map.of(Boolean.FALSE, "O usuário " + usuarioEncontrado.getEmail()
+						+ " está inativo, solicite a ativação por um administrador");
+
 			if (usuarioEncontrado.getSenha().equals(usuario.getSenha())) {
 				session.setUsuario(usuarioEncontrado);
-				return Map.of(Boolean.TRUE, "Sessão iniciado com sucesso");
+				return Map.of(Boolean.TRUE, "Sessão iniciada com sucesso");
 			}
 
 			return Map.of(Boolean.FALSE, "Senha incorreta");
@@ -41,6 +45,7 @@ public class AutenticacaoService {
 	public Map<Boolean, String> criarConta(Usuario usuario) {
 		try {
 			usuario.setTipo(TipoUsuario.PADRAO);
+			usuario.setAtivo(Boolean.TRUE);
 			dao.inserir(usuario);
 
 			return Map.of(Boolean.TRUE, "Usuário inserido com sucesso");

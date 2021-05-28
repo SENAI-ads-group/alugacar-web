@@ -31,7 +31,6 @@ public class ConnectionFactory {
 		if (connection != null) {
 			try {
 				connection.close();
-				System.out.println();
 			} catch (SQLException ex) {
 				throw new DAOException(ex.getMessage());
 			}
