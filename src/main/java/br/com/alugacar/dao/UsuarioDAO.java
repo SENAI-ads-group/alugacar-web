@@ -15,6 +15,8 @@ public interface UsuarioDAO {
 	Usuario buscarEmail(String email);
 
 	List<Usuario> buscarTodos();
+	
+	List<Usuario> buscarAtivos();
 
 	boolean existeId(Long id);
 

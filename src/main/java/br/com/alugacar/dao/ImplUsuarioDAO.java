@@ -149,6 +149,25 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 	}
 
 	@Override
+	public List<Usuario> buscarAtivos() {
+		final String SQL = "SELECT * FROM usuario WHERE ativo = true";
+
+		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
+
+			ResultSet rs = st.executeQuery(SQL);
+
+			List<Usuario> usuariosEncontrados = new ArrayList<>();
+			while (rs.next())
+				usuariosEncontrados.add(instanciarUsuario(rs));
+
+			ConnectionFactory.closeConnection(connection, st, rs);
+			return usuariosEncontrados;
+		} catch (SQLException e) {
+			throw new DAOException(e.getMessage());
+		}
+	}
+
+	@Override
 	public boolean existeId(Long id) {
 		final String SQL = "SELECT * FROM usuario WHERE id_usuario = ?";
 

@@ -73,18 +73,21 @@
 						</a>
 					</div>
 					<div class="col-6">
-						<a class="block block-rounded block-link-shadow text-center"
-							href="">
-							<div class="block-content block-content-full">
-								<div class="font-size-h2 text-danger">
-									<i class="fa fa-times"></i>
+						<form id="form-excluir" method="POST"
+							action="<c:url value="excluir/${ usuario.id }"/>">
+							<a class="block block-rounded block-link-shadow text-center"
+								onclick="document.getElementById('form-excluir').submit()">
+								<div class="block-content block-content-full">
+									<div class="font-size-h2 text-danger">
+										<i class="fa fa-times"></i>
+									</div>
 								</div>
-							</div>
-							<div class="block-content py-2 bg-body-light">
-								<p class="font-w600 font-size-sm text-danger mb-0">Excluir
-									Usuário</p>
-							</div>
-						</a>
+								<div class="block-content py-2 bg-body-light">
+									<p class="font-w600 font-size-sm text-danger mb-0">Excluir
+										Usuário</p>
+								</div>
+							</a>
+						</form>
 					</div>
 				</div>
 				<!-- END Quick Actions -->
@@ -133,16 +136,6 @@
 												${ usuario.tipo.administrador ? 'checked' : '' }
 												${ !usuarioSession.usuario.tipo.administrador ? 'disabled' : '' }>
 											<label class="custom-control-label" for="administrador"></label>
-										</div>
-									</div>
-									<div class="form-group">
-										<label>Ativo?</label>
-										<div class="custom-control custom-switch mb-1">
-											<input type="checkbox" class="custom-control-input"
-												id="usuario.ativo" name="usuario.ativo"
-												${ usuario.ativo ? 'checked' : '' }
-												${ !usuarioSession.usuario.tipo.administrador ? 'disabled' : '' }>
-											<label class="custom-control-label" for="usuario.ativo"></label>
 										</div>
 									</div>
 									<c:if

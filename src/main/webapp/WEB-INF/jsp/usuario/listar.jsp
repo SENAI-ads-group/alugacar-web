@@ -85,9 +85,16 @@
 					<div class="block-header">
 						<h3 class="block-title"></h3>
 						<div class="block-options">
-							<button type="button" class="btn-block-option">
-								<i class="si si-settings"></i>
+							<button type="button" class="btn btn-alt-light dropdown-toggle"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">
+								<i class="fa fa-fw fa-cog mr-1"></i> Opções
 							</button>
+							<div class="dropdown-menu font-size-sm"
+								aria-labelledby="dropdown-default-light">
+								<a class="dropdown-item" href="javascript:void(0)">Recuperar
+									Exclusão</a>
+							</div>
 						</div>
 					</div>
 					<div class="block-content">
@@ -108,7 +115,8 @@
 										<td class="text-center"><img
 											class="img-avatar img-avatar48" alt=""
 											src="<c:url value="/assets/media/avatars/avatar8.jpg"/>"></td>
-										<td class="font-w600 font-size-sm"><a href="<c:url value="${ u.id }"/>">${ u.nome }</a></td>
+										<td class="font-w600 font-size-sm"><a
+											href="<c:url value="${ u.id }"/>">${ u.nome }</a></td>
 										<td class="d-none d-md-table-cell font-size-sm"><em
 											class="text-muted">${ u.email }</em></td>
 
@@ -154,7 +162,7 @@
 
 	<script src="<c:url value="/assets/js/oneui.core.min.js"/>"></script>
 	<script src="<c:url value="/assets/js/oneui.app.min.js"/>"></script>
-	
+
 	<!-- Notifications JS Plugin -->
 	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>

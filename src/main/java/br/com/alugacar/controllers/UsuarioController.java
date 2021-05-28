@@ -1,6 +1,7 @@
 package br.com.alugacar.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -32,7 +33,7 @@ public class UsuarioController {
 	@AutenticacaoNecessaria
 	@Get
 	public List<Usuario> listar() {
-		List<Usuario> usuarioList = service.getTodos();
+		List<Usuario> usuarioList = service.getAtivos();
 		return usuarioList;
 	}
 
@@ -64,5 +65,29 @@ public class UsuarioController {
 			validator.onErrorRedirectTo(this).listar();
 		} else
 			result.redirectTo(this).formulario(usuarioAtualizado);
+	}
+
+	@AutenticacaoNecessaria
+	@Post("excluir/{usuario.id}")
+	public void excluir(Usuario usuario) {
+		Map<Boolean, String> resultado = service.excluir(usuario.getId());
+
+		if (resultado.containsKey(Boolean.FALSE)) {
+			validator.add(new SimpleMessage("Erro ao excluir usuário", resultado.get(Boolean.FALSE)));
+			validator.onErrorRedirectTo(this).listar();
+		} else
+			result.redirectTo(this).listar();
+	}
+
+	@AutenticacaoNecessaria
+	@Post("recuperar/{usuario.id}")
+	public void recuperarExclusao(Usuario usuario) {
+		Map<Boolean, String> resultado = service.recuperar(usuario.getId());
+
+		if (resultado.containsKey(Boolean.FALSE)) {
+			validator.add(new SimpleMessage("Erro ao recuperar usuário", resultado.get(Boolean.FALSE)));
+			validator.onErrorRedirectTo(this).listar();
+		} else
+			result.redirectTo(this).listar();
 	}
 }
