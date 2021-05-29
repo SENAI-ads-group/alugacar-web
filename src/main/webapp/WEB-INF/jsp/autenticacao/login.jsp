@@ -4,7 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-br">
 
 <head>
 <meta charset="utf-8">
@@ -145,6 +145,42 @@
 				message : '<br>${ error.message }'
 			}, {
 				type : 'danger'
+			});
+		</script>
+	</c:forEach>
+
+	<c:forEach var="notificacao" items="${ notificacoesSucesso }">
+		<script>
+			$.notify({
+				title : '<b>${ notificacao.category }</b>',
+				icon : 'fa fa-check mr-1',
+				message : '<br>${ notificacao.message }'
+			}, {
+				type : 'success'
+			});
+		</script>
+	</c:forEach>
+	
+	<c:forEach var="notificacao" items="${ notificacoesInformacao }">
+		<script>
+			$.notify({
+				title : '<b>${ notificacao.category }</b>',
+				icon : 'fa fa-info-circle mr-1',
+				message : '<br>${ notificacao.message }'
+			}, {
+				type : 'info'
+			});
+		</script>
+	</c:forEach>
+	
+	<c:forEach var="notificacao" items="${ notificacoesAviso }">
+		<script>
+			$.notify({
+				title : '<b>${ notificacao.category }</b>',
+				icon : 'fa fa-exclamation mr-1',
+				message : '<br>${ notificacao.message }'
+			}, {
+				type : 'warning'
 			});
 		</script>
 	</c:forEach>

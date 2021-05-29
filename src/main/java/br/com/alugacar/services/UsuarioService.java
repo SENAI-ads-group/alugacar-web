@@ -1,13 +1,13 @@
 package br.com.alugacar.services;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
 import br.com.alugacar.dao.UsuarioDAO;
 import br.com.alugacar.dao.exceptions.DAOException;
 import br.com.alugacar.entidades.Usuario;
+import br.com.alugacar.services.exceptions.ServiceException;
 import br.com.alugacar.sessions.UsuarioSession;
 
 public class UsuarioService {
@@ -33,47 +33,50 @@ public class UsuarioService {
 	public Usuario atualizar(Long id, Usuario usuario) {
 		Usuario obj = dao.buscarId(id);
 		atualizarDados(usuario, obj);
-		return dao.atualizar(id, obj);
+		Usuario usuarioAtualizado = dao.atualizar(id, obj);
+
+		if (usuarioAtualizado == null)
+			throw new ServiceException("Não foi possível atualizar o usuário");
+
+		return usuarioAtualizado;
 	}
 
-	public Map<Boolean, String> excluir(Long id) {
+	public void excluir(Long id) {
 		try {
 			Usuario obj = dao.buscarId(id);
 
 			if (obj == null)
-				return Map.of(Boolean.FALSE, "Usuário com ID " + id + " não existe");
+				throw new ServiceException("Usuário com ID " + id + " não existe");
 			if (obj.getId().equals(session.getUsuario().getId()))
-				return Map.of(Boolean.FALSE, "Não é possível excluir o usuário logado");
+				throw new ServiceException("Não é possível excluir o usuário logado");
 
 			obj.setAtivo(Boolean.FALSE);
 			obj = dao.atualizar(id, obj);
 
 			if (obj == null)
-				return Map.of(Boolean.FALSE, "Não foi possível desativar o usuário");
-			else
-				return Map.of(Boolean.TRUE, "Usuário excluído com sucesso");
-			
+				throw new ServiceException("Não foi possível desativar o usuário");
+
 		} catch (DAOException e) {
-			return Map.of(Boolean.FALSE, e.getClass().getSimpleName() + " -> " + e.getMessage());
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
 	};
 
-	public Map<Boolean, String> recuperar(Long id) {
+	public Usuario recuperarExclusao(Long id) {
 		try {
 			Usuario obj = dao.buscarId(id);
 
 			if (obj == null)
-				return Map.of(Boolean.FALSE, "Usuário com ID " + id + " não existe");
+				throw new ServiceException("Usuário com ID " + id + " não existe");
 
 			obj.setAtivo(Boolean.TRUE);
 			obj = dao.atualizar(id, obj);
 
 			if (obj == null)
-				return Map.of(Boolean.FALSE, "Não foi possível recuperar o usuário");
-			else
-				return Map.of(Boolean.TRUE, "Usuário recuperado com sucesso");
+				throw new ServiceException("Não foi possível recuperar o usuário");
+
+			return obj;
 		} catch (DAOException e) {
-			return Map.of(Boolean.FALSE, e.getClass().getSimpleName() + " -> " + e.getMessage());
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
 	};
 

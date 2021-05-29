@@ -83,6 +83,9 @@
 
 	<script src="<c:url value="/assets/js/pages/be_ui_icons.min.js"/>"></script>
 
+	<!-- Notifications JS Plugin -->
+	<script
+		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
 
 	<!-- Page JS Helpers (jQuery Sparkline Plugins) -->
 	<script>
@@ -90,6 +93,55 @@
 			One.helpers([ 'sparkline' ]);
 		});
 	</script>
+
+	<c:forEach var="error" items="${ errors }">
+		<script>
+			$.notify({
+				title : '<b>${ error.category }</b>',
+				icon : 'fa fa-times mr-1',
+				message : '<br>${ error.message }'
+			}, {
+				type : 'danger'
+			});
+		</script>
+	</c:forEach>
+
+	<c:forEach var="notificacao" items="${ notificacoesSucesso }">
+		<script>
+			$.notify({
+				title : '<b>${ notificacao.category }</b>',
+				icon : 'fa fa-check mr-1',
+				message : '<br>${ notificacao.message }'
+			}, {
+				type : 'success'
+			});
+		</script>
+	</c:forEach>
+
+	<c:forEach var="notificacao" items="${ notificacoesInformacao }">
+		<script>
+			$.notify({
+				title : '<b>${ notificacao.category }</b>',
+				icon : 'fa fa-info-circle mr-1',
+				message : '<br>${ notificacao.message }'
+			}, {
+				type : 'info'
+			});
+		</script>
+	</c:forEach>
+
+	<c:forEach var="notificacao" items="${ notificacoesAviso }">
+		<script>
+			$.notify({
+				title : '<b>${ notificacao.category }</b>',
+				icon : 'fa fa-exclamation mr-1',
+				message : '<br>${ notificacao.message }'
+			}, {
+				type : 'warning'
+			});
+		</script>
+	</c:forEach>
+
 </body>
 
 </html>

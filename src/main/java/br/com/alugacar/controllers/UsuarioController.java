@@ -1,7 +1,6 @@
 package br.com.alugacar.controllers;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -9,6 +8,7 @@ import br.com.alugacar.annotations.AutenticacaoNecessaria;
 import br.com.alugacar.entidades.Usuario;
 import br.com.alugacar.entidades.enums.TipoUsuario;
 import br.com.alugacar.services.UsuarioService;
+import br.com.alugacar.services.exceptions.ServiceException;
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
@@ -53,41 +53,53 @@ public class UsuarioController {
 	@AutenticacaoNecessaria
 	@Post("atualizar")
 	public void atualizar(Usuario usuario, Boolean administrador) {
-		usuario.setTipo(administrador == null || !administrador ? TipoUsuario.PADRAO : TipoUsuario.ADMINISTRADOR);
-		if (usuario.getAtivo() == null || !usuario.getAtivo())
-			usuario.setAtivo(Boolean.FALSE);
+		TipoUsuario tipoUsuario = administrador == null || !administrador ? TipoUsuario.PADRAO
+				: TipoUsuario.ADMINISTRADOR;
+		Boolean ativo = !(usuario.getAtivo() == null || !usuario.getAtivo());
 
-		Usuario usuarioAtualizado = service.atualizar(usuario.getId(), usuario);
+		usuario.setTipo(tipoUsuario);
+		usuario.setAtivo(ativo);
+		try {
+			Usuario usuarioAtualizado = service.atualizar(usuario.getId(), usuario);
 
-		if (usuarioAtualizado == null) {
-			validator.add(new SimpleMessage("Erro ao atualizar usuário",
-					"Não foi possível atualizar as informações do usuário"));
-			validator.onErrorRedirectTo(this).listar();
-		} else
 			result.redirectTo(this).formulario(usuarioAtualizado);
+		} catch (Exception e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar usuário",
+					e.getMessage().replace((char) 39, '"'));
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(this).listar();
+		}
+
 	}
 
 	@AutenticacaoNecessaria
 	@Post("excluir/{usuario.id}")
 	public void excluir(Usuario usuario) {
-		Map<Boolean, String> resultado = service.excluir(usuario.getId());
-
-		if (resultado.containsKey(Boolean.FALSE)) {
-			validator.add(new SimpleMessage("Erro ao excluir usuário", resultado.get(Boolean.FALSE)));
-			validator.onErrorRedirectTo(this).listar();
-		} else
+		try {
+			service.excluir(usuario.getId());
 			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir usuário",
+					e.getMessage().replace((char) 39, '"'));
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(this).listar();
+		}
 	}
 
 	@AutenticacaoNecessaria
 	@Post("recuperar/{usuario.id}")
 	public void recuperarExclusao(Usuario usuario) {
-		Map<Boolean, String> resultado = service.recuperar(usuario.getId());
-
-		if (resultado.containsKey(Boolean.FALSE)) {
-			validator.add(new SimpleMessage("Erro ao recuperar usuário", resultado.get(Boolean.FALSE)));
-			validator.onErrorRedirectTo(this).listar();
-		} else
+		try {
+			service.recuperarExclusao(usuario.getId());
 			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao recuperar usuário",
+					e.getMessage().replace((char) 39, '"'));
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(this).listar();
+		}
 	}
 }

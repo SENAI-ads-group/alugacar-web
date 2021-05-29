@@ -1,12 +1,14 @@
 package br.com.alugacar.controllers;
 
-import java.util.Map;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import br.com.alugacar.annotations.AutenticacaoNecessaria;
 import br.com.alugacar.entidades.Usuario;
 import br.com.alugacar.services.AutenticacaoService;
+import br.com.alugacar.services.exceptions.ServiceException;
+import br.com.alugacar.util.NotificacaoUtil;
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
@@ -38,24 +40,33 @@ public class AutenticacaoController {
 
 	@Post("entrar")
 	public void entrar(Usuario usuario) {
-		Map<Boolean, String> resultado = service.tryLogin(usuario);
+		try {
+			usuario = service.tryLogin(usuario);
+			NotificacaoUtil.adicionarSucesso(result, List.of(new SimpleMessage("Login efetuado com sucesso!",
+					"Olá, " + usuario.getNome() + ", seja bem vindo(a)!")));
 
-		if (resultado.containsKey(Boolean.TRUE))
 			result.redirectTo(DashboardController.class).dashboard();
-		else {
-			validator.add(new SimpleMessage("Erro ao tentar entrar", resultado.get(Boolean.FALSE)));
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao entrar", e.getMessage().replace((char) 39, '"'));
+
+			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).login();
 		}
+
 	}
 
 	@Post("criarconta")
 	public void criarConta(Usuario usuario) {
-		Map<Boolean, String> resultado = service.criarConta(usuario);
+		try {
+			service.criarConta(usuario);
+			NotificacaoUtil.adicionarSucesso(result, List.of(
+					new SimpleMessage("Nova conta criada com sucesso!", "Olá, " + usuario.getNome() + " faça login")));
 
-		if (resultado.containsKey(Boolean.TRUE))
 			result.redirectTo(this).login();
-		else {
-			validator.add(new SimpleMessage("Erro ao criar conta", resultado.get(Boolean.FALSE)));
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao entrar", e.getMessage().replace((char) 39, '"'));
+
+			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).cadastrar();
 		}
 	}

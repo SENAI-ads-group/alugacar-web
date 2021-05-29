@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+	pageEncoding="utf-8" %>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-br">
 
 <head>
 <meta charset="utf-8">
@@ -221,12 +221,12 @@
 	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
 
-	<c:forEach var="error" items="${errors}">
+	<c:forEach var="error" items="${ errors }">
 		<script>
 			$.notify({
-				title : '<b>Erro ao criar conta</b>',
+				title : '<b>${ error.category }</b>',
 				icon : 'fa fa-times mr-1',
-				message : '<br>${error.message}'
+				message : '<br>${ error.message }'
 			}, {
 				type : 'danger'
 			});

@@ -1,7 +1,5 @@
 package br.com.alugacar.services;
 
-import java.util.Map;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -9,6 +7,7 @@ import br.com.alugacar.dao.UsuarioDAO;
 import br.com.alugacar.dao.exceptions.DAOException;
 import br.com.alugacar.entidades.Usuario;
 import br.com.alugacar.entidades.enums.TipoUsuario;
+import br.com.alugacar.services.exceptions.ServiceException;
 import br.com.alugacar.sessions.UsuarioSession;
 
 @ApplicationScoped
@@ -20,39 +19,35 @@ public class AutenticacaoService {
 	@Inject
 	private UsuarioSession session;
 
-	public Map<Boolean, String> tryLogin(Usuario usuario) {
+	public Usuario tryLogin(Usuario usuario) {
 		try {
 			Usuario usuarioEncontrado = dao.buscarEmail(usuario.getEmail());
 
 			if (usuarioEncontrado == null)
-				return Map.of(Boolean.FALSE, "Usuário não encontrado");
+				throw new ServiceException("Usuário " + usuario.getEmail() + " não econtrado");
 
 			if (!usuarioEncontrado.getAtivo())
-				return Map.of(Boolean.FALSE, "O usuário " + usuarioEncontrado.getEmail()
+				throw new ServiceException("O usuário " + usuarioEncontrado.getEmail()
 						+ " está inativo, solicite a ativação por um administrador");
 
-			if (usuarioEncontrado.getSenha().equals(usuario.getSenha())) {
-				session.setUsuario(usuarioEncontrado);
-				return Map.of(Boolean.TRUE, "Sessão iniciada com sucesso");
-			}
+			if (!usuarioEncontrado.getSenha().equals(usuario.getSenha()))
+				throw new ServiceException("Senha incorreta");
 
-			return Map.of(Boolean.FALSE, "Senha incorreta");
+			session.setUsuario(usuarioEncontrado);
+			return usuarioEncontrado;
 		} catch (DAOException e) {
-			return Map.of(Boolean.FALSE, e.getClass().getSimpleName() + " -> " + e.getMessage());
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
 	}
 
-	public Map<Boolean, String> criarConta(Usuario usuario) {
+	public Usuario criarConta(Usuario usuario) {
 		try {
 			usuario.setTipo(TipoUsuario.PADRAO);
 			usuario.setAtivo(Boolean.TRUE);
-			dao.inserir(usuario);
 
-			return Map.of(Boolean.TRUE, "Usuário inserido com sucesso");
+			return dao.inserir(usuario);
 		} catch (DAOException e) {
-			return Map.of(Boolean.FALSE, e.getClass().getSimpleName() + " -> " + e.getMessage());
-		} catch (IllegalStateException e) {
-			return Map.of(Boolean.FALSE, e.getClass().getSimpleName() + " -> " + e.getMessage());
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
 	}
 
