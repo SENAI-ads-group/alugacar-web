@@ -94,10 +94,10 @@
 					<div class="p-2">
 						<a
 							class="dropdown-item d-flex align-items-center justify-content-between"
-							href=""> <span class="font-size-sm font-w500">Perfil</span>
+							href="<c:url value="/usuarios/${ usuarioSession.usuario.id }"/>">
+							<span class="font-size-sm font-w500">Perfil</span>
 						</a>
-						<c:if
-							test="${ usuarioSession.usuario.tipo.administrador }">
+						<c:if test="${ usuarioSession.usuario.tipo.administrador }">
 							<a
 								class="dropdown-item d-flex align-items-center justify-content-between"
 								href=""> <span class="font-size-sm font-w500">Configurações</span>
@@ -105,10 +105,6 @@
 						</c:if>
 						<div role="separator" class="dropdown-divider"></div>
 						<a
-							class="dropdown-item d-flex align-items-center justify-content-between"
-							href=""> <span class="font-size-sm font-w500">Bloquear
-								Tela</span>
-						</a> <a
 							class="dropdown-item d-flex align-items-center justify-content-between"
 							href="<c:url value="/autenticacao/sair"/>"> <span
 							class="font-size-sm font-w500">Sair</span>

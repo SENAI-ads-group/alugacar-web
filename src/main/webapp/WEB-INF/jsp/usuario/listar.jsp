@@ -92,8 +92,7 @@
 							</button>
 							<div class="dropdown-menu font-size-sm"
 								aria-labelledby="dropdown-default-light">
-								<a class="dropdown-item" href="javascript:void(0)">Recuperar
-									Exclusão</a>
+								<a class="dropdown-item" href="">Recuperar Exclusão</a>
 							</div>
 						</div>
 					</div>
@@ -134,11 +133,17 @@
 													title="Visualizar" href="<c:url value="${ u.id }"/>"> <i
 													class="fa fa-fw fa fa-eye"></i>
 												</a>
-												<c:if test="${ usuarioSession.usuario.tipo.administrador }">
-													<a type="button" class="btn btn-sm btn-alt-primary"
-														data-toggle="tooltip" title="Excluir"> <i
-														class="fa fa-fw fa-times"></i>
-													</a>
+												<c:if
+													test="${ usuarioSession.usuario.tipo.administrador && usuarioSession.usuario.id != u.id }">
+													<form id="form-excluir"
+														method="POST"
+														action="<c:url value="excluir/${ u.id }"/>">
+														<a type="button" class="btn btn-sm btn-alt-primary"
+															data-toggle="tooltip" title="Excluir"
+															onclick="document.getElementById('form-excluir').submit()">
+															<i class="fa fa-fw fa-times"></i>
+														</a>
+													</form>
 												</c:if>
 											</div>
 										</td>
@@ -179,6 +184,41 @@
 		</script>
 	</c:forEach>
 
+	<c:forEach var="notificacao" items="${ notificacoesSucesso }">
+		<script>
+			$.notify({
+				title : '<b>${ notificacao.category }</b>',
+				icon : 'fa fa-check mr-1',
+				message : '<br>${ notificacao.message }'
+			}, {
+				type : 'success'
+			});
+		</script>
+	</c:forEach>
+
+	<c:forEach var="notificacao" items="${ notificacoesInformacao }">
+		<script>
+			$.notify({
+				title : '<b>${ notificacao.category }</b>',
+				icon : 'fa fa-info-circle mr-1',
+				message : '<br>${ notificacao.message }'
+			}, {
+				type : 'info'
+			});
+		</script>
+	</c:forEach>
+
+	<c:forEach var="notificacao" items="${ notificacoesAviso }">
+		<script>
+			$.notify({
+				title : '<b>${ notificacao.category }</b>',
+				icon : 'fa fa-exclamation mr-1',
+				message : '<br>${ notificacao.message }'
+			}, {
+				type : 'warning'
+			});
+		</script>
+	</c:forEach>
 </body>
 
 </html>

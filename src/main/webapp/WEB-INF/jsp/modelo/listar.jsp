@@ -10,7 +10,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Usuários</title>
+<title>Alugacar | Marcas</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -61,7 +61,7 @@
 				<div class="row">
 					<div class="col-6">
 						<a class="block block-rounded block-link-shadow text-center"
-							href="<c:url value="listar"/>">
+							href="">
 							<div class="block-content block-content-full">
 								<div class="font-size-h2 text-dark">
 									<i class="fa fa-arrow-left"></i>
@@ -72,26 +72,20 @@
 							</div>
 						</a>
 					</div>
-					<c:if
-						test="${ usuarioSession.usuario.tipo.administrador && usuarioSession.usuario.id != usuario.id }">
-						<div class="col-6">
-							<form id="form-excluir" method="POST"
-								action="<c:url value="excluir/${ usuario.id }"/>">
-								<a class="block block-rounded block-link-shadow text-center"
-									onclick="document.getElementById('form-excluir').submit()">
-									<div class="block-content block-content-full">
-										<div class="font-size-h2 text-danger">
-											<i class="fa fa-times"></i>
-										</div>
-									</div>
-									<div class="block-content py-2 bg-body-light">
-										<p class="font-w600 font-size-sm text-danger mb-0">Excluir
-											Usuário</p>
-									</div>
-								</a>
-							</form>
-						</div>
-					</c:if>
+					<div class="col-6">
+						<a class="block block-rounded block-link-shadow text-center"
+							href="">
+							<div class="block-content block-content-full">
+								<div class="font-size-h2 text-danger">
+									<i class="fa fa-times"></i>
+								</div>
+							</div>
+							<div class="block-content py-2 bg-body-light">
+								<p class="font-w600 font-size-sm text-danger mb-0">Excluir
+									Modelo</p>
+							</div>
+						</a>
+					</div>
 				</div>
 				<!-- END Quick Actions -->
 
@@ -107,55 +101,51 @@
 									<img class="img-avatar" alt=""
 										src="<c:url value="/assets/media/avatars/avatar13.jpg"/>">
 								</div>
-								<h1 class="font-size-lg mb-0">${ usuario.nome }</h1>
-								<p class="font-size-sm text-muted">Usuário ${ usuario.tipo.valor }</p>
+								<h1 class="font-size-lg mb-0">${ modelo.descricao }</h1>
 							</div>
 						</div>
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="atualizar" method="POST">
+								<form action="" method="POST">
 									<div class="form-group">
-										<label for="usuario.id">ID</label> <input type="text"
-											class="form-control" id="usuario.id" name="usuario.id"
-											value="${ usuario.id }" readonly>
+										<label for="modelo.id">ID</label> <input type="text"
+											class="form-control" id="modelo.id" name="modelo.id"
+											value="${ modelo.id }" readonly>
 									</div>
 									<div class="form-group">
-										<label for="usuario.nome">Nome</label> <input type="text"
-											class="form-control" id="usuario.nome" name="usuario.nome"
-											value="${ usuario.nome }"
-											${ !usuarioSession.usuario.tipo.administrador && !(usuarioSession.usuario.id == usuario.id) ? 'readonly' : '' }>
+										<label for="modelo.descricao">Descrição</label> <input
+											type="text" class="form-control" id="modelo.descricao"
+											name="modelo.descricao" value="${ modelo.descricao }">
 									</div>
 									<div class="form-group">
-										<label for="usuario.email">Email</label> <input type="text"
-											class="form-control" id="usuario.email" name="usuario.email"
-											value="${ usuario.email }"
-											${ !usuarioSession.usuario.tipo.administrador && !(usuarioSession.usuario.id == usuario.id) ? 'readonly' : '' }>
+										<!-- Select2 (.js-select2 class is initialized in Helpers.select2()) -->
+										<!-- For more info and examples you can check out https://github.com/select2/select2 -->
+										<label for="">Marca</label> <select
+											class="js-select2 form-control" id="modelo.marca"
+											name="modelo.marca" style="width: 100%;"
+											data-placeholder="Escolha uma marca">
+											<option></option>
+											<!-- Required for data-placeholder attribute to work with Select2 plugin -->
+											<c:forEach var="marca" items="${ marcasList }">
+												<option value="${ marca }"
+													${ modelo.marca.id == marca.id ? 'selected' : ''  }>${ marca.descricao  }</option>
+											</c:forEach>
+										</select>
 									</div>
 									<div class="form-group">
-										<label>Administrador?</label>
-										<div class="custom-control custom-switch mb-1">
-											<input type="checkbox" class="custom-control-input"
-												id="administrador" name="administrador"
-												${ usuario.tipo.administrador ? 'checked' : '' }
-												${ !usuarioSession.usuario.tipo.administrador ? 'disabled' : '' }>
-											<label class="custom-control-label" for="administrador"></label>
-										</div>
+										<button type="submit" class="btn btn-alt-success">Atualizar</button>
 									</div>
-									<c:if
-										test="${ usuarioSession.usuario.tipo.administrador || (usuarioSession.usuario.id == usuario.id) }">
-										<div class="form-group">
-											<button type="submit" class="btn btn-alt-success">Atualizar</button>
-										</div>
-									</c:if>
 								</form>
 							</div>
 						</div>
 					</div>
+
+					<!-- END Info -->
 				</div>
-				<!-- END Info -->
 
 			</div>
 			<!-- END Page Content -->
+
 		</main>
 		<!-- END Main Container -->
 
@@ -167,10 +157,9 @@
 	<script src="<c:url value="/assets/js/oneui.core.min.js"/>"></script>
 	<script src="<c:url value="/assets/js/oneui.app.min.js"/>"></script>
 
-	<!-- Page JS Plugins -->
+	<!-- Notifications JS Plugin -->
 	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
-
 
 	<c:forEach var="error" items="${errors}">
 		<script>
@@ -180,42 +169,6 @@
 				message : '<br>${ error.message }'
 			}, {
 				type : 'danger'
-			});
-		</script>
-	</c:forEach>
-
-	<c:forEach var="notificacao" items="${ notificacoesSucesso }">
-		<script>
-			$.notify({
-				title : '<b>${ notificacao.category }</b>',
-				icon : 'fa fa-check mr-1',
-				message : '<br>${ notificacao.message }'
-			}, {
-				type : 'success'
-			});
-		</script>
-	</c:forEach>
-
-	<c:forEach var="notificacao" items="${ notificacoesInformacao }">
-		<script>
-			$.notify({
-				title : '<b>${ notificacao.category }</b>',
-				icon : 'fa fa-info-circle mr-1',
-				message : '<br>${ notificacao.message }'
-			}, {
-				type : 'info'
-			});
-		</script>
-	</c:forEach>
-
-	<c:forEach var="notificacao" items="${ notificacoesAviso }">
-		<script>
-			$.notify({
-				title : '<b>${ notificacao.category }</b>',
-				icon : 'fa fa-exclamation mr-1',
-				message : '<br>${ notificacao.message }'
-			}, {
-				type : 'warning'
 			});
 		</script>
 	</c:forEach>

@@ -19,26 +19,47 @@ public class UsuarioService {
 	private UsuarioSession session;
 
 	public List<Usuario> getTodos() {
-		return dao.buscarTodos();
+		try {
+			return dao.buscarTodos();
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
 	}
 
 	public List<Usuario> getAtivos() {
-		return dao.buscarAtivos();
+		try {
+			return dao.buscarAtivos();
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
 	}
 
 	public Usuario getId(Long id) {
-		return dao.buscarId(id);
+		try {
+			Usuario usuarioEncontrado = dao.buscarId(id);
+
+			if (usuarioEncontrado == null)
+				throw new ServiceException("Usuário com ID " + id + " não encontrado");
+
+			return dao.buscarId(id);
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
 	}
 
 	public Usuario atualizar(Long id, Usuario usuario) {
-		Usuario obj = dao.buscarId(id);
-		atualizarDados(usuario, obj);
-		Usuario usuarioAtualizado = dao.atualizar(id, obj);
+		try {
+			Usuario obj = dao.buscarId(id);
+			atualizarDados(usuario, obj);
+			Usuario usuarioAtualizado = dao.atualizar(id, obj);
 
-		if (usuarioAtualizado == null)
-			throw new ServiceException("Não foi possível atualizar o usuário");
+			if (usuarioAtualizado == null)
+				throw new ServiceException("Não foi possível atualizar o usuário");
 
-		return usuarioAtualizado;
+			return usuarioAtualizado;
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
 	}
 
 	public void excluir(Long id) {
@@ -55,7 +76,6 @@ public class UsuarioService {
 
 			if (obj == null)
 				throw new ServiceException("Não foi possível desativar o usuário");
-
 		} catch (DAOException e) {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}

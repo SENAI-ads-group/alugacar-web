@@ -40,14 +40,18 @@ public class UsuarioController {
 	@AutenticacaoNecessaria
 	@Get("{usuario.id}")
 	public Usuario formulario(Usuario usuario) {
-		Usuario usuarioEncontrado = service.getId(usuario.getId());
+		try {
+			Usuario usuarioEncontrado = service.getId(usuario.getId());
 
-		if (usuarioEncontrado == null) {
-			validator.add(new SimpleMessage("Erro ao carregar formulário de usuário", "O ID informado é inválido"));
+			return usuarioEncontrado;
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar formulário",
+					e.getMessage().replace((char) 39, '"'));
+
+			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).listar();
 			return null;
-		} else
-			return usuarioEncontrado;
+		}
 	}
 
 	@AutenticacaoNecessaria

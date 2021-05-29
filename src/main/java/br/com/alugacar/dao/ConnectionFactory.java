@@ -1,5 +1,8 @@
 package br.com.alugacar.dao;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -60,22 +63,16 @@ public class ConnectionFactory {
 	}
 
 	private static Properties loadConfiguracoes() {
-		/*
-		 * try (FileInputStream fileInputStream = new FileInputStream( new
-		 * File("").getCanonicalPath() + "/src/main/resources/database.properties")) {
-		 * System.out.println("CAMINHO = " + caminho); Properties properties = new
-		 * Properties(); properties.load(fileInputStream); return properties; } catch
-		 * (IOException e) { throw new
-		 * DAOException("Arquivo de configurações não encontrado."); }
-		 */
+		String pastaRaiz = System.getProperty("user.home");
+		String pastaArquivo = pastaRaiz + "/alugacar/database.properties";
 
-		Properties props = new Properties();
-		props.put("user", "alugacar");
-		props.put("password", "senai");
-		props.put("dburl", "jdbc:postgresql://localhost:5432/alugacar");
-		props.put("driver", "org.postgresql.Driver");
-
-		return props;
+		try (FileInputStream fileInputStream = new FileInputStream(new File(pastaArquivo))) {
+			Properties properties = new Properties();
+			properties.load(fileInputStream);
+			return properties;
+		} catch (IOException e) {
+			throw new DAOException("Arquivo de configurações não encontrado.");
+		}
 
 	}
 
