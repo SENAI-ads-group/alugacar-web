@@ -8,7 +8,7 @@ import javax.inject.Named;
 import br.com.alugacar.entidades.Usuario;
 
 @SessionScoped
-@Named
+@Named("usuarioLogado")
 public class UsuarioSession implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -87,7 +87,7 @@
 						<h3 class="block-title">Listagem de categorias</h3>
 						<div class="block-options">
 							<a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
-								href="<c:url value="incluir"/>"> Adicionar </a>
+								href="<c:url value="adicionar"/>"> Adicionar </a>
 						</div>
 					</div>
 					<div class="block-content">

@@ -73,7 +73,7 @@
 						</a>
 					</div>
 					<c:if
-						test="${ usuarioSession.usuario.tipo.administrador && usuarioSession.usuario.id != usuario.id }">
+						test="${ usuarioLogado.usuario.tipo.administrador && usuarioLogado.usuario.id != usuario.id }">
 						<div class="col-6">
 							<form id="form-excluir" method="POST"
 								action="<c:url value="excluir/${ usuario.id }"/>">
@@ -123,13 +123,13 @@
 										<label for="usuario.nome">Nome</label> <input type="text"
 											class="form-control" id="usuario.nome" name="usuario.nome"
 											value="${ usuario.nome }"
-											${ !usuarioSession.usuario.tipo.administrador && !(usuarioSession.usuario.id == usuario.id) ? 'readonly' : '' }>
+											${ !usuarioLogado.usuario.tipo.administrador && !(usuarioLogado.usuario.id == usuario.id) ? 'readonly' : '' }>
 									</div>
 									<div class="form-group">
 										<label for="usuario.email">Email</label> <input type="text"
 											class="form-control" id="usuario.email" name="usuario.email"
 											value="${ usuario.email }"
-											${ !usuarioSession.usuario.tipo.administrador && !(usuarioSession.usuario.id == usuario.id) ? 'readonly' : '' }>
+											${ !usuarioLogado.usuario.tipo.administrador && !(usuarioLogado.usuario.id == usuario.id) ? 'readonly' : '' }>
 									</div>
 									<div class="form-group">
 										<label>Administrador?</label>
@@ -137,12 +137,12 @@
 											<input type="checkbox" class="custom-control-input"
 												id="administrador" name="administrador"
 												${ usuario.tipo.administrador ? 'checked' : '' }
-												${ !usuarioSession.usuario.tipo.administrador ? 'disabled' : '' }>
+												${ !usuarioLogado.usuario.tipo.administrador ? 'disabled' : '' }>
 											<label class="custom-control-label" for="administrador"></label>
 										</div>
 									</div>
 									<c:if
-										test="${ usuarioSession.usuario.tipo.administrador || (usuarioSession.usuario.id == usuario.id) }">
+										test="${ usuarioLogado.usuario.tipo.administrador || (usuarioLogado.usuario.id == usuario.id) }">
 										<div class="form-group">
 											<button type="submit" class="btn btn-alt-success">Atualizar</button>
 										</div>

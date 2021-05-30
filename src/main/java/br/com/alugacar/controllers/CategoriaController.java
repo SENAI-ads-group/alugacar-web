@@ -41,7 +41,7 @@ public class CategoriaController {
 
 	@AutenticacaoNecessaria
 	@Get
-	public void incluir() {
+	public void adicionar() {
 	}
 
 	@AutenticacaoNecessaria

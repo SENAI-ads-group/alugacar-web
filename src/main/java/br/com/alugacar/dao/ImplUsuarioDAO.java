@@ -12,13 +12,16 @@ import br.com.alugacar.dao.exceptions.DAOException;
 import br.com.alugacar.entidades.Usuario;
 import br.com.alugacar.entidades.enums.TipoUsuario;
 
+/**
+ * @author <a href="https://github.com/Patrick-Ribeiro">Patrick Ribeiro</a>
+ */
 public class ImplUsuarioDAO implements UsuarioDAO {
 
 	@Override
 	public Usuario inserir(Usuario usuario) {
-		if (usuario == null) {
+		if (usuario == null)
 			throw new IllegalStateException("O usuário não pode ser nulo");
-		}
+
 		if (buscarEmail(usuario.getEmail()) != null) {
 			throw new DAOException("O usuário com o email " + usuario.getEmail() + " já existe");
 		}
@@ -55,6 +58,11 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 
 	@Override
 	public Usuario atualizar(Long id, Usuario usuario) {
+		if (id == null)
+			throw new IllegalStateException("O ID não pode ser nulo");
+		if (usuario == null)
+			throw new IllegalStateException("O usuário não pode ser nulo");
+
 		final String SQL = "UPDATE usuario SET nome = ?, email = ?, "
 				+ "senha = ?, dica_senha = ?, tipo_usuario = ?, ativo = ? WHERE id_usuario = ?";
 
@@ -89,6 +97,9 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 
 	@Override
 	public Usuario buscarId(Long id) {
+		if (id == null)
+			throw new IllegalStateException("O ID não pode ser nulo");
+
 		final String SQL = "SELECT * FROM usuario WHERE id_usuario = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
@@ -110,6 +121,9 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 
 	@Override
 	public Usuario buscarEmail(String email) {
+		if (email == null || email.isEmpty())
+			throw new IllegalStateException("O email não pode ser nulo ou vazio");
+
 		final String SQL = "SELECT * FROM usuario WHERE email = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();

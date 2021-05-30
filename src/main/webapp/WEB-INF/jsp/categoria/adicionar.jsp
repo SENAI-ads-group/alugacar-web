@@ -90,7 +90,7 @@
 											name="categoria.descricao" value="${ categoria.descricao }">
 									</div>
 									<div class="form-group">
-										<button type="submit" class="btn btn-alt-success">Incluir</button>
+										<button type="submit" class="btn btn-alt-success">Adicionar</button>
 									</div>
 								</form>
 							</div>

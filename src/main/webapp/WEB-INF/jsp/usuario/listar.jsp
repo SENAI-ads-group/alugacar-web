@@ -136,7 +136,7 @@
 													class="fa fa-fw fa fa-eye"></i>
 												</a>
 												<c:if
-													test="${ usuarioSession.usuario.tipo.administrador && usuarioSession.usuario.id != u.id }">
+													test="${ usuarioLogado.usuario.tipo.administrador && usuarioLogado.usuario.id != u.id }">
 													<form id="form-excluir" method="POST"
 														action="<c:url value="excluir/${ u.id }"/>">
 														<button type="submit" class="btn btn-sm btn-alt-primary"

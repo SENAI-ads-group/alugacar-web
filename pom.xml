@@ -62,7 +62,7 @@
 			<version>5.4.10.Final</version>
 		</dependency>
 
-		<!-- C3p0 é nosso "GERENCIADOR" do pool de conexoes com o banco de dados 
+		<!-- C3p0 é nosso "GERENCIADOR" do pool de conexoes com a base de dados 
 			https://mvnrepository.com/artifact/c3p0/c3p0 -->
 		<dependency>
 			<groupId>c3p0</groupId>

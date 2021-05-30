@@ -78,7 +78,7 @@
 					<img class="rounded-circle"
 						src="<c:url value="/assets/media/avatars/avatar10.jpg"/>"
 						alt="Header Avatar" style="width: 21px;"> <span
-						class="d-none d-sm-inline-block ml-2">${ usuarioSession.usuario.nome }</span>
+						class="d-none d-sm-inline-block ml-2">${ usuarioLogado.usuario.nome }</span>
 					<i
 						class="fa fa-fw fa-angle-down d-none d-sm-inline-block ml-1 mt-1"></i>
 				</button>
@@ -88,16 +88,16 @@
 					<div class="p-3 text-center bg-primary-dark rounded-top">
 						<img class="img-avatar img-avatar48 img-avatar-thumb"
 							src="<c:url value="/assets/media/avatars/avatar10.jpg"/>" alt="">
-						<p class="mt-2 mb-0 text-white font-w500">${ usuarioSession.usuario.nome }</p>
-						<p class="mb-0 text-white-50 font-size-sm">Usuário ${ usuarioSession.usuario.tipo.valor }</p>
+						<p class="mt-2 mb-0 text-white font-w500">${ usuarioLogado.usuario.nome }</p>
+						<p class="mb-0 text-white-50 font-size-sm">Usuário ${ usuarioLogado.usuario.tipo.valor }</p>
 					</div>
 					<div class="p-2">
 						<a
 							class="dropdown-item d-flex align-items-center justify-content-between"
-							href="<c:url value="/usuarios/${ usuarioSession.usuario.id }"/>">
+							href="<c:url value="/usuarios/${ usuarioLogado.usuario.id }"/>">
 							<span class="font-size-sm font-w500">Perfil</span>
 						</a>
-						<c:if test="${ usuarioSession.usuario.tipo.administrador }">
+						<c:if test="${ usuarioLogado.usuario.tipo.administrador }">
 							<a
 								class="dropdown-item d-flex align-items-center justify-content-between"
 								href=""> <span class="font-size-sm font-w500">Configurações</span>

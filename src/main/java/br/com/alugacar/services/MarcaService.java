@@ -22,7 +22,7 @@ public class MarcaService {
 			}
 			return Map.of(Boolean.TRUE, "Marca inserida com sucesso!");
 		} catch (DAOException e) {
-			return Map.of(Boolean.FALSE, e.getClass().getSimpleName() + " -> " + "Ocorreu um erro no banco de dados");
+			return Map.of(Boolean.FALSE, e.getClass().getSimpleName() + " -> " + "Ocorreu um erro na base de dados");
 		}
 
 	}

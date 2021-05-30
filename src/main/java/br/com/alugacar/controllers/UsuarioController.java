@@ -22,6 +22,9 @@ import br.com.caelum.vraptor.validator.Validator;
 
 @Path("usuarios")
 @Controller
+/**
+ * @author <a href="https://github.com/Patrick-Ribeiro">Patrick Ribeiro</a>
+ */
 public class UsuarioController {
 
 	@Inject
@@ -68,6 +71,7 @@ public class UsuarioController {
 
 		usuario.setTipo(tipoUsuario);
 		usuario.setAtivo(ativo);
+
 		try {
 			Usuario usuarioAtualizado = service.atualizar(usuario.getId(), usuario);
 
@@ -89,7 +93,7 @@ public class UsuarioController {
 	@Post("excluir/{usuario.id}")
 	public void excluir(Usuario usuario) {
 		try {
-			service.excluir(usuario.getId());
+			service.desativar(usuario.getId());
 			result.redirectTo(this).listar();
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir usuário", e.getMessage());
@@ -110,7 +114,7 @@ public class UsuarioController {
 			result.redirectTo(this).listar();
 		} else {
 			try {
-				Usuario usuarioRecuperado = service.recuperarExclusao(usuario.getId());
+				Usuario usuarioRecuperado = service.recuperarInativo(usuario.getId());
 
 				Notificacao notificacao = NotificacaoUtil.criarNotificacao("Recuperação de usuário",
 						"Usuário " + usuarioRecuperado.getNome() + " recuperado com sucesso!", TipoNotificacao.SUCESSO);

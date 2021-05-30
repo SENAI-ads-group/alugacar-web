@@ -110,6 +110,13 @@
 														placeholder="Confirmação de Senha">
 												</div>
 												<div class="form-group">
+													<input type="text"
+														class="form-control form-control-lg form-control-alt"
+														id="usuario.dicaSenha"
+														name="usuario.dicaSenha"
+														placeholder="Dica de Senha">
+												</div>
+												<div class="form-group">
 													<div class="custom-control custom-checkbox">
 														<input type="checkbox" class="custom-control-input"
 															id="cadastrar-termos" name="cadastrar-termos"> <label
