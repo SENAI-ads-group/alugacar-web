@@ -54,13 +54,20 @@
 						class="nav-main-link-name">Veículos</span>
 				</a>
 					<ul class="nav-main-submenu">
-						<li class="nav-main-item"><a class="nav-main-link"> <i
+						<li class="nav-main-item"><a class="nav-main-link"
+							href="<c:url value="/marcas/listar"/>"> <i
 								class="nav-main-link-icon fab fa-black-tie"></i> <span
 								class="nav-main-link-name">Marcas</span>
 						</a></li>
-						<li class="nav-main-item"><a class="nav-main-link"> <i
+						<li class="nav-main-item"><a class="nav-main-link"
+							href="<c:url value="/modelos/listar"/>"> <i
 								class="nav-main-link-icon fa fa-car-side"></i> <span
 								class="nav-main-link-name">Modelos</span>
+						</a></li>
+						<li class="nav-main-item"><a class="nav-main-link"
+							href="<c:url value="/categorias/listar"/>"> <i
+								class="nav-main-link-icon fa fa-tags"></i> <span
+								class="nav-main-link-name">Categorias</span>
 						</a></li>
 					</ul></li>
 

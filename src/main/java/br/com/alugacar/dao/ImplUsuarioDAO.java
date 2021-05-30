@@ -149,8 +149,8 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 	}
 
 	@Override
-	public List<Usuario> buscarAtivos() {
-		final String SQL = "SELECT * FROM usuario WHERE ativo = true";
+	public List<Usuario> buscarAtivo(boolean ativo) {
+		final String SQL = "SELECT * FROM usuario WHERE ativo = " + ativo;
 
 		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
 

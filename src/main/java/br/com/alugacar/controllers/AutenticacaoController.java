@@ -1,13 +1,13 @@
 package br.com.alugacar.controllers;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import br.com.alugacar.annotations.AutenticacaoNecessaria;
 import br.com.alugacar.entidades.Usuario;
 import br.com.alugacar.services.AutenticacaoService;
 import br.com.alugacar.services.exceptions.ServiceException;
+import br.com.alugacar.util.Notificacao;
+import br.com.alugacar.util.Notificacao.TipoNotificacao;
 import br.com.alugacar.util.NotificacaoUtil;
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
@@ -42,12 +42,13 @@ public class AutenticacaoController {
 	public void entrar(Usuario usuario) {
 		try {
 			usuario = service.tryLogin(usuario);
-			NotificacaoUtil.adicionarSucesso(result, List.of(new SimpleMessage("Login efetuado com sucesso!",
-					"Olá, " + usuario.getNome() + ", seja bem vindo(a)!")));
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Login efetuado com sucesso!",
+					"Olá, " + usuario.getNome() + ", seja bem vindo(a)!", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
 
 			result.redirectTo(DashboardController.class).dashboard();
 		} catch (ServiceException e) {
-			SimpleMessage mensagemErro = new SimpleMessage("Erro ao entrar", e.getMessage().replace((char) 39, '"'));
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao entrar", e.getMessage());
 
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).login();
@@ -59,12 +60,13 @@ public class AutenticacaoController {
 	public void criarConta(Usuario usuario) {
 		try {
 			service.criarConta(usuario);
-			NotificacaoUtil.adicionarSucesso(result, List.of(
-					new SimpleMessage("Nova conta criada com sucesso!", "Olá, " + usuario.getNome() + " faça login")));
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Nova conta criada com sucesso!",
+					"Olá, " + usuario.getNome() + " faça login", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
 
 			result.redirectTo(this).login();
 		} catch (ServiceException e) {
-			SimpleMessage mensagemErro = new SimpleMessage("Erro ao entrar", e.getMessage().replace((char) 39, '"'));
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao entrar", e.getMessage());
 
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).cadastrar();

@@ -9,6 +9,9 @@ import br.com.alugacar.entidades.Usuario;
 import br.com.alugacar.entidades.enums.TipoUsuario;
 import br.com.alugacar.services.UsuarioService;
 import br.com.alugacar.services.exceptions.ServiceException;
+import br.com.alugacar.util.Notificacao;
+import br.com.alugacar.util.Notificacao.TipoNotificacao;
+import br.com.alugacar.util.NotificacaoUtil;
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
@@ -34,6 +37,9 @@ public class UsuarioController {
 	@Get
 	public List<Usuario> listar() {
 		List<Usuario> usuarioList = service.getAtivos();
+		List<Usuario> usuarioInativoList = service.getInativos();
+
+		result.include("usuarioInativoList", usuarioInativoList);
 		return usuarioList;
 	}
 
@@ -45,8 +51,7 @@ public class UsuarioController {
 
 			return usuarioEncontrado;
 		} catch (ServiceException e) {
-			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar formulário",
-					e.getMessage().replace((char) 39, '"'));
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar formulário", e.getMessage());
 
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).listar();
@@ -66,10 +71,13 @@ public class UsuarioController {
 		try {
 			Usuario usuarioAtualizado = service.atualizar(usuario.getId(), usuario);
 
-			result.redirectTo(this).formulario(usuarioAtualizado);
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Atualização de dados de usuário",
+					"Usuário " + usuarioAtualizado.getNome() + " atualizado com sucesso!", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
 		} catch (Exception e) {
-			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar usuário",
-					e.getMessage().replace((char) 39, '"'));
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar usuário", e.getMessage());
 
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).listar();
@@ -84,8 +92,7 @@ public class UsuarioController {
 			service.excluir(usuario.getId());
 			result.redirectTo(this).listar();
 		} catch (ServiceException e) {
-			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir usuário",
-					e.getMessage().replace((char) 39, '"'));
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir usuário", e.getMessage());
 
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).listar();
@@ -93,17 +100,29 @@ public class UsuarioController {
 	}
 
 	@AutenticacaoNecessaria
-	@Post("recuperar/{usuario.id}")
+	@Post("recuperar")
 	public void recuperarExclusao(Usuario usuario) {
-		try {
-			service.recuperarExclusao(usuario.getId());
-			result.redirectTo(this).listar();
-		} catch (ServiceException e) {
-			SimpleMessage mensagemErro = new SimpleMessage("Erro ao recuperar usuário",
-					e.getMessage().replace((char) 39, '"'));
+		if (usuario.getId() == 0L) {
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Recuperação de usuário",
+					"Nenhum usuário foi recuperado", TipoNotificacao.AVISO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
 
-			validator.add(mensagemErro);
-			validator.onErrorRedirectTo(this).listar();
+			result.redirectTo(this).listar();
+		} else {
+			try {
+				Usuario usuarioRecuperado = service.recuperarExclusao(usuario.getId());
+
+				Notificacao notificacao = NotificacaoUtil.criarNotificacao("Recuperação de usuário",
+						"Usuário " + usuarioRecuperado.getNome() + " recuperado com sucesso!", TipoNotificacao.SUCESSO);
+				NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+				result.redirectTo(this).listar();
+			} catch (ServiceException e) {
+				SimpleMessage mensagemErro = new SimpleMessage("Erro ao recuperar usuário", e.getMessage());
+
+				validator.add(mensagemErro);
+				validator.onErrorRedirectTo(this).listar();
+			}
 		}
 	}
 }

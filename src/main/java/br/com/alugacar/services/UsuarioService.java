@@ -28,7 +28,15 @@ public class UsuarioService {
 
 	public List<Usuario> getAtivos() {
 		try {
-			return dao.buscarAtivos();
+			return dao.buscarAtivo(true);
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
+	}
+
+	public List<Usuario> getInativos() {
+		try {
+			return dao.buscarAtivo(false);
 		} catch (DAOException e) {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}

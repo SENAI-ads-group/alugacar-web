@@ -184,38 +184,14 @@
 		</script>
 	</c:forEach>
 
-	<c:forEach var="notificacao" items="${ notificacoesSucesso }">
+	<c:forEach var="notificacao" items="${ notificacoes }">
 		<script>
 			$.notify({
-				title : '<b>${ notificacao.category }</b>',
-				icon : 'fa fa-check mr-1',
-				message : '<br>${ notificacao.message }'
+				title : '<b>${ notificacao.mensagem.category }</b>',
+				icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
+				message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
 			}, {
-				type : 'success'
-			});
-		</script>
-	</c:forEach>
-
-	<c:forEach var="notificacao" items="${ notificacoesInformacao }">
-		<script>
-			$.notify({
-				title : '<b>${ notificacao.category }</b>',
-				icon : 'fa fa-info-circle mr-1',
-				message : '<br>${ notificacao.message }'
-			}, {
-				type : 'info'
-			});
-		</script>
-	</c:forEach>
-
-	<c:forEach var="notificacao" items="${ notificacoesAviso }">
-		<script>
-			$.notify({
-				title : '<b>${ notificacao.category }</b>',
-				icon : 'fa fa-exclamation mr-1',
-				message : '<br>${ notificacao.message }'
-			}, {
-				type : 'warning'
+				type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
 			});
 		</script>
 	</c:forEach>

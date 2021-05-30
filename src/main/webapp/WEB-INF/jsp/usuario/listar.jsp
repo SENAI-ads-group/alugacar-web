@@ -31,9 +31,9 @@
 <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
 <link rel="shortcut icon" href="assets/media/favicons/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192"
-	href="<c:url value="assets/media/favicons/favicon-192x192.png"/>">
+	href="<c:url value="/assets/media/favicons/favicon-192x192.png"/>">
 <link rel="apple-touch-icon" sizes="180x180"
-	href="<c:url value="assets/media/favicons/apple-touch-icon-180x180.png"/>">
+	href="<c:url value="/assets/media/favicons/apple-touch-icon-180x180.png"/>">
 <!-- END Icons -->
 
 <!-- Stylesheets -->
@@ -92,7 +92,9 @@
 							</button>
 							<div class="dropdown-menu font-size-sm"
 								aria-labelledby="dropdown-default-light">
-								<a class="dropdown-item" href="">Recuperar Exclusão</a>
+								<a class="dropdown-item" data-toggle="modal"
+									data-target="#recuperacao-form-modal" href="">Recuperar
+									Exclusão</a>
 							</div>
 						</div>
 					</div>
@@ -135,14 +137,12 @@
 												</a>
 												<c:if
 													test="${ usuarioSession.usuario.tipo.administrador && usuarioSession.usuario.id != u.id }">
-													<form id="form-excluir"
-														method="POST"
+													<form id="form-excluir" method="POST"
 														action="<c:url value="excluir/${ u.id }"/>">
-														<a type="button" class="btn btn-sm btn-alt-primary"
-															data-toggle="tooltip" title="Excluir"
-															onclick="document.getElementById('form-excluir').submit()">
+														<button type="submit" class="btn btn-sm btn-alt-primary"
+															data-toggle="tooltip" title="Excluir">
 															<i class="fa fa-fw fa-times"></i>
-														</a>
+														</button>
 													</form>
 												</c:if>
 											</div>
@@ -165,6 +165,50 @@
 	</div>
 	<!-- END Page Container -->
 
+	<!-- Apps Modal -->
+	<!-- Opens from the modal toggle button in the header -->
+	<div class="modal fade" id="recuperacao-form-modal" tabindex="-1"
+		role="dialog" aria-labelledby="modal-block-vcenter" aria-hidden="true"
+		style="display: none;">
+		<div class="modal-dialog modal-md modal-dialog-centered"
+			role="document">
+			<div class="modal-content">
+				<div class="block block-rounded block-themed block-transparent mb-0">
+					<div class="block-header bg-primary-dark">
+						<h3 class="block-title">Recuperação de usuário</h3>
+						<div class="block-options">
+							<button type="button" class="btn-block-option"
+								data-dismiss="modal" aria-label="Close">
+								<i class="si si-close"></i>
+							</button>
+						</div>
+					</div>
+					<form id="form-recuperar"
+						action="<c:url value="/usuarios/recuperar"/>" method="POST">
+						<div class="block-content font-size-sm">
+							<div class="form-group">
+								<select class="custom-select" id="usuario.id" name="usuario.id">
+									<option value="0">Selecione um usuário</option>
+									<c:forEach var="u" items="${ usuarioInativoList }">
+										<option value="${ u.id }">${ u.email }</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+						<div
+							class="block-content block-content-full text-right border-top">
+							<a class="btn btn-alt-primary mr-1" data-dismiss="modal" href="">Cancelar</a>
+
+							<a class="btn btn-primary" data-dismiss="modal"
+								onclick="document.getElementById('form-recuperar').submit()">Recuperar</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END Apps Modal -->
+
 	<script src="<c:url value="/assets/js/oneui.core.min.js"/>"></script>
 	<script src="<c:url value="/assets/js/oneui.app.min.js"/>"></script>
 
@@ -172,53 +216,30 @@
 	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
 
-	<c:forEach var="error" items="${errors}">
+	<c:forEach var="error" items="${ errors }">
 		<script>
 			$.notify({
-				title : '<b>${ error.category }</b>',
+				title : '<b><c:url value="${ error.category }"/></b>',
 				icon : 'fa fa-times mr-1',
-				message : '<br>${ error.message }'
+				message : '<br><c:out value="${ error.message }"/>'
 			}, {
 				type : 'danger'
 			});
 		</script>
 	</c:forEach>
 
-	<c:forEach var="notificacao" items="${ notificacoesSucesso }">
+	<c:forEach var="notificacao" items="${ notificacoes }">
 		<script>
 			$.notify({
-				title : '<b>${ notificacao.category }</b>',
-				icon : 'fa fa-check mr-1',
-				message : '<br>${ notificacao.message }'
+				title : '<b><c:out value="${ notificacao.mensagem.category }"/></b>',
+				icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
+				message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
 			}, {
-				type : 'success'
+				type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
 			});
 		</script>
 	</c:forEach>
 
-	<c:forEach var="notificacao" items="${ notificacoesInformacao }">
-		<script>
-			$.notify({
-				title : '<b>${ notificacao.category }</b>',
-				icon : 'fa fa-info-circle mr-1',
-				message : '<br>${ notificacao.message }'
-			}, {
-				type : 'info'
-			});
-		</script>
-	</c:forEach>
-
-	<c:forEach var="notificacao" items="${ notificacoesAviso }">
-		<script>
-			$.notify({
-				title : '<b>${ notificacao.category }</b>',
-				icon : 'fa fa-exclamation mr-1',
-				message : '<br>${ notificacao.message }'
-			}, {
-				type : 'warning'
-			});
-		</script>
-	</c:forEach>
 </body>
 
 </html>
