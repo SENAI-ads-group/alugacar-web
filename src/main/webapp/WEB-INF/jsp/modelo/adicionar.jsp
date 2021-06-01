@@ -10,7 +10,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Categorias</title>
+<title>Alugacar | Modelo</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -29,8 +29,7 @@
 
 <!-- Icons -->
 <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-<link rel="shortcut icon"
-	href="<c:url value="/assets/media/favicons/favicon.png"/>">
+<link rel="shortcut icon" href="assets/media/favicons/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192"
 	href="<c:url value="/assets/media/favicons/favicon-192x192.png"/>">
 <link rel="apple-touch-icon" sizes="180x180"
@@ -56,81 +55,86 @@
 
 		<!-- Main Container -->
 		<main id="main-container">
-			<!-- Hero -->
-			<div class="bg-body-light">
-				<div class="content content-full">
-					<div
-						class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-						<h1 class="flex-sm-fill h3 my-2">
-							Categorias <small
-								class="d-block d-sm-inline-block mt-2 mt-sm-0 font-size-base font-w400 text-muted">Cadastro
-								de categorias de veículos</small>
-						</h1>
-						<nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
-							<ol class="breadcrumb breadcrumb-alt">
-								<li class="breadcrumb-item"><a class="link-fx"
-									href="<c:url value="/dashboard"/>">Dashboard</a></li>
-								<li class="breadcrumb-item" aria-current="page"><a
-									class="link-fx" href="<c:url value="/categorias/listar"/>">Categorias</a></li>
-							</ol>
-						</nav>
-					</div>
-				</div>
-			</div>
-			<!-- END Hero -->
-
 			<!-- Page Content -->
 			<div class="content">
-				<!-- Users Table -->
-				<div class="block block-rounded">
-					<div class="block-header block-header-default">
-						<h3 class="block-title">Listagem de categorias</h3>
-						<div class="block-options">
-							<a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
-								href="<c:url value="adicionar"/>"><i
-								class="fa fa-fw fa-plus mr-1"></i>Adicionar </a>
-						</div>
+				<!-- Quick Actions -->
+				<div class="row">
+					<div class="col-6">
+						<a class="block block-rounded block-link-shadow text-center"
+							href="">
+							<div class="block-content block-content-full">
+								<div class="font-size-h2 text-dark">
+									<i class="fa fa-arrow-left"></i>
+								</div>
+							</div>
+							<div class="block-content py-2 bg-body-light">
+								<p class="font-w600 font-size-sm text-muted mb-0">Voltar</p>
+							</div>
+						</a>
 					</div>
-					<div class="block-content">
-						<table class="table table-striped table-vcenter">
-							<thead>
-								<tr>
-									<th class="text-center" style="width: 50px;">ID</th>
-									<th>Descrição</th>
-									<th class="text-center" style="width: 100px;">Ações</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="cat" items="${ categoriaList }">
-									<tr>
-										<th class="text-center" scope="row">${ cat.id }</th>
-										<td class="font-w600 font-size-sm"><a
-											href="<c:url value="/categorias/${ cat.id }"/>">${ cat.descricao }</a></td>
-										<td class="text-center">
-											<div class="btn-group">
-												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
-													title="Editar"
-													href="<c:url value="/categorias/${ cat.id }"/>"> <i
-													class="fa fa-fw fa-pencil-alt"></i>
-												</a>
-												<form id="form-excluir" method="POST"
-													action="<c:url value="excluir/${ cat.id }"/>">
-													<button type="button" class="btn btn-sm btn-alt-primary"
-														data-toggle="tooltip" title="Excluir">
-														<i class="fa fa-fw fa-times"></i>
-													</button>
-												</form>
-											</div>
-										</td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
+					<div class="col-6">
+						<a class="block block-rounded block-link-shadow text-center"
+							href="">
+							<div class="block-content block-content-full">
+								<div class="font-size-h2 text-danger">
+									<i class="fa fa-times"></i>
+								</div>
+							</div>
+							<div class="block-content py-2 bg-body-light">
+								<p class="font-w600 font-size-sm text-danger mb-0">Excluir
+									Modelo</p>
+							</div>
+						</a>
 					</div>
 				</div>
-				<!-- END Users Table -->
+				<!-- END Quick Actions -->
+
+				<!-- Info -->
+				<div class="block block-rounded">
+					<div class="block-header block-header-default">
+						<h3 class="block-title">Informações</h3>
+					</div>
+					<div class="block-content">
+						<div class="block-content text-center">
+							<div class="py-4">
+								<div class="mb-3">
+									<img class="img-avatar" alt=""
+										src="<c:url value="/assets/media/avatars/avatar13.jpg"/>">
+								</div>
+								<h1 class="font-size-lg mb-0">${ modelo.descricao }</h1>
+							</div>
+						</div>
+						<div class="row justify-content-center">
+							<div class="col-md-10 col-lg-8">
+								<form action="atualizar" method="POST">
+									<div class="form-group">
+										<label for="modelo.descricao">Descrição</label> <input
+											type="text" class="form-control" id="modelo.descricao"
+											name="modelo.descricao" value="${ modelo.descricao }">
+									</div>
+									<div class="form-group">
+										<label for="">Marca</label> <select class="custom-select"
+											id="modelo.marca.id" name="modelo.marca.id"
+											style="width: 100%;" data-placeholder="Escolha uma marca">
+											<c:forEach var="mar" items="${ marcaList }">
+												<option value="${ mar.id }">${ mar.descricao }</option>
+											</c:forEach>
+										</select>
+									</div>
+									<div class="form-group">
+										<button type="submit" class="btn btn-alt-success">Atualizar</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<!-- END Info -->
+				</div>
+
 			</div>
 			<!-- END Page Content -->
+
 		</main>
 		<!-- END Main Container -->
 

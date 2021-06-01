@@ -31,9 +31,9 @@
 <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
 <link rel="shortcut icon" href="assets/media/favicons/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192"
-	href="<c:url value="assets/media/favicons/favicon-192x192.png"/>">
+	href="<c:url value="/assets/media/favicons/favicon-192x192.png"/>">
 <link rel="apple-touch-icon" sizes="180x180"
-	href="<c:url value="assets/media/favicons/apple-touch-icon-180x180.png"/>">
+	href="<c:url value="/assets/media/favicons/apple-touch-icon-180x180.png"/>">
 <!-- END Icons -->
 
 <!-- Stylesheets -->
@@ -106,7 +106,7 @@
 						</div>
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="" method="POST">
+								<form action="atualizar" method="POST">
 									<div class="form-group">
 										<label for="modelo.id">ID</label> <input type="text"
 											class="form-control" id="modelo.id" name="modelo.id"
@@ -118,17 +118,12 @@
 											name="modelo.descricao" value="${ modelo.descricao }">
 									</div>
 									<div class="form-group">
-										<!-- Select2 (.js-select2 class is initialized in Helpers.select2()) -->
-										<!-- For more info and examples you can check out https://github.com/select2/select2 -->
-										<label for="">Marca</label> <select
-											class="js-select2 form-control" id="modelo.marca"
-											name="modelo.marca" style="width: 100%;"
-											data-placeholder="Escolha uma marca">
-											<option></option>
-											<!-- Required for data-placeholder attribute to work with Select2 plugin -->
-											<c:forEach var="marca" items="${ marcasList }">
-												<option value="${ marca }"
-													${ modelo.marca.id == marca.id ? 'selected' : ''  }>${ marca.descricao  }</option>
+										<label for="">Marca</label> <select class="custom-select"
+											id="modelo.marca.id" name="modelo.marca.id"
+											style="width: 100%;" data-placeholder="Escolha uma marca">
+											<c:forEach var="mar" items="${ marcaList }">
+												<option value="${ mar.id }"
+													${ modelo.marca.id == mar.id ? 'selected' : ''  }>${ mar.descricao  }</option>
 											</c:forEach>
 										</select>
 									</div>
@@ -161,15 +156,29 @@
 	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
 
-	<c:forEach var="error" items="${errors}">
+	<c:forEach var="error" items="${ errors }">
 		<script>
 			$.notify({
-				title : '<b>${ error.category }</b>',
-				icon : 'fa fa-times mr-1',
-				message : '<br>${ error.message }'
+				title : `<b><c:url value="${ error.category }"/></b>`,
+				icon : `fa fa-times mr-1`,
+				message : `<br><c:out value="${ error.message }"/>`
 			}, {
 				type : 'danger'
 			});
+		</script>
+	</c:forEach>
+
+	<c:forEach var="notificacao" items="${ notificacoes }">
+		<script>
+			$.notify(
+				{
+					title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
+					icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
+					message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
+				},
+				{
+					type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
+				});
 		</script>
 	</c:forEach>
 

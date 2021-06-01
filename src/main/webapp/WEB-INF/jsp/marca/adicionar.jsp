@@ -10,7 +10,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Usuários</title>
+<title>Alugacar | Marca</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -54,7 +54,7 @@
 		<%@ include file="../sidebar.jsp"%>
 
 		<!-- Main Container -->
-		<main id="main-container">
+		<main id="main-container">		
 			<!-- Page Content -->
 			<div class="content">
 				<!-- Quick Actions -->
@@ -72,20 +72,6 @@
 							</div>
 						</a>
 					</div>
-					<div class="col-6">
-						<a class="block block-rounded block-link-shadow text-center"
-							href="">
-							<div class="block-content block-content-full">
-								<div class="font-size-h2 text-danger">
-									<i class="fa fa-times"></i>
-								</div>
-							</div>
-							<div class="block-content py-2 bg-body-light">
-								<p class="font-w600 font-size-sm text-danger mb-0">Excluir
-									Marca</p>
-							</div>
-						</a>
-					</div>
 				</div>
 				<!-- END Quick Actions -->
 
@@ -95,42 +81,28 @@
 						<h3 class="block-title">Informações</h3>
 					</div>
 					<div class="block-content">
-						<div class="block-content text-center">
-							<div class="py-4">
-								<div class="mb-3">
-									<img class="img-avatar"
-										src="<c:url value ="/assets/media/avatars/avatar13.jpg "/>"
-										alt="">
-								</div>
-								<h1 class="font-size-lg mb-0">${ marca.descricao }</h1>
-							</div>
-						</div>
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="<c:url value = "cadastrar"/>" method="POST">
-									<div class="form-group">
-										<label for="marca.id">ID</label> <input type="text"
-											class="form-control" id="marca.id" name="marca.id"
-											value="${ marca.id }" readonly>
-									</div>
+								<form action="<c:url value="cadastrar"/>" method="POST">
 									<div class="form-group">
 										<label for="marca.descricao">Descrição</label> <input
 											type="text" class="form-control" id="marca.descricao"
-											name="marca.descricao" value="${ marca.descricao }">
+											name="marca.descricao">
 									</div>
-
 									<div class="form-group">
-										<button type="submit" class="btn btn-alt-success">Atualizar</button>
+										<button type="submit" class="btn btn-alt-success">Adicionar</button>
 									</div>
 								</form>
 							</div>
 						</div>
 					</div>
+
+					<!-- END Info -->
 				</div>
-				<!-- END Info -->
 
 			</div>
 			<!-- END Page Content -->
+
 		</main>
 		<!-- END Main Container -->
 
@@ -141,6 +113,34 @@
 
 	<script src="<c:url value="/assets/js/oneui.core.min.js"/>"></script>
 	<script src="<c:url value="/assets/js/oneui.app.min.js"/>"></script>
+
+	<!-- Notifications JS Plugin -->
+	<script
+		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
+
+	<c:forEach var="error" items="${ errors }">
+		<script>
+			$.notify({
+				title : '<b><c:url value="${ error.category }"/></b>',
+				icon : 'fa fa-times mr-1',
+				message : '<br><c:out value="${ error.message }"/>'
+			}, {
+				type : 'danger'
+			});
+		</script>
+	</c:forEach>
+
+	<c:forEach var="notificacao" items="${ notificacoes }">
+		<script>
+			$.notify({
+				title : '<b><c:out value="${ notificacao.mensagem.category }"/></b>',
+				icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
+				message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
+			}, {
+				type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
+			});
+		</script>
+	</c:forEach>
 
 </body>
 

@@ -10,7 +10,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Categorias</title>
+<title>Alugacar | Modelos</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -62,16 +62,16 @@
 					<div
 						class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
 						<h1 class="flex-sm-fill h3 my-2">
-							Categorias <small
+							Modelos <small
 								class="d-block d-sm-inline-block mt-2 mt-sm-0 font-size-base font-w400 text-muted">Cadastro
-								de categorias de veículos</small>
+								de modelos de veículos</small>
 						</h1>
 						<nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
 							<ol class="breadcrumb breadcrumb-alt">
 								<li class="breadcrumb-item"><a class="link-fx"
 									href="<c:url value="/dashboard"/>">Dashboard</a></li>
 								<li class="breadcrumb-item" aria-current="page"><a
-									class="link-fx" href="<c:url value="/categorias/listar"/>">Categorias</a></li>
+									class="link-fx" href="<c:url value="/categorias/listar"/>">Modelos</a></li>
 							</ol>
 						</nav>
 					</div>
@@ -84,7 +84,7 @@
 				<!-- Users Table -->
 				<div class="block block-rounded">
 					<div class="block-header block-header-default">
-						<h3 class="block-title">Listagem de categorias</h3>
+						<h3 class="block-title">Listagem de modelos</h3>
 						<div class="block-options">
 							<a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
 								href="<c:url value="adicionar"/>"><i
@@ -97,24 +97,26 @@
 								<tr>
 									<th class="text-center" style="width: 50px;">ID</th>
 									<th>Descrição</th>
+									<th>Marca</th>
 									<th class="text-center" style="width: 100px;">Ações</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="cat" items="${ categoriaList }">
+								<c:forEach var="m" items="${ modeloList }">
 									<tr>
-										<th class="text-center" scope="row">${ cat.id }</th>
+										<th class="text-center" scope="row">${ m.id }</th>
 										<td class="font-w600 font-size-sm"><a
-											href="<c:url value="/categorias/${ cat.id }"/>">${ cat.descricao }</a></td>
+											href="<c:url value="/modelos/${ m.id }"/>">${ m.descricao }</a></td>
+										<td class="font-w600 font-size-sm"><a
+											href="<c:url value="/marcas/${ m.marca.id }"/>">${ m.marca.descricao }</a></td>
 										<td class="text-center">
 											<div class="btn-group">
 												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
-													title="Editar"
-													href="<c:url value="/categorias/${ cat.id }"/>"> <i
-													class="fa fa-fw fa-pencil-alt"></i>
+													title="Editar" href="<c:url value="/modelos/${ m.id }"/>">
+													<i class="fa fa-fw fa-pencil-alt"></i>
 												</a>
 												<form id="form-excluir" method="POST"
-													action="<c:url value="excluir/${ cat.id }"/>">
+													action="<c:url value="excluir/${ m.id }"/>">
 													<button type="button" class="btn btn-sm btn-alt-primary"
 														data-toggle="tooltip" title="Excluir">
 														<i class="fa fa-fw fa-times"></i>
@@ -160,16 +162,15 @@
 
 	<c:forEach var="notificacao" items="${ notificacoes }">
 		<script>
-			$
-					.notify(
-							{
-								title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
-								icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
-								message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
-							},
-							{
-								type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
-							});
+			$.notify(
+				{
+					title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
+					icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
+					message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
+				},
+				{
+					type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
+				});
 		</script>
 	</c:forEach>
 

@@ -140,9 +140,9 @@
 	<c:forEach var="error" items="${ errors }">
 		<script>
 			$.notify({
-				title : '<b><c:url value="${ error.category }"/></b>',
-				icon : 'fa fa-times mr-1',
-				message : '<br><c:out value="${ error.message }"/>'
+				title : `<b><c:url value="${ error.category }"/></b>`,
+				icon : `fa fa-times mr-1`,
+				message : `<br><c:out value="${ error.message }"/>`
 			}, {
 				type : 'danger'
 			});
@@ -151,13 +151,15 @@
 
 	<c:forEach var="notificacao" items="${ notificacoes }">
 		<script>
-			$.notify({
-				title : '<b><c:out value="${ notificacao.mensagem.category }"/></b>',
-				icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
-				message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
-			}, {
-				type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
-			});
+			$.notify(
+				{
+					title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
+					icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
+					message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
+				},
+				{
+					type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
+				});
 		</script>
 	</c:forEach>
 

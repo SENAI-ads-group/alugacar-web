@@ -54,8 +54,7 @@ public class CategoriaController {
 
 			return categoriaEncontrada;
 		} catch (ServiceException e) {
-			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar formulário",
-					e.getMessage().replace((char) 39, '"'));
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar formulário", e.getMessage());
 
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).listar();
@@ -66,6 +65,14 @@ public class CategoriaController {
 	@AutenticacaoNecessaria
 	@Post("atualizar")
 	public void atualizar(Categoria categoria) {
+		if (!validarCategoria(categoria)) {
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Nada feito!",
+					"A categoria não foi atualizada, pois nenhuma descrição foi informada", TipoNotificacao.AVISO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+			result.redirectTo(this).listar();
+			return;
+		}
+
 		try {
 			service.atualizar(categoria.getId(), categoria);
 
@@ -85,19 +92,36 @@ public class CategoriaController {
 	@AutenticacaoNecessaria
 	@Post("cadastrar")
 	public void cadastrar(Categoria categoria) {
+		if (!validarCategoria(categoria)) {
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Nada feito!",
+					"Nehuma categoria foi adicionada, pois nenhuma descrição foi informada", TipoNotificacao.AVISO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+			result.redirectTo(this).listar();
+			return;
+		}
+
 		try {
 			service.incluir(categoria);
-			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Nova categoria inclusa!",
-					"categoria " + categoria.getDescricao() + " inclusa com sucesso!", TipoNotificacao.SUCESSO);
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Nova categoria adicionada!",
+					"categoria " + categoria.getDescricao() + " adicionada com sucesso!", TipoNotificacao.SUCESSO);
 			NotificacaoUtil.adicionarNotificacao(result, notificacao);
 
 			result.redirectTo(this).listar();
 		} catch (ServiceException e) {
-			SimpleMessage mensagemErro = new SimpleMessage("Erro ao incluir categoria",
-					e.getMessage().replace((char) 39, '"'));
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao incluir categoria", e.getMessage());
 
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).listar();
 		}
+	}
+
+	private boolean validarCategoria(Categoria cat) {
+		if (cat == null)
+			return false;
+		if (cat.getDescricao() == null)
+			return false;
+		if (cat.getDescricao().trim().isEmpty())
+			return false;
+		return true;
 	}
 }

@@ -11,7 +11,6 @@ import java.util.List;
 import br.com.alugacar.dao.exceptions.DAOException;
 import br.com.alugacar.entidades.Marca;
 
-
 public class ImplMarcaDAO implements MarcaDAO {
 
 	@Override
@@ -45,22 +44,21 @@ public class ImplMarcaDAO implements MarcaDAO {
 		} catch (Exception e) {
 			throw new DAOException(e.getMessage());
 		}
-
 	}
 
 	@Override
 	public Marca atualizar(Integer id, Marca marca) {
 		final String SQL = "UPDATE marca SET descricao  = ?, logomarca_foto = ? WHERE id_marca = ?";
-		
+
 		try (Connection connection = ConnectionFactory.getConnection();
-				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)){
-			
+				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
+
 			ps.setString(1, marca.getDescricao());
 			ps.setString(2, marca.getLogomarcaFoto());
 			ps.setInt(3, id);
-			
+
 			Marca marcaAtualizada = null;
-			
+
 			int linhasAfetadas = ps.executeUpdate();
 			ResultSet rs = null;
 			if (linhasAfetadas > 0) {
@@ -81,29 +79,29 @@ public class ImplMarcaDAO implements MarcaDAO {
 	@Override
 	public Marca buscarId(Integer id) {
 		final String SQL = "SELECT * FROM marca WHERE id_marca = ?";
-		
+
 		try (Connection connection = ConnectionFactory.getConnection();
-				PreparedStatement ps = connection.prepareStatement(SQL)){
-			
+				PreparedStatement ps = connection.prepareStatement(SQL)) {
+
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
-			
+
 			Marca marcaEncontrada = null;
-			if(rs.next())
+			if (rs.next())
 				marcaEncontrada = instanciarMarca(rs);
-			
+
 			ConnectionFactory.closeConnection(connection, ps, rs);
 			return marcaEncontrada;
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}
-		
+
 	}
 
 	@Override
 	public List<Marca> buscarTodos() {
 		final String SQL = "SELECT * FROM marca";
-		
+
 		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
 
 			ResultSet rs = st.executeQuery(SQL);
@@ -118,17 +116,6 @@ public class ImplMarcaDAO implements MarcaDAO {
 			throw new DAOException(e.getMessage());
 		}
 
-	}
-
-	private Marca instanciarMarca(ResultSet rs) throws SQLException {
-		Marca m = new Marca();
-
-		m.setId(rs.getInt("id_marca"));
-		m.setDescricao(rs.getString("descricao"));
-		m.setLogomarcaFoto(rs.getString("logomarca_foto"));
-
-
-		return m;
 	}
 
 	@Override
@@ -148,5 +135,15 @@ public class ImplMarcaDAO implements MarcaDAO {
 			throw new DAOException(e.getMessage());
 		}
 	}
-	
+
+	private Marca instanciarMarca(ResultSet rs) throws SQLException {
+		Marca m = new Marca();
+
+		m.setId(rs.getInt("id_marca"));
+		m.setDescricao(rs.getString("descricao"));
+		m.setLogomarcaFoto(rs.getString("logomarca_foto"));
+
+		return m;
+	}
+
 }

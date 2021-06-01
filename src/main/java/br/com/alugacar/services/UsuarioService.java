@@ -27,8 +27,7 @@ public class UsuarioService {
 	 * 
 	 * @exception ServiceException Caso ocorra algum erro de comunicação com o banco
 	 *                             de dados ou de processamento na classe de
-	 *                             persistência.
-	 * 
+	 *                             persistência. 
 	 */
 	public List<Usuario> getTodos() {
 		try {
@@ -43,8 +42,7 @@ public class UsuarioService {
 	 * 
 	 * @exception ServiceException Caso ocorra algum erro de comunicação com o banco
 	 *                             de dados ou de processamento na classe de
-	 *                             persistência.
-	 * 
+	 *                             persistência. 
 	 */
 	public List<Usuario> getAtivos() {
 		try {
@@ -59,8 +57,7 @@ public class UsuarioService {
 	 * 
 	 * @exception ServiceException Caso ocorra algum erro de comunicação com o banco
 	 *                             de dados ou de processamento na classe de
-	 *                             persistência.
-	 * 
+	 *                             persistência. 
 	 */
 	public List<Usuario> getInativos() {
 		try {
@@ -77,8 +74,7 @@ public class UsuarioService {
 	 *                             cadastrado.
 	 * @exception ServiceException Caso ocorra algum erro de comunicação com o banco
 	 *                             de dados ou de processamento na classe de
-	 *                             persistência.
-	 * 
+	 *                             persistência. 
 	 */
 	public Usuario getId(Long id) {
 		try {
@@ -109,8 +105,7 @@ public class UsuarioService {
 	 * 
 	 * @exception ServiceException Caso ocorra algum erro de comunicação com o banco
 	 *                             de dados ou de processamento na classe de
-	 *                             persistência
-	 * 
+	 *                             persistência 
 	 */
 	public Usuario atualizar(Long id, Usuario usuario) {
 		try {
@@ -139,8 +134,7 @@ public class UsuarioService {
 	 *                             do tipo Administrador
 	 * @exception ServiceException Caso ocorra algum erro de comunicação com o banco
 	 *                             de dados ou de processamento na classe de
-	 *                             persistência
-	 * 
+	 *                             persistência 
 	 */
 	public void desativar(Long id) {
 		try {
@@ -176,8 +170,7 @@ public class UsuarioService {
 	 *                             no sistema
 	 * @exception ServiceException Caso ocorra algum erro de comunicação com o banco
 	 *                             de dados ou de processamento na classe de
-	 *                             persistência
-	 * 
+	 *                             persistência 
 	 */
 	public Usuario recuperarInativo(Long id) {
 		try {

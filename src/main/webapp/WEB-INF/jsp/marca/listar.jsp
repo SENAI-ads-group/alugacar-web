@@ -56,71 +56,78 @@
 		<!-- Main Container -->
 		<main id="main-container">
 			<div class="bg-body-light">
-                    <div class="content content-full">
-                        <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-                            <h1 class="flex-sm-fill h3 my-2">
-                                Marcas <small class="d-block d-sm-inline-block mt-2 mt-sm-0 font-size-base font-w400 text-muted">Cadastro de marcas de veículos</small>
-                            </h1>
-                            <nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
-                                <ol class="breadcrumb breadcrumb-alt">
-                                    <li class="breadcrumb-item">
-                                        <a class="link-fx" href="">Dashboard</a>
-                                    </li>
-                                    <li class="breadcrumb-item" aria-current="page">
-                                        <a class="link-fx" href="">Marcas</a>
-                                    </li>
-                                </ol>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-                <!-- END Hero -->
+				<div class="content content-full">
+					<div
+						class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
+						<h1 class="flex-sm-fill h3 my-2">
+							Marcas <small
+								class="d-block d-sm-inline-block mt-2 mt-sm-0 font-size-base font-w400 text-muted">Cadastro
+								de marcas de veículos</small>
+						</h1>
+						<nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
+							<ol class="breadcrumb breadcrumb-alt">
+								<li class="breadcrumb-item"><a class="link-fx" href="">Dashboard</a>
+								</li>
+								<li class="breadcrumb-item" aria-current="page"><a
+									class="link-fx" href="">Marcas</a></li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<!-- END Hero -->
 
-                <!-- Page Content -->
-                <div class="content">
-                    <!-- Partial Table -->
-                    <div class="block block-rounded">
-                        <div class="block-header">
-                            <h3 class="block-title"></h3>
-                            <div class="block-options">
-                                <button type="button" class="btn-block-option">
-                <i class="si si-settings"></i>
-            </button>
-                            </div>
-                        </div>
-                        <div class="block-content">
-                            <table class="table table-bordered table-striped table-vcenter">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" style="width: 80px;">ID</th>
-                                        <th class="d-none d-md-table-cell" style="width: 80%;">Descrição</th>
-                                        <th class="text-center" style="width: 100px;">Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="font-w600 font-size-sm">
-                                            <a href=""><span>1</span></a>
-                                        </td>
-                                        <td class="d-none d-md-table-cell font-size-sm">Chevrolet</td>
-                                        <td class="text-center">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-sm btn-alt-primary" data-toggle="tooltip" title="Editar">
-                                <i class="fa fa-fw fa-pencil-alt"></i>
-                            </button>
-                                                <button type="button" class="btn btn-sm btn-alt-primary" data-toggle="tooltip" title="Excluir">
-                                <i class="fa fa-fw fa-times"></i>
-                            </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- END Users Table -->
-                </div>
-                <!-- END Page Content -->
+			<!-- Page Content -->
+			<div class="content">
+				<!-- Partial Table -->
+				<div class="block block-rounded">
+					<div class="block-header block-header-default">
+						<h3 class="block-title">Listagem de marcas</h3>
+						<div class="block-options">
+							<a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
+								href="<c:url value="adicionar"/>"><i
+								class="fa fa-fw fa-plus mr-1"></i>Adicionar </a>
+						</div>
+					</div>
+					<div class="block-content">
+						<table class="table table-striped table-vcenter">
+							<thead>
+								<tr>
+									<th class="text-center" style="width: 50px;">ID</th>
+									<th>Descrição</th>
+									<th class="text-center" style="width: 100px;">Ações</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="m" items="${ marcaList }">
+									<tr>
+										<th class="text-center" scope="row">${ m.id }</th>
+										<td class="font-w600 font-size-sm"><a
+											href="<c:url value="/modelos/${ m.id }"/>">${ m.descricao }</a></td>
+										<td class="text-center">
+											<div class="btn-group">
+												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
+													title="Editar" href="<c:url value="/marcas/${ m.id }"/>">
+													<i class="fa fa-fw fa-pencil-alt"></i>
+												</a>
+												<form id="form-excluir" method="POST"
+													action="<c:url value="excluir/${ m.id }"/>">
+													<button type="button" class="btn btn-sm btn-alt-primary"
+														data-toggle="tooltip" title="Excluir">
+														<i class="fa fa-fw fa-times"></i>
+													</button>
+												</form>
+											</div>
+										</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- END Users Table -->
+			</div>
+			<!-- END Page Content -->
 		</main>
 		<!-- END Main Container -->
 
@@ -136,7 +143,7 @@
 	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
 
-	<c:forEach var="error" items="${errors}">
+	<c:forEach var="error" items="${ errors }">
 		<script>
 			$.notify({
 				title : '<b>${ error.category }</b>',

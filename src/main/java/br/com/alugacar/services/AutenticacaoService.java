@@ -40,6 +40,11 @@ public class AutenticacaoService {
 		}
 	}
 
+	/**
+	 * Cria uma nova conta de usuário.
+	 * @param usuario Objetos com as informações do novo usuário.
+	 * @return {@link UsuarioDAO}
+	 */
 	public Usuario criarConta(Usuario usuario) {
 		try {
 			usuario.setTipo(TipoUsuario.PADRAO);
@@ -51,6 +56,9 @@ public class AutenticacaoService {
 		}
 	}
 
+	/**
+	 * Reseta o estado da sessão de usuário
+	 */
 	public void logout() {
 		session.setUsuario(null);
 	}
