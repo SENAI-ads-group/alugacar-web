@@ -84,9 +84,15 @@
 					<div class="block-header block-header-default">
 						<h3 class="block-title">Listagem de marcas</h3>
 						<div class="block-options">
-							<a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
-								href="<c:url value="adicionar"/>"><i
-								class="fa fa-fw fa-plus mr-1"></i>Adicionar </a>
+							<div class="btn-group" role="group">
+								<a type="button" class="btn btn-sm btn-alt-dark mr-1 mb-3"
+									data-toggle="modal" data-target="#recuperacao-form-modal"
+									href=""> <i class="fa fa-fw fa fa-trash-restore mr-1"></i>
+									Recuperar Exclusão
+								</a> <a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
+									href="<c:url value="adicionar"/>"><i
+									class="fa fa-fw fa-plus mr-1"></i>Adicionar </a>
+							</div>
 						</div>
 					</div>
 					<div class="block-content">
@@ -103,16 +109,20 @@
 									<tr>
 										<th class="text-center" scope="row">${ m.id }</th>
 										<td class="font-w600 font-size-sm"><a
-											href="<c:url value="/modelos/${ m.id }"/>">${ m.descricao }</a></td>
+											href="<c:url value="/marcas/${ m.id }"/>">${ m.descricao }</a></td>
 										<td class="text-center">
 											<div class="btn-group">
 												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
+													title="Visualizar Modelos"
+													href="<c:url value="/modelos/marca/${ m.id }"/>"> <i
+													class="fa fa-fw fa fa-eye"></i>
+												</a> <a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
 													title="Editar" href="<c:url value="/marcas/${ m.id }"/>">
 													<i class="fa fa-fw fa-pencil-alt"></i>
 												</a>
-												<form id="form-excluir" method="POST"
+												<form method="POST"
 													action="<c:url value="excluir/${ m.id }"/>">
-													<button type="button" class="btn btn-sm btn-alt-primary"
+													<button type="submit" class="btn btn-sm btn-alt-primary"
 														data-toggle="tooltip" title="Excluir">
 														<i class="fa fa-fw fa-times"></i>
 													</button>
@@ -136,6 +146,47 @@
 	</div>
 	<!-- END Page Container -->
 
+	<div class="modal fade" id="recuperacao-form-modal" tabindex="-1"
+		role="dialog" aria-labelledby="modal-block-vcenter" aria-hidden="true"
+		style="display: none;">
+		<div class="modal-dialog modal-md modal-dialog-centered"
+			role="document">
+			<div class="modal-content">
+				<div class="block block-rounded block-themed block-transparent mb-0">
+					<div class="block-header bg-primary-dark">
+						<h3 class="block-title">Recuperação de marca</h3>
+						<div class="block-options">
+							<button type="button" class="btn-block-option"
+								data-dismiss="modal" aria-label="Close">
+								<i class="si si-close"></i>
+							</button>
+						</div>
+					</div>
+					<form id="form-recuperar"
+						action="<c:url value="/marcas/recuperar"/>" method="POST">
+						<div class="block-content font-size-sm">
+							<div class="form-group">
+								<select class="custom-select" id="marca.id" name="marca.id">
+									<option value="0">Selecione uma marca</option>
+									<c:forEach var="m" items="${ marcaInativasList }">
+										<option value="${ m.id }">${ m.descricao }</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+						<div
+							class="block-content block-content-full text-right border-top">
+							<a class="btn btn-alt-primary mr-1" data-dismiss="modal" href="">Cancelar</a>
+
+							<a class="btn btn-primary" data-dismiss="modal"
+								onclick="document.getElementById('form-recuperar').submit()">Recuperar</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script src="<c:url value="/assets/js/oneui.core.min.js"/>"></script>
 	<script src="<c:url value="/assets/js/oneui.app.min.js"/>"></script>
 
@@ -146,12 +197,27 @@
 	<c:forEach var="error" items="${ errors }">
 		<script>
 			$.notify({
-				title : '<b>${ error.category }</b>',
-				icon : 'fa fa-times mr-1',
-				message : '<br>${ error.message }'
+				title : `<b><c:url value="${ error.category }"/></b>`,
+				icon : `fa fa-times mr-1`,
+				message : `<br><c:out value="${ error.message }"/>`
 			}, {
 				type : 'danger'
 			});
+		</script>
+	</c:forEach>
+
+	<c:forEach var="notificacao" items="${ notificacoes }">
+		<script>
+			$
+					.notify(
+							{
+								title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
+								icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
+								message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
+							},
+							{
+								type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
+							});
 		</script>
 	</c:forEach>
 

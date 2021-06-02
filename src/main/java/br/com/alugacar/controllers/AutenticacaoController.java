@@ -43,7 +43,7 @@ public class AutenticacaoController {
 		try {
 			usuario = service.tryLogin(usuario);
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Login efetuado com sucesso!",
-					"Olá, " + usuario.getNome() + ", seja bem vindo(a)!", TipoNotificacao.SUCESSO);
+					"Olá " + usuario.getNome() + ", seja bem vindo(a)!", TipoNotificacao.SUCESSO);
 			NotificacaoUtil.adicionarNotificacao(result, notificacao);
 
 			result.redirectTo(DashboardController.class).dashboard();

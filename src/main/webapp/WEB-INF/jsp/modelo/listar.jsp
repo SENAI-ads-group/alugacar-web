@@ -71,7 +71,7 @@
 								<li class="breadcrumb-item"><a class="link-fx"
 									href="<c:url value="/dashboard"/>">Dashboard</a></li>
 								<li class="breadcrumb-item" aria-current="page"><a
-									class="link-fx" href="<c:url value="/categorias/listar"/>">Modelos</a></li>
+									class="link-fx" href="<c:url value="/modelos/listar"/>">Modelos</a></li>
 							</ol>
 						</nav>
 					</div>
@@ -87,7 +87,7 @@
 						<h3 class="block-title">Listagem de modelos</h3>
 						<div class="block-options">
 							<a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
-								href="<c:url value="adicionar"/>"><i
+								href="<c:url value="/modelos/adicionar"/>"><i
 								class="fa fa-fw fa-plus mr-1"></i>Adicionar </a>
 						</div>
 					</div>
@@ -116,7 +116,7 @@
 													<i class="fa fa-fw fa-pencil-alt"></i>
 												</a>
 												<form id="form-excluir" method="POST"
-													action="<c:url value="excluir/${ m.id }"/>">
+													action="<c:url value="/modelos/excluir/${ m.id }"/>">
 													<button type="button" class="btn btn-sm btn-alt-primary"
 														data-toggle="tooltip" title="Excluir">
 														<i class="fa fa-fw fa-times"></i>
@@ -162,15 +162,16 @@
 
 	<c:forEach var="notificacao" items="${ notificacoes }">
 		<script>
-			$.notify(
-				{
-					title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
-					icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
-					message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
-				},
-				{
-					type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
-				});
+			$
+					.notify(
+							{
+								title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
+								icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
+								message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
+							},
+							{
+								type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
+							});
 		</script>
 	</c:forEach>
 

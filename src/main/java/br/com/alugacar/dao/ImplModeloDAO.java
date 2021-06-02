@@ -21,14 +21,15 @@ public class ImplModeloDAO implements ModeloDAO {
 		if (modelo == null) {
 			throw new IllegalStateException("O modelo não pode ser nulo");
 		}
-
-		final String SQL = "INSERT INTO modelo(descricao, foto, id_marca) VALUES(?,?,?)";
+		final String SQL = "INSERT INTO modelo(descricao, foto, id_marca, ativo) VALUES(?,?,?,?)";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
 			ps.setString(1, modelo.getDescricao());
 			ps.setString(2, modelo.getFoto());
+			ps.setInt(3, modelo.getMarca().getId());
+			ps.setBoolean(4, modelo.getAtivo());
 
 			Modelo modeloInserido = null;
 
@@ -44,7 +45,7 @@ public class ImplModeloDAO implements ModeloDAO {
 			ConnectionFactory.closeConnection(connection, ps, rs);
 			return modeloInserido;
 
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}
 
@@ -52,7 +53,7 @@ public class ImplModeloDAO implements ModeloDAO {
 
 	@Override
 	public Modelo atualizar(Integer id, Modelo modelo) {
-		final String SQL = "UPDATE modelo SET descricao  = ?, foto = ?, id_marca = ? WHERE id_modelo = ?";
+		final String SQL = "UPDATE modelo SET descricao  = ?, foto = ?, id_marca = ?, ativo = ? WHERE id_modelo = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -60,7 +61,8 @@ public class ImplModeloDAO implements ModeloDAO {
 			ps.setString(1, modelo.getDescricao());
 			ps.setString(2, modelo.getFoto());
 			ps.setInt(3, modelo.getMarca().getId());
-			ps.setInt(4, id);
+			ps.setBoolean(4, modelo.getAtivo());
+			ps.setInt(5, id);
 
 			Modelo modeloAtualizado = null;
 
@@ -137,6 +139,39 @@ public class ImplModeloDAO implements ModeloDAO {
 	}
 
 	@Override
+	public List<Modelo> buscarMarca(Marca marca) {
+		final String SQL = "SELECT marca.descricao AS descricao_marca, marca.logomarca_foto, "
+				+ "modelo.* FROM modelo JOIN marca ON(marca.id_marca = modelo.id_marca) WHERE modelo.id_marca = ?";
+
+		try (Connection connection = ConnectionFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
+
+			ps.setInt(1, marca.getId());
+			ResultSet rs = ps.executeQuery();
+
+			List<Modelo> modelosEncontrados = new ArrayList<>();
+			Map<Integer, Marca> marcaMap = new HashMap<>();
+
+			while (rs.next()) {
+				Modelo modelo = instanciarModelo(rs);
+				marca = instanciarMarca(rs);
+
+				if (marcaMap.containsKey(marca.getId()))
+					modelo.setMarca(marcaMap.get(marca.getId()));
+				else
+					modelo.setMarca(marca);
+
+				modelosEncontrados.add(modelo);
+			}
+
+			ConnectionFactory.closeConnection(connection, ps, rs);
+			return modelosEncontrados;
+		} catch (SQLException e) {
+			throw new DAOException(e.getMessage());
+		}
+	}
+
+	@Override
 	public boolean existeId(Integer id) {
 		final String SQL = "SELECT * FROM modelo WHERE id_modelo = ?";
 
@@ -160,6 +195,7 @@ public class ImplModeloDAO implements ModeloDAO {
 		modelo.setId(rs.getInt("id_modelo"));
 		modelo.setDescricao(rs.getString("descricao"));
 		modelo.setFoto(rs.getString("foto"));
+		modelo.setAtivo(rs.getBoolean("ativo"));
 
 		return modelo;
 	}

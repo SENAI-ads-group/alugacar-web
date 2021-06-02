@@ -2,6 +2,7 @@ package br.com.alugacar.dao;
 
 import java.util.List;
 
+import br.com.alugacar.entidades.Marca;
 import br.com.alugacar.entidades.Modelo;
 
 public interface ModeloDAO {
@@ -13,6 +14,8 @@ public interface ModeloDAO {
 	Modelo buscarId(Integer id);
 
 	List<Modelo> buscarTodos();
+	
+	List<Modelo> buscarMarca(Marca marca);
 	
 	boolean existeId(Integer id);
 	

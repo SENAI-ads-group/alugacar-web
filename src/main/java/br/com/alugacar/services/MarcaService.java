@@ -16,6 +16,8 @@ public class MarcaService {
 
 	public Marca inserir(Marca marca) {
 		try {
+			marca.setAtivo(true);
+
 			Marca m = dao.inserir(marca);
 			if (m == null) {
 				throw new ServiceException("Marca " + marca.getDescricao() + " não foi inserida!");
@@ -47,6 +49,22 @@ public class MarcaService {
 		}
 	}
 
+	public List<Marca> getAtivos() {
+		try {
+			return dao.buscarAtivo(true);
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
+	}
+
+	public List<Marca> getInativos() {
+		try {
+			return dao.buscarAtivo(false);
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
+	}
+
 	public Marca atualizar(Integer id, Marca marca) {
 		try {
 			Marca mc = dao.buscarId(id);
@@ -62,16 +80,39 @@ public class MarcaService {
 		}
 	}
 
-	public void excluir(Integer id) {
+	public Marca desativar(Integer id) {
 		try {
 			Marca mc = dao.buscarId(id);
 
 			if (mc == null)
 				throw new ServiceException("Marca com ID " + id + " não existe");
+
+			mc.setAtivo(false);
 			mc = dao.atualizar(id, mc);
 
 			if (mc == null)
 				throw new ServiceException("Não foi possível excluir a marca");
+			
+			return mc;
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
+	}
+
+	public Marca recuperar(Integer id) {
+		try {
+			Marca mc = dao.buscarId(id);
+
+			if (mc == null)
+				throw new ServiceException("Marca com ID " + id + " não existe");
+
+			mc.setAtivo(true);
+			mc = dao.atualizar(id, mc);
+
+			if (mc == null)
+				throw new ServiceException("Não foi possível recuperar a marca");
+
+			return mc;
 		} catch (DAOException e) {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}

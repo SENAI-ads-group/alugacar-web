@@ -14,6 +14,8 @@ public interface MarcaDAO {
 
 	List<Marca> buscarTodos();
 	
+	List<Marca> buscarAtivo(boolean ativo);
+	
 	boolean existeId(Long id);
 
 }

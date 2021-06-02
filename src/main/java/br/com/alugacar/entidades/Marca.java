@@ -8,16 +8,16 @@ public class Marca implements Serializable {
 	private Integer id;
 	private String descricao;
 	private String logomarcaFoto;
+	private Boolean ativo;
 
 	public Marca() {
-		super();
 	}
 
-	public Marca(Integer id, String descricao, String logomarcaFoto) {
-		super();
+	public Marca(Integer id, String descricao, String logomarcaFoto, Boolean ativo) {
 		this.id = id;
 		this.descricao = descricao;
 		this.logomarcaFoto = logomarcaFoto;
+		this.ativo = ativo;
 	}
 
 	public Integer getId() {
@@ -42,6 +42,14 @@ public class Marca implements Serializable {
 
 	public void setLogomarcaFoto(String logomarcaFoto) {
 		this.logomarcaFoto = logomarcaFoto;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	@Override

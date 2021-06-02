@@ -8,6 +8,9 @@ import br.com.alugacar.annotations.AutenticacaoNecessaria;
 import br.com.alugacar.entidades.Marca;
 import br.com.alugacar.services.MarcaService;
 import br.com.alugacar.services.exceptions.ServiceException;
+import br.com.alugacar.util.Notificacao;
+import br.com.alugacar.util.NotificacaoUtil;
+import br.com.alugacar.util.Notificacao.TipoNotificacao;
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
@@ -35,9 +38,12 @@ public class MarcaController {
 	@AutenticacaoNecessaria
 	@Post("cadastrar")
 	public Marca cadastrar(Marca marca) {
-		// instanciando o RESULTADO DA INSERÇÃO DA MÁQUINA ATRAVÉS DO MAP
 		try {
 			Marca marcaInserida = service.inserir(marca);
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Marca adicionada com sucesso!",
+					"A marca " + marca.getDescricao() + " foi adicionada com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
 			result.redirectTo(this).listar();
 			return marcaInserida;
 		} catch (ServiceException e) {
@@ -54,7 +60,10 @@ public class MarcaController {
 	@Get
 	public List<Marca> listar() {
 		try {
-			List<Marca> marcaList = service.getAll();
+			List<Marca> marcaList = service.getAtivos();
+			List<Marca> marcaInativasList = service.getInativos();
+
+			result.include("marcaInativasList", marcaInativasList);
 			return marcaList;
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar lista de marcas", e.getMessage());
@@ -84,8 +93,12 @@ public class MarcaController {
 	@Post("atualizar")
 	public void atualizar(Marca marca) {
 		try {
-			Marca marcaAtualizada = service.atualizar(marca.getId(), marca);
-			result.redirectTo(this).formulario(marcaAtualizada);
+			marca = service.atualizar(marca.getId(), marca);
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Marca atualizada com sucesso!",
+					"A marca " + marca.getDescricao() + " foi atualizada com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
 		} catch (Exception e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar marca", e.getMessage());
 
@@ -98,10 +111,41 @@ public class MarcaController {
 	@Post("excluir/{marca.id}")
 	public void excluir(Marca marca) {
 		try {
-			service.excluir(marca.getId());
+			marca = service.desativar(marca.getId());
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Marca excluída com sucesso!",
+					"A marca " + marca.getDescricao() + " foi excluida com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
 			result.redirectTo(this).listar();
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir marca", e.getMessage());
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(this).listar();
+		}
+	}
+
+	@AutenticacaoNecessaria
+	@Post("recuperar")
+	public void recuperar(Marca marca) {
+		if (marca.getId() == 0) {
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Recuperação de marca",
+					"Nenhuma marca foi recuperada", TipoNotificacao.AVISO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+			return;
+		}
+
+		try {
+			marca = service.recuperar(marca.getId());
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Marca recuperada com sucesso!",
+					"A marca " + marca.getDescricao() + " foi recuperada com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao recuperar marca", e.getMessage());
 
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).listar();

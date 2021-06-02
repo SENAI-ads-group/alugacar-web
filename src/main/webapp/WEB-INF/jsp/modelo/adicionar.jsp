@@ -61,7 +61,7 @@
 				<div class="row">
 					<div class="col-6">
 						<a class="block block-rounded block-link-shadow text-center"
-							href="">
+							href="<c:url value="listar"/>">
 							<div class="block-content block-content-full">
 								<div class="font-size-h2 text-dark">
 									<i class="fa fa-arrow-left"></i>
@@ -106,7 +106,7 @@
 						</div>
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="atualizar" method="POST">
+								<form action="cadastrar" method="POST">
 									<div class="form-group">
 										<label for="modelo.descricao">Descrição</label> <input
 											type="text" class="form-control" id="modelo.descricao"
@@ -122,7 +122,7 @@
 										</select>
 									</div>
 									<div class="form-group">
-										<button type="submit" class="btn btn-alt-success">Atualizar</button>
+										<button type="submit" class="btn btn-alt-success">Adicionar</button>
 									</div>
 								</form>
 							</div>

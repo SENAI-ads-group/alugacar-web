@@ -73,18 +73,22 @@
 						</a>
 					</div>
 					<div class="col-6">
-						<a class="block block-rounded block-link-shadow text-center"
-							href="">
-							<div class="block-content block-content-full">
-								<div class="font-size-h2 text-danger">
-									<i class="fa fa-times"></i>
+						<form id="form-excluir"
+							action="<c:url value="excluir/${ marca.id }"/>" method="POST">
+							<a class="block block-rounded block-link-shadow text-center"
+								onclick="document.getElementById('form-excluir').submit()"
+								${ usuarioLogado.usuario.tipo.administrador ? '' : 'hidden' }>
+								<div class="block-content block-content-full">
+									<div class="font-size-h2 text-danger">
+										<i class="fa fa-times"></i>
+									</div>
 								</div>
-							</div>
-							<div class="block-content py-2 bg-body-light">
-								<p class="font-w600 font-size-sm text-danger mb-0">Excluir
-									Marca</p>
-							</div>
-						</a>
+								<div class="block-content py-2 bg-body-light">
+									<p class="font-w600 font-size-sm text-danger mb-0">Excluir
+										Marca</p>
+								</div>
+							</a>
+						</form>
 					</div>
 				</div>
 				<!-- END Quick Actions -->
@@ -107,7 +111,7 @@
 						</div>
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="<c:url value = "cadastrar"/>" method="POST">
+								<form action="<c:url value = "atualizar"/>" method="POST">
 									<div class="form-group">
 										<label for="marca.id">ID</label> <input type="text"
 											class="form-control" id="marca.id" name="marca.id"

@@ -165,8 +165,6 @@
 	</div>
 	<!-- END Page Container -->
 
-	<!-- Apps Modal -->
-	<!-- Opens from the modal toggle button in the header -->
 	<div class="modal fade" id="recuperacao-form-modal" tabindex="-1"
 		role="dialog" aria-labelledby="modal-block-vcenter" aria-hidden="true"
 		style="display: none;">

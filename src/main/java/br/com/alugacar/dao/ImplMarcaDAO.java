@@ -19,13 +19,14 @@ public class ImplMarcaDAO implements MarcaDAO {
 			throw new IllegalStateException("A marca não pode ser nula");
 		}
 
-		final String SQL = "INSERT INTO marca(descricao, logomarca_foto) VALUES(?,?)";
+		final String SQL = "INSERT INTO marca(descricao, logomarca_foto, ativo) VALUES(?,?,?)";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
 			ps.setString(1, marca.getDescricao());
 			ps.setString(2, marca.getLogomarcaFoto());
+			ps.setBoolean(3, marca.getAtivo());
 
 			Marca marcaInserida = null;
 
@@ -48,14 +49,15 @@ public class ImplMarcaDAO implements MarcaDAO {
 
 	@Override
 	public Marca atualizar(Integer id, Marca marca) {
-		final String SQL = "UPDATE marca SET descricao  = ?, logomarca_foto = ? WHERE id_marca = ?";
+		final String SQL = "UPDATE marca SET descricao = ?, logomarca_foto = ?, ativo = ? WHERE id_marca = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
 			ps.setString(1, marca.getDescricao());
 			ps.setString(2, marca.getLogomarcaFoto());
-			ps.setInt(3, id);
+			ps.setBoolean(3, marca.getAtivo());
+			ps.setInt(4, id);
 
 			Marca marcaAtualizada = null;
 
@@ -78,7 +80,7 @@ public class ImplMarcaDAO implements MarcaDAO {
 
 	@Override
 	public Marca buscarId(Integer id) {
-		final String SQL = "SELECT * FROM marca WHERE id_marca = ?";
+		final String SQL = "SELECT * FROM marca WHERE id_marca = ? ORDER BY id_marca";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -100,7 +102,7 @@ public class ImplMarcaDAO implements MarcaDAO {
 
 	@Override
 	public List<Marca> buscarTodos() {
-		final String SQL = "SELECT * FROM marca";
+		final String SQL = "SELECT * FROM marca ORDER BY id_marca";
 
 		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
 
@@ -115,7 +117,27 @@ public class ImplMarcaDAO implements MarcaDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}
+	}
 
+	@Override
+	public List<Marca> buscarAtivo(boolean ativo) {
+		final String SQL = "SELECT * FROM marca WHERE ativo = ? ORDER BY id_marca";
+
+		try (Connection connection = ConnectionFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(SQL)) {
+
+			ps.setBoolean(1, ativo);
+			ResultSet rs = ps.executeQuery();
+
+			List<Marca> marcasEncontradas = new ArrayList<>();
+			while (rs.next())
+				marcasEncontradas.add(instanciarMarca(rs));
+
+			ConnectionFactory.closeConnection(connection, ps, rs);
+			return marcasEncontradas;
+		} catch (SQLException e) {
+			throw new DAOException(e.getMessage());
+		}
 	}
 
 	@Override
@@ -142,6 +164,7 @@ public class ImplMarcaDAO implements MarcaDAO {
 		m.setId(rs.getInt("id_marca"));
 		m.setDescricao(rs.getString("descricao"));
 		m.setLogomarcaFoto(rs.getString("logomarca_foto"));
+		m.setAtivo(rs.getBoolean("ativo"));
 
 		return m;
 	}

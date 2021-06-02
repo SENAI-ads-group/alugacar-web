@@ -61,7 +61,7 @@
 				<div class="row">
 					<div class="col-6">
 						<a class="block block-rounded block-link-shadow text-center"
-							href="">
+							href="<c:url value="listar"/>">
 							<div class="block-content block-content-full">
 								<div class="font-size-h2 text-dark">
 									<i class="fa fa-arrow-left"></i>
@@ -120,10 +120,11 @@
 									<div class="form-group">
 										<label for="">Marca</label> <select class="custom-select"
 											id="modelo.marca.id" name="modelo.marca.id"
-											style="width: 100%;" data-placeholder="Escolha uma marca">
+											style="width: 100%;" data-placeholder="Escolha uma marca"
+											${ usuarioLogado.usuario.tipo.administrador ? '' : 'disabled' }>
 											<c:forEach var="mar" items="${ marcaList }">
 												<option value="${ mar.id }"
-													${ modelo.marca.id == mar.id ? 'selected' : ''  }>${ mar.descricao  }</option>
+													${ modelo.marca.id == mar.id ? 'selected' : ''  }>${ mar.descricao }</option>
 											</c:forEach>
 										</select>
 									</div>
