@@ -7,13 +7,15 @@ public class Categoria implements Serializable {
 
 	private Integer id;
 	private String descricao;
+	private Boolean excluida;
 
 	public Categoria() {
 	}
 
-	public Categoria(Integer id, String descricao) {
+	public Categoria(Integer id, String descricao, Boolean excluida) {
 		this.id = id;
 		this.descricao = descricao;
+		this.excluida = excluida;
 	}
 
 	public Integer getId() {
@@ -30,6 +32,14 @@ public class Categoria implements Serializable {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public Boolean getExcluida() {
+		return excluida;
+	}
+
+	public void setExcluida(Boolean excluido) {
+		this.excluida = excluido;
 	}
 
 	@Override

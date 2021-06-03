@@ -27,7 +27,7 @@ public class UsuarioService {
 	 * 
 	 * @exception ServiceException Caso ocorra algum erro de comunicação com o banco
 	 *                             de dados ou de processamento na classe de
-	 *                             persistência. 
+	 *                             persistência.
 	 */
 	public List<Usuario> getTodos() {
 		try {
@@ -42,11 +42,11 @@ public class UsuarioService {
 	 * 
 	 * @exception ServiceException Caso ocorra algum erro de comunicação com o banco
 	 *                             de dados ou de processamento na classe de
-	 *                             persistência. 
+	 *                             persistência.
 	 */
 	public List<Usuario> getAtivos() {
 		try {
-			return dao.buscarAtivo(true);
+			return dao.buscarExclusao(false);
 		} catch (DAOException e) {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
@@ -57,11 +57,11 @@ public class UsuarioService {
 	 * 
 	 * @exception ServiceException Caso ocorra algum erro de comunicação com o banco
 	 *                             de dados ou de processamento na classe de
-	 *                             persistência. 
+	 *                             persistência.
 	 */
-	public List<Usuario> getInativos() {
+	public List<Usuario> getExcluidos() {
 		try {
-			return dao.buscarAtivo(false);
+			return dao.buscarExclusao(true);
 		} catch (DAOException e) {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
@@ -74,9 +74,9 @@ public class UsuarioService {
 	 *                             cadastrado.
 	 * @exception ServiceException Caso ocorra algum erro de comunicação com o banco
 	 *                             de dados ou de processamento na classe de
-	 *                             persistência. 
+	 *                             persistência.
 	 */
-	public Usuario getId(Long id) {
+	public Usuario getId(Integer id) {
 		try {
 			Usuario usuarioEncontrado = dao.buscarId(id);
 
@@ -105,9 +105,9 @@ public class UsuarioService {
 	 * 
 	 * @exception ServiceException Caso ocorra algum erro de comunicação com o banco
 	 *                             de dados ou de processamento na classe de
-	 *                             persistência 
+	 *                             persistência
 	 */
-	public Usuario atualizar(Long id, Usuario usuario) {
+	public Usuario atualizar(Integer id, Usuario usuario) {
 		try {
 			Usuario obj = dao.buscarId(id);
 			atualizarDados(usuario, obj);
@@ -134,9 +134,9 @@ public class UsuarioService {
 	 *                             do tipo Administrador
 	 * @exception ServiceException Caso ocorra algum erro de comunicação com o banco
 	 *                             de dados ou de processamento na classe de
-	 *                             persistência 
+	 *                             persistência
 	 */
-	public void desativar(Long id) {
+	public void excluir(Integer id) {
 		try {
 			Usuario obj = dao.buscarId(id);
 
@@ -145,13 +145,17 @@ public class UsuarioService {
 			if (obj.getId().equals(session.getUsuario().getId()))
 				throw new ServiceException("Não é possível excluir o usuário logado");
 
-			List<Usuario> usuariosAdministradores = dao.buscarAtivo(true).stream()
+			for (Usuario usuario : dao.buscarExclusao(false)) {
+				System.out.println(usuario.getNome());
+			}
+
+			List<Usuario> usuariosAdministradores = dao.buscarExclusao(false).stream()
 					.filter(u -> u.getTipo().isAdministrador()).filter(u -> u.getId() != id)
 					.collect(Collectors.toList());
-			if (usuariosAdministradores.size() < 1)
+			if (usuariosAdministradores.isEmpty())
 				throw new ServiceException("Não é possível excluir o único usuário administrador do sistema");
 
-			obj.setAtivo(Boolean.FALSE);
+			obj.setExcluido(Boolean.TRUE);
 			obj = dao.atualizar(id, obj);
 
 			if (obj == null)
@@ -170,16 +174,16 @@ public class UsuarioService {
 	 *                             no sistema
 	 * @exception ServiceException Caso ocorra algum erro de comunicação com o banco
 	 *                             de dados ou de processamento na classe de
-	 *                             persistência 
+	 *                             persistência
 	 */
-	public Usuario recuperarInativo(Long id) {
+	public Usuario recuperar(Integer id) {
 		try {
 			Usuario obj = dao.buscarId(id);
 
 			if (obj == null)
 				throw new ServiceException("Usuário com ID " + id + " não existe");
 
-			obj.setAtivo(Boolean.TRUE);
+			obj.setExcluido(Boolean.FALSE);
 			obj = dao.atualizar(id, obj);
 
 			if (obj == null)

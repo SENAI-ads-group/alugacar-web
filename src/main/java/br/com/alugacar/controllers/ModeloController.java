@@ -42,12 +42,13 @@ public class ModeloController {
 	@AutenticacaoNecessaria
 	public List<Modelo> listar() {
 		try {
-			return service.getTodos();
+			result.include("modeloExcluidoList", service.getExcluidos());
+			return service.getAtivos();
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao listar modelos", e.getMessage());
 
 			validator.add(mensagemErro);
-			validator.onErrorRedirectTo(this).listar();
+			validator.onErrorRedirectTo(DashboardController.class).dashboard();
 			return null;
 		}
 	}
@@ -56,9 +57,8 @@ public class ModeloController {
 	@AutenticacaoNecessaria
 	public void listarModelosMarca(Marca marca) {
 		try {
-			List<Modelo> modelosMarca = service.getTodosMarca(marca);
-			
-			result.include("modeloList", modelosMarca);
+			result.include("modeloExcluidoList", service.getExcluidos());
+			result.include("modeloList", service.getTodosMarca(marca));
 			result.forwardTo("/WEB-INF/jsp/modelo/listar.jsp");
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao listar modelos", e.getMessage());
@@ -71,7 +71,7 @@ public class ModeloController {
 	@Get
 	@AutenticacaoNecessaria
 	public void adicionar() {
-		List<Marca> marcas = marcaService.getAtivos();
+		List<Marca> marcas = marcaService.getAtivas();
 		result.include("marcaList", marcas);
 	}
 
@@ -108,7 +108,7 @@ public class ModeloController {
 	public Modelo formulario(Modelo modelo) {
 		try {
 			Modelo modeloEncontrado = service.buscarId(modelo.getId());
-			List<Marca> marcas = marcaService.getAtivos();
+			List<Marca> marcas = marcaService.getAtivas();
 
 			result.include("marcaList", marcas);
 			return modeloEncontrado;
@@ -134,6 +134,51 @@ public class ModeloController {
 			result.redirectTo(this).listar();
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar modelo", e.getMessage());
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(this).listar();
+		}
+	}
+
+	@AutenticacaoNecessaria
+	@Post("excluir/{modelo.id}")
+	public void excluir(Modelo modelo) {
+		try {
+			modelo = service.excluir(modelo.getId());
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Modelo excluído com sucesso!",
+					"O modelo " + modelo.getDescricao() + " foi excluído com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir modelo", e.getMessage());
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(this).listar();
+		}
+	}
+
+	@AutenticacaoNecessaria
+	@Post("recuperar")
+	public void recuperar(Modelo modelo) {
+		if (modelo.getId() == 0) {
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Recuperação de modelo",
+					"Nenhum modelo foi recuperado", TipoNotificacao.AVISO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+			return;
+		}
+
+		try {
+			modelo = service.recuperar(modelo.getId());
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Modelo recuperado com sucesso!",
+					"O modelo " + modelo.getDescricao() + " foi recuperado com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao recuperar modelo", e.getMessage());
 
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).listar();

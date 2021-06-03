@@ -32,9 +32,9 @@
 <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
 <link rel="shortcut icon" href="assets/media/favicons/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192"
-	href="<c:url value="assets/media/favicons/favicon-192x192.png"/>">
+	href="<c:url value="/assets/media/favicons/favicon-192x192.png"/>">
 <link rel="apple-touch-icon" sizes="180x180"
-	href="<c:url value="assets/media/favicons/apple-touch-icon-180x180.png"/>">
+	href="<c:url value="/assets/media/favicons/apple-touch-icon-180x180.png"/>">
 <!-- END Icons -->
 
 <!-- Stylesheets -->
@@ -97,9 +97,9 @@
 	<c:forEach var="error" items="${ errors }">
 		<script>
 			$.notify({
-				title : '<b><c:url value="${ error.category }"/></b>',
-				icon : 'fa fa-times mr-1',
-				message : '<br><c:out value="${ error.message }"/>'
+				title : `<b><c:url value="${ error.category }"/></b>`,
+				icon : `fa fa-times mr-1`,
+				message : `<br><c:out value="${ error.message }"/>`
 			}, {
 				type : 'danger'
 			});
@@ -108,13 +108,16 @@
 
 	<c:forEach var="notificacao" items="${ notificacoes }">
 		<script>
-			$.notify({
-				title : '<b><c:out value="${ notificacao.mensagem.category }"/></b>',
-				icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
-				message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
-			}, {
-				type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
-			});
+			$
+					.notify(
+							{
+								title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
+								icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
+								message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
+							},
+							{
+								type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
+							});
 		</script>
 	</c:forEach>
 

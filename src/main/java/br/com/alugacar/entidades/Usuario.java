@@ -7,33 +7,33 @@ import br.com.alugacar.entidades.enums.TipoUsuario;
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
+	private Integer id;
 	private String nome;
 	private String email;
 	private String senha;
 	private String dicaSenha;
 	private TipoUsuario tipo;
-	private Boolean ativo;
+	private Boolean excluido;
 
 	public Usuario() {
 	}
 
-	public Usuario(Long id, String nome, String email, String senha, String dicaSenha, TipoUsuario tipo,
-			Boolean ativo) {
+	public Usuario(Integer id, String nome, String email, String senha, String dicaSenha, TipoUsuario tipo,
+			Boolean excluido) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
 		this.dicaSenha = dicaSenha;
 		this.tipo = tipo;
-		this.ativo = ativo;
+		this.excluido = excluido;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -77,12 +77,12 @@ public class Usuario implements Serializable {
 		this.tipo = tipo;
 	}
 
-	public Boolean getAtivo() {
-		return ativo;
+	public Boolean getExcluido() {
+		return excluido;
 	}
 
-	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
+	public void setExcluido(Boolean excluido) {
+		this.excluido = excluido;
 	}
 
 	@Override

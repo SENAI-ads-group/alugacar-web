@@ -6,17 +6,17 @@ public class Modelo {
 	private String descricao;
 	private String foto;
 	private Marca marca;
-	private Boolean ativo;
+	private Boolean excluido;
 
 	public Modelo() {
 	}
 
-	public Modelo(Integer id, String descricao, String foto, Marca marca, Boolean ativo) {
+	public Modelo(Integer id, String descricao, String foto, Marca marca, Boolean excluido) {
 		this.id = id;
 		this.descricao = descricao;
 		this.foto = foto;
 		this.marca = marca;
-		this.ativo = ativo;
+		this.excluido = excluido;
 	}
 
 	public Integer getId() {
@@ -51,12 +51,12 @@ public class Modelo {
 		this.marca = marca;
 	}
 
-	public Boolean getAtivo() {
-		return ativo;
+	public Boolean getExcluido() {
+		return excluido;
 	}
 
-	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
+	public void setExcluido(Boolean excluido) {
+		this.excluido = excluido;
 	}
 
 	@Override

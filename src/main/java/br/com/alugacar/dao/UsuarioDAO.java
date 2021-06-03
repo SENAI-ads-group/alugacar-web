@@ -44,7 +44,7 @@ public interface UsuarioDAO {
 	 * @exception DAOException          Caso ocorra algum erro de comunicação com a
 	 *                                  base de dados.
 	 */
-	Usuario atualizar(Long id, Usuario usuario);
+	Usuario atualizar(Integer id, Usuario usuario);
 
 	/**
 	 * Busca um usuário da base de dados pelo ID.
@@ -59,7 +59,7 @@ public interface UsuarioDAO {
 	 * @exception DAOException          Caso ocorra algum erro de comunicação com a
 	 *                                  base de dados.
 	 */
-	Usuario buscarId(Long id);
+	Usuario buscarId(Integer id);
 
 	/**
 	 * Busca um usuário da base de dados pelo email.
@@ -98,7 +98,7 @@ public interface UsuarioDAO {
 	 * @exception DAOException Caso ocorra algum erro de comunicação com a base de
 	 *                         dados.
 	 */
-	List<Usuario> buscarAtivo(boolean ativo);
+	List<Usuario> buscarExclusao(boolean excluido);
 
 	/**
 	 * Verifica se existe um usuário com um determinado ID
@@ -107,6 +107,6 @@ public interface UsuarioDAO {
 	 * @return true caso exista um usuário com o ID informado e false caso não
 	 *         exista.
 	 */
-	boolean existeId(Long id);
+	boolean existeId(Integer id);
 
 }

@@ -86,9 +86,15 @@
 					<div class="block-header block-header-default">
 						<h3 class="block-title">Listagem de categorias</h3>
 						<div class="block-options">
-							<a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
-								href="<c:url value="adicionar"/>"><i
-								class="fa fa-fw fa-plus mr-1"></i>Adicionar </a>
+							<div class="btn-group" role="group">
+								<a type="button" class="btn btn-sm btn-alt-dark mr-1 mb-3"
+									data-toggle="modal" data-target="#recuperacao-form-modal"
+									href=""> <i class="fa fa-fw fa fa-trash-restore mr-1"></i>
+									Recuperar Exclusão
+								</a> <a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
+									href="<c:url value="adicionar"/>"><i
+									class="fa fa-fw fa-plus mr-1"></i>Adicionar </a>
+							</div>
 						</div>
 					</div>
 					<div class="block-content">
@@ -115,7 +121,7 @@
 												</a>
 												<form id="form-excluir" method="POST"
 													action="<c:url value="excluir/${ cat.id }"/>">
-													<button type="button" class="btn btn-sm btn-alt-primary"
+													<button type="submit" class="btn btn-sm btn-alt-primary"
 														data-toggle="tooltip" title="Excluir">
 														<i class="fa fa-fw fa-times"></i>
 													</button>
@@ -138,6 +144,48 @@
 
 	</div>
 	<!-- END Page Container -->
+
+	<div class="modal fade" id="recuperacao-form-modal" tabindex="-1"
+		role="dialog" aria-labelledby="modal-block-vcenter" aria-hidden="true"
+		style="display: none;">
+		<div class="modal-dialog modal-md modal-dialog-centered"
+			role="document">
+			<div class="modal-content">
+				<div class="block block-rounded block-themed block-transparent mb-0">
+					<div class="block-header bg-primary-dark">
+						<h3 class="block-title">Recuperação de categoria</h3>
+						<div class="block-options">
+							<button type="button" class="btn-block-option"
+								data-dismiss="modal" aria-label="Close">
+								<i class="si si-close"></i>
+							</button>
+						</div>
+					</div>
+					<form id="form-recuperar"
+						action="<c:url value="/categorias/recuperar"/>" method="POST">
+						<div class="block-content font-size-sm">
+							<div class="form-group">
+								<select class="custom-select" id="categoria.id"
+									name="categoria.id">
+									<option value="0">Selecione uma categoria</option>
+									<c:forEach var="m" items="${ catExcluidaList }">
+										<option value="${ m.id }">${ m.descricao }</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+						<div
+							class="block-content block-content-full text-right border-top">
+							<a class="btn btn-alt-primary mr-1" data-dismiss="modal" href="">Cancelar</a>
+
+							<a class="btn btn-primary" data-dismiss="modal"
+								onclick="document.getElementById('form-recuperar').submit()">Recuperar</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<script src="<c:url value="/assets/js/oneui.core.min.js"/>"></script>
 	<script src="<c:url value="/assets/js/oneui.app.min.js"/>"></script>

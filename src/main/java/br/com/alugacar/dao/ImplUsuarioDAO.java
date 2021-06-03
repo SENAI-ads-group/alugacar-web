@@ -26,7 +26,7 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 			throw new DAOException("O usuário com o email " + usuario.getEmail() + " já existe");
 		}
 
-		final String SQL = "INSERT INTO usuario (nome, email, senha, dica_senha, tipo_usuario, ativo) VALUES(?,?,?,?,?,?)";
+		final String SQL = "INSERT INTO usuario (nome, email, senha, dica_senha, tipo_usuario, excluido) VALUES(?,?,?,?,?,?)";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -36,7 +36,7 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 			ps.setString(3, usuario.getSenha());
 			ps.setString(4, usuario.getDicaSenha());
 			ps.setString(5, usuario.getTipo().name());
-			ps.setBoolean(6, usuario.getAtivo());
+			ps.setBoolean(6, usuario.getExcluido());
 
 			Usuario usuarioInserido = null;
 
@@ -46,7 +46,7 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 				rs = ps.getGeneratedKeys();
 				if (rs.next()) {
 					usuarioInserido = usuario;
-					usuarioInserido.setId(rs.getLong(1));
+					usuarioInserido.setId(rs.getInt(1));
 				}
 			}
 			ConnectionFactory.closeConnection(connection, ps, rs);
@@ -57,14 +57,14 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 	}
 
 	@Override
-	public Usuario atualizar(Long id, Usuario usuario) {
+	public Usuario atualizar(Integer id, Usuario usuario) {
 		if (id == null)
 			throw new IllegalStateException("O ID não pode ser nulo");
 		if (usuario == null)
 			throw new IllegalStateException("O usuário não pode ser nulo");
 
 		final String SQL = "UPDATE usuario SET nome = ?, email = ?, "
-				+ "senha = ?, dica_senha = ?, tipo_usuario = ?, ativo = ? WHERE id_usuario = ?";
+				+ "senha = ?, dica_senha = ?, tipo_usuario = ?, excluido = ? WHERE id_usuario = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -74,8 +74,8 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 			ps.setString(3, usuario.getSenha());
 			ps.setString(4, usuario.getDicaSenha());
 			ps.setString(5, usuario.getTipo().name());
-			ps.setBoolean(6, usuario.getAtivo());
-			ps.setLong(7, id);
+			ps.setBoolean(6, usuario.getExcluido());
+			ps.setInt(7, id);
 
 			Usuario usuarioAtualizado = null;
 
@@ -85,7 +85,7 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 				rs = ps.getGeneratedKeys();
 				if (rs.next()) {
 					usuarioAtualizado = usuario;
-					usuarioAtualizado.setId(rs.getLong(1));
+					usuarioAtualizado.setId(rs.getInt(1));
 				}
 			}
 			ConnectionFactory.closeConnection(connection, ps, rs);
@@ -96,7 +96,7 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 	}
 
 	@Override
-	public Usuario buscarId(Long id) {
+	public Usuario buscarId(Integer id) {
 		if (id == null)
 			throw new IllegalStateException("O ID não pode ser nulo");
 
@@ -105,7 +105,7 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
 
-			ps.setLong(1, id);
+			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 
 			Usuario usuarioEncontrado = null;
@@ -163,8 +163,8 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 	}
 
 	@Override
-	public List<Usuario> buscarAtivo(boolean ativo) {
-		final String SQL = "SELECT * FROM usuario WHERE ativo = " + ativo;
+	public List<Usuario> buscarExclusao(boolean excluido) {
+		final String SQL = "SELECT * FROM usuario WHERE excluido = " + excluido;
 
 		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
 
@@ -182,13 +182,13 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 	}
 
 	@Override
-	public boolean existeId(Long id) {
-		final String SQL = "SELECT * FROM usuario WHERE id_usuario = ?";
+	public boolean existeId(Integer id) {
+		final String SQL = "SELECT id_usuario FROM usuario WHERE id_usuario = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
 
-			ps.setLong(1, id);
+			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			boolean existe = rs.next();
 
@@ -202,13 +202,13 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 	private Usuario instanciarUsuario(ResultSet rs) throws SQLException {
 		Usuario u = new Usuario();
 
-		u.setId(rs.getLong("id_usuario"));
+		u.setId(rs.getInt("id_usuario"));
 		u.setNome(rs.getString("nome"));
 		u.setEmail(rs.getString("email"));
 		u.setSenha(rs.getString("senha"));
 		u.setDicaSenha(rs.getString("dica_senha"));
 		u.setTipo(TipoUsuario.valueOf(rs.getString("tipo_usuario")));
-		u.setAtivo(rs.getBoolean("ativo"));
+		u.setExcluido(rs.getBoolean("excluido"));
 
 		return u;
 	}

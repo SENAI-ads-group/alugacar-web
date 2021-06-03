@@ -29,11 +29,12 @@
 
 <!-- Icons -->
 <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-<link rel="shortcut icon" href="assets/media/favicons/favicon.png">
+<link rel="shortcut icon"
+	href="<c:url value="/assets/media/favicons/favicon.png"/>">
 <link rel="icon" type="image/png" sizes="192x192"
-	href="<c:url value="assets/media/favicons/favicon-192x192.png"/>">
+	href="<c:url value="/assets/media/favicons/favicon-192x192.png"/>">
 <link rel="apple-touch-icon" sizes="180x180"
-	href="<c:url value="assets/media/favicons/apple-touch-icon-180x180.png"/>">
+	href="<c:url value="/assets/media/favicons/apple-touch-icon-180x180.png"/>">
 <!-- END Icons -->
 
 <!-- Stylesheets -->
@@ -115,7 +116,7 @@
 												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
 													title="Visualizar Modelos"
 													href="<c:url value="/modelos/marca/${ m.id }"/>"> <i
-													class="fa fa-fw fa fa-eye"></i>
+													class="fa fa-fw fa fa-car-side"></i>
 												</a> <a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
 													title="Editar" href="<c:url value="/marcas/${ m.id }"/>">
 													<i class="fa fa-fw fa-pencil-alt"></i>
@@ -168,7 +169,7 @@
 							<div class="form-group">
 								<select class="custom-select" id="marca.id" name="marca.id">
 									<option value="0">Selecione uma marca</option>
-									<c:forEach var="m" items="${ marcaInativasList }">
+									<c:forEach var="m" items="${ marcaExcluidaList }">
 										<option value="${ m.id }">${ m.descricao }</option>
 									</c:forEach>
 								</select>

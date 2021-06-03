@@ -40,7 +40,7 @@ public class UsuarioController {
 	@Get
 	public List<Usuario> listar() {
 		List<Usuario> usuarioList = service.getAtivos();
-		List<Usuario> usuarioInativoList = service.getInativos();
+		List<Usuario> usuarioInativoList = service.getExcluidos();
 
 		result.include("usuarioInativoList", usuarioInativoList);
 		return usuarioList;
@@ -67,10 +67,10 @@ public class UsuarioController {
 	public void atualizar(Usuario usuario, Boolean administrador) {
 		TipoUsuario tipoUsuario = administrador == null || !administrador ? TipoUsuario.PADRAO
 				: TipoUsuario.ADMINISTRADOR;
-		Boolean ativo = !(usuario.getAtivo() == null || !usuario.getAtivo());
+		Boolean excluido = !(usuario.getExcluido() == null || !usuario.getExcluido());
 
 		usuario.setTipo(tipoUsuario);
-		usuario.setAtivo(ativo);
+		usuario.setExcluido(excluido);
 
 		try {
 			Usuario usuarioAtualizado = service.atualizar(usuario.getId(), usuario);
@@ -93,7 +93,7 @@ public class UsuarioController {
 	@Post("excluir/{usuario.id}")
 	public void excluir(Usuario usuario) {
 		try {
-			service.desativar(usuario.getId());
+			service.excluir(usuario.getId());
 			result.redirectTo(this).listar();
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir usuário", e.getMessage());
@@ -114,7 +114,7 @@ public class UsuarioController {
 			result.redirectTo(this).listar();
 		} else {
 			try {
-				Usuario usuarioRecuperado = service.recuperarInativo(usuario.getId());
+				Usuario usuarioRecuperado = service.recuperar(usuario.getId());
 
 				Notificacao notificacao = NotificacaoUtil.criarNotificacao("Recuperação de usuário",
 						"Usuário " + usuarioRecuperado.getNome() + " recuperado com sucesso!", TipoNotificacao.SUCESSO);

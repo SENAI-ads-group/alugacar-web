@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import br.com.alugacar.dao.MarcaDAO;
 import br.com.alugacar.dao.exceptions.DAOException;
 import br.com.alugacar.entidades.Marca;
+import br.com.alugacar.entidades.Modelo;
 import br.com.alugacar.services.exceptions.ServiceException;
 
 public class MarcaService {
@@ -14,9 +15,36 @@ public class MarcaService {
 	@Inject
 	private MarcaDAO dao;
 
+	@Inject
+	private ModeloService modeloService;
+
+	public List<Marca> getTodas() {
+		try {
+			return dao.buscarTodas();
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
+	}
+
+	public List<Marca> getAtivas() {
+		try {
+			return dao.buscarExclusao(false);
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
+	}
+
+	public List<Marca> getExcluidas() {
+		try {
+			return dao.buscarExclusao(true);
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
+	}
+
 	public Marca inserir(Marca marca) {
 		try {
-			marca.setAtivo(true);
+			marca.setExcluida(false);
 
 			Marca m = dao.inserir(marca);
 			if (m == null) {
@@ -41,30 +69,6 @@ public class MarcaService {
 		}
 	}
 
-	public List<Marca> getAll() {
-		try {
-			return dao.buscarTodos();
-		} catch (DAOException e) {
-			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
-		}
-	}
-
-	public List<Marca> getAtivos() {
-		try {
-			return dao.buscarAtivo(true);
-		} catch (DAOException e) {
-			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
-		}
-	}
-
-	public List<Marca> getInativos() {
-		try {
-			return dao.buscarAtivo(false);
-		} catch (DAOException e) {
-			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
-		}
-	}
-
 	public Marca atualizar(Integer id, Marca marca) {
 		try {
 			Marca mc = dao.buscarId(id);
@@ -80,19 +84,24 @@ public class MarcaService {
 		}
 	}
 
-	public Marca desativar(Integer id) {
+	public Marca excluir(Integer id) {
 		try {
 			Marca mc = dao.buscarId(id);
 
 			if (mc == null)
 				throw new ServiceException("Marca com ID " + id + " não existe");
 
-			mc.setAtivo(false);
+			List<Modelo> modelos = modeloService.getTodosMarca(mc);
+			if (!modelos.isEmpty())
+				throw new ServiceException("Não é possível excluir esta marca, pois o modelo "
+						+ modelos.get(0).getDescricao() + " está associado à ela.");
+
+			mc.setExcluida(true);
 			mc = dao.atualizar(id, mc);
 
 			if (mc == null)
-				throw new ServiceException("Não foi possível excluir a marca");
-			
+				throw new ServiceException("Não foi possível excluir esta marca");
+
 			return mc;
 		} catch (DAOException e) {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
@@ -106,7 +115,7 @@ public class MarcaService {
 			if (mc == null)
 				throw new ServiceException("Marca com ID " + id + " não existe");
 
-			mc.setAtivo(true);
+			mc.setExcluida(false);
 			mc = dao.atualizar(id, mc);
 
 			if (mc == null)

@@ -60,11 +60,10 @@ public class MarcaController {
 	@Get
 	public List<Marca> listar() {
 		try {
-			List<Marca> marcaList = service.getAtivos();
-			List<Marca> marcaInativasList = service.getInativos();
+			List<Marca> marcasExcluidas = service.getExcluidas();
 
-			result.include("marcaInativasList", marcaInativasList);
-			return marcaList;
+			result.include("marcaExcluidaList", marcasExcluidas);
+			return service.getAtivas();
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar lista de marcas", e.getMessage());
 
@@ -111,7 +110,7 @@ public class MarcaController {
 	@Post("excluir/{marca.id}")
 	public void excluir(Marca marca) {
 		try {
-			marca = service.desativar(marca.getId());
+			marca = service.excluir(marca.getId());
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Marca excluída com sucesso!",
 					"A marca " + marca.getDescricao() + " foi excluida com sucesso.", TipoNotificacao.SUCESSO);
 			NotificacaoUtil.adicionarNotificacao(result, notificacao);

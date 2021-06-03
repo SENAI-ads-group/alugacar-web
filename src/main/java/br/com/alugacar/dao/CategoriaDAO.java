@@ -12,8 +12,10 @@ public interface CategoriaDAO {
 
 	Categoria buscarId(Integer id);
 
-	List<Categoria> buscarTodos();
+	List<Categoria> buscarTodas();
 	
-	boolean existeId(Long id);
+	List<Categoria> buscarExclusao(boolean excluida);
+	
+	boolean existeId(Integer id);
 
 }

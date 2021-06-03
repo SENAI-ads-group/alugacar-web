@@ -6,7 +6,7 @@ import br.com.alugacar.entidades.Marca;
 import br.com.alugacar.entidades.Modelo;
 
 public interface ModeloDAO {
-	
+
 	Modelo inserir(Modelo modelo);
 
 	Modelo atualizar(Integer id, Modelo modelo);
@@ -14,10 +14,11 @@ public interface ModeloDAO {
 	Modelo buscarId(Integer id);
 
 	List<Modelo> buscarTodos();
-	
+
+	List<Modelo> buscarExclusao(boolean excluida);
+
 	List<Modelo> buscarMarca(Marca marca);
-	
+
 	boolean existeId(Integer id);
-	
 
 }

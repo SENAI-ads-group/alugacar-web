@@ -11,6 +11,7 @@ import br.com.alugacar.services.exceptions.ServiceException;
 import br.com.alugacar.util.Notificacao;
 import br.com.alugacar.util.Notificacao.TipoNotificacao;
 import br.com.alugacar.util.NotificacaoUtil;
+import br.com.alugacar.validations.CategoriaValidation;
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
@@ -35,8 +36,16 @@ public class CategoriaController {
 	@AutenticacaoNecessaria
 	@Get
 	public List<Categoria> listar() {
-		List<Categoria> categoriaList = service.getTodas();
-		return categoriaList;
+		try {
+			result.include("catExcluidaList", service.getExcluidas());
+			return service.getAtivas();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar categorias", e.getMessage());
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(DashboardController.class).dashboard();
+			return null;
+		}
 	}
 
 	@AutenticacaoNecessaria
@@ -65,23 +74,23 @@ public class CategoriaController {
 	@AutenticacaoNecessaria
 	@Post("atualizar")
 	public void atualizar(Categoria categoria) {
-		if (!validarCategoria(categoria)) {
+		if (!CategoriaValidation.validarCategoria(categoria)) {
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Nada feito!",
-					"A categoria não foi atualizada, pois nenhuma descrição foi informada", TipoNotificacao.AVISO);
+					"A categoria não foi atualizada, pois não é válida", TipoNotificacao.AVISO);
 			NotificacaoUtil.adicionarNotificacao(result, notificacao);
 			result.redirectTo(this).listar();
 			return;
 		}
 
 		try {
-			service.atualizar(categoria.getId(), categoria);
+			service.atualizar(categoria);
 
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Categoria atualizada!",
 					"categoria atualizada com sucesso!", TipoNotificacao.SUCESSO);
 			NotificacaoUtil.adicionarNotificacao(result, notificacao);
 
 			result.redirectTo(this).listar();
-		} catch (Exception e) {
+		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar categoria", e.getMessage());
 
 			validator.add(mensagemErro);
@@ -92,9 +101,9 @@ public class CategoriaController {
 	@AutenticacaoNecessaria
 	@Post("cadastrar")
 	public void cadastrar(Categoria categoria) {
-		if (!validarCategoria(categoria)) {
+		if (!CategoriaValidation.validarCategoria(categoria)) {
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Nada feito!",
-					"Nehuma categoria foi adicionada, pois nenhuma descrição foi informada", TipoNotificacao.AVISO);
+					"Nehuma categoria foi adicionada, pois a categoria é inválida.", TipoNotificacao.AVISO);
 			NotificacaoUtil.adicionarNotificacao(result, notificacao);
 			result.redirectTo(this).listar();
 			return;
@@ -115,13 +124,49 @@ public class CategoriaController {
 		}
 	}
 
-	private boolean validarCategoria(Categoria cat) {
-		if (cat == null)
-			return false;
-		if (cat.getDescricao() == null)
-			return false;
-		if (cat.getDescricao().trim().isEmpty())
-			return false;
-		return true;
+	@AutenticacaoNecessaria
+	@Post("excluir/{categoria.id}")
+	public void excluir(Categoria categoria) {
+		try {
+			categoria = service.excluir(categoria.getId());
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Categoria excluída com sucesso!",
+					"A categoria " + categoria.getDescricao() + " foi excluída com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir categoria", e.getMessage());
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(this).listar();
+		}
+	}
+
+	@AutenticacaoNecessaria
+	@Post("recuperar")
+	public void recuperar(Categoria categoria) {
+		if (categoria.getId() == 0) {
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Recuperação de categoria",
+					"Nenhuma categoria foi recuperada", TipoNotificacao.AVISO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+			return;
+		}
+
+		try {
+			categoria = service.recuperar(categoria.getId());
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Categoria recuperada com sucesso!",
+					"A categoria " + categoria.getDescricao() + " foi recuperada com sucesso.",
+					TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao recuperar categoria", e.getMessage());
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(this).listar();
+		}
 	}
 }

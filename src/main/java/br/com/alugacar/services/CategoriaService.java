@@ -16,7 +16,23 @@ public class CategoriaService {
 
 	public List<Categoria> getTodas() {
 		try {
-			return dao.buscarTodos();
+			return dao.buscarTodas();
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
+	}
+
+	public List<Categoria> getAtivas() {
+		try {
+			return dao.buscarExclusao(false);
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
+	}
+
+	public List<Categoria> getExcluidas() {
+		try {
+			return dao.buscarExclusao(true);
 		} catch (DAOException e) {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
@@ -35,9 +51,11 @@ public class CategoriaService {
 		}
 	}
 
-	public Categoria atualizar(Integer id, Categoria categoria) {
+	public Categoria atualizar(Categoria categoria) {
 		try {
-			Categoria categoriaAtualizada = dao.atualizar(id, categoria);
+			Categoria obj = dao.buscarId(categoria.getId());
+			atualizarDados(categoria, obj);
+			Categoria categoriaAtualizada = dao.atualizar(categoria.getId(), obj);
 
 			if (categoriaAtualizada == null)
 				throw new ServiceException("Não foi possível atualizar a categoria");
@@ -50,6 +68,7 @@ public class CategoriaService {
 
 	public Categoria incluir(Categoria categoria) {
 		try {
+			categoria.setExcluida(false);
 			Categoria categoriaInserida = dao.inserir(categoria);
 
 			if (categoriaInserida == null)
@@ -59,6 +78,48 @@ public class CategoriaService {
 		} catch (DAOException e) {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
+	}
+
+	public Categoria excluir(Integer id) {
+		try {
+			Categoria cat = dao.buscarId(id);
+
+			if (cat == null)
+				throw new ServiceException("Marca com ID " + id + " não existe");
+
+			cat.setExcluida(true);
+			cat = dao.atualizar(id, cat);
+
+			if (cat == null)
+				throw new ServiceException("Não foi possível excluir a marca");
+
+			return cat;
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
+	}
+
+	public Categoria recuperar(Integer id) {
+		try {
+			Categoria cat = dao.buscarId(id);
+
+			if (cat == null)
+				throw new ServiceException("Categoria com ID " + id + " não existe");
+
+			cat.setExcluida(false);
+			cat = dao.atualizar(id, cat);
+
+			if (cat == null)
+				throw new ServiceException("Não foi possível recuperar a categoria");
+
+			return cat;
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
+	}
+
+	private void atualizarDados(Categoria origem, Categoria destino) {
+		destino.setDescricao(origem.getDescricao());
 	}
 
 }

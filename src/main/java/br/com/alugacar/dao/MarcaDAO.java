@@ -12,10 +12,10 @@ public interface MarcaDAO {
 
 	Marca buscarId(Integer id);
 
-	List<Marca> buscarTodos();
-	
-	List<Marca> buscarAtivo(boolean ativo);
-	
+	List<Marca> buscarTodas();
+
+	List<Marca> buscarExclusao(boolean excluida);
+
 	boolean existeId(Long id);
 
 }

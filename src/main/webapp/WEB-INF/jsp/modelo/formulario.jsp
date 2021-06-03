@@ -29,7 +29,8 @@
 
 <!-- Icons -->
 <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-<link rel="shortcut icon" href="assets/media/favicons/favicon.png">
+<link rel="shortcut icon"
+	href="<c:url value="/assets/media/favicons/favicon.png"/>">
 <link rel="icon" type="image/png" sizes="192x192"
 	href="<c:url value="/assets/media/favicons/favicon-192x192.png"/>">
 <link rel="apple-touch-icon" sizes="180x180"
@@ -73,18 +74,22 @@
 						</a>
 					</div>
 					<div class="col-6">
-						<a class="block block-rounded block-link-shadow text-center"
-							href="">
-							<div class="block-content block-content-full">
-								<div class="font-size-h2 text-danger">
-									<i class="fa fa-times"></i>
+						<form id="form-excluir"
+							action="<c:url value="excluir/${ modelo.id }"/>" method="POST">
+							<a class="block block-rounded block-link-shadow text-center"
+								onclick="document.getElementById('form-excluir').submit()"
+								${ usuarioLogado.usuario.tipo.administrador ? '' : 'hidden' }>
+								<div class="block-content block-content-full">
+									<div class="font-size-h2 text-danger">
+										<i class="fa fa-times"></i>
+									</div>
 								</div>
-							</div>
-							<div class="block-content py-2 bg-body-light">
-								<p class="font-w600 font-size-sm text-danger mb-0">Excluir
-									Modelo</p>
-							</div>
-						</a>
+								<div class="block-content py-2 bg-body-light">
+									<p class="font-w600 font-size-sm text-danger mb-0">Excluir
+										Modelo</p>
+								</div>
+							</a>
+						</form>
 					</div>
 				</div>
 				<!-- END Quick Actions -->
@@ -171,15 +176,16 @@
 
 	<c:forEach var="notificacao" items="${ notificacoes }">
 		<script>
-			$.notify(
-				{
-					title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
-					icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
-					message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
-				},
-				{
-					type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
-				});
+			$
+					.notify(
+							{
+								title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
+								icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
+								message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
+							},
+							{
+								type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
+							});
 		</script>
 	</c:forEach>
 

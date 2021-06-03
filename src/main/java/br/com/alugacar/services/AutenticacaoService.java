@@ -26,7 +26,7 @@ public class AutenticacaoService {
 			if (usuarioEncontrado == null)
 				throw new ServiceException("Usuário " + usuario.getEmail() + " não econtrado");
 
-			if (!usuarioEncontrado.getAtivo())
+			if (usuarioEncontrado.getExcluido())
 				throw new ServiceException("O usuário " + usuarioEncontrado.getEmail()
 						+ " está inativo, solicite a ativação por um administrador");
 
@@ -42,13 +42,14 @@ public class AutenticacaoService {
 
 	/**
 	 * Cria uma nova conta de usuário.
-	 * @param usuario Objetos com as informações do novo usuário.
+	 * 
+	 * @param usuario Objeto com as informações do novo usuário.
 	 * @return {@link UsuarioDAO}
 	 */
 	public Usuario criarConta(Usuario usuario) {
 		try {
 			usuario.setTipo(TipoUsuario.PADRAO);
-			usuario.setAtivo(Boolean.TRUE);
+			usuario.setExcluido(Boolean.FALSE);
 
 			return dao.inserir(usuario);
 		} catch (DAOException e) {
