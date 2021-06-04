@@ -150,6 +150,32 @@
 								</form>
 							</div>
 						</div>
+						<div class="row justify-content-center">
+							<div class="col-md-10 col-lg-8">
+								<form action="atualizar-foto" method="POST">
+									<div class="form-group">
+										<label>Seu Avatar</label>
+										<div class="push">
+											<img class="img-avatar"
+												src="assets/media/avatars/avatar13.jpg" alt="">
+										</div>
+										<div class="custom-file">
+											<!-- Populating custom file input label with the selected filename (data-toggle="custom-file-input" is initialized in Helpers.coreBootstrapCustomFileInput()) -->
+											<input type="file" class="custom-file-input"
+												enctype="multipart/form-data"
+												data-toggle="custom-file-input" id="foto" name="foto">
+											<label class="custom-file-label" for="foto">Escolha a
+												nova foto</label>
+										</div>
+									</div>
+									<c:if test="${ usuarioLogado.usuario.id == usuario.id }">
+										<div class="form-group">
+											<button type="submit" class="btn btn-alt-success">Atualizar</button>
+										</div>
+									</c:if>
+								</form>
+							</div>
+						</div>
 					</div>
 				</div>
 				<!-- END Info -->
@@ -186,13 +212,16 @@
 
 	<c:forEach var="notificacao" items="${ notificacoes }">
 		<script>
-			$.notify({
-				title : '<b>${ notificacao.mensagem.category }</b>',
-				icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
-				message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
-			}, {
-				type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
-			});
+			$
+					.notify(
+							{
+								title : '<b>${ notificacao.mensagem.category }</b>',
+								icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
+								message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
+							},
+							{
+								type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
+							});
 		</script>
 	</c:forEach>
 

@@ -1,5 +1,10 @@
 package br.com.alugacar.controllers;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,6 +22,8 @@ import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.observer.upload.UploadSizeLimit;
+import br.com.caelum.vraptor.observer.upload.UploadedFile;
 import br.com.caelum.vraptor.validator.SimpleMessage;
 import br.com.caelum.vraptor.validator.Validator;
 
@@ -86,7 +93,25 @@ public class UsuarioController {
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).listar();
 		}
+	}
 
+	@Post("atualizar-foto")
+	@UploadSizeLimit(sizeLimit = 50 * 1024 * 1024, fileSizeLimit = 30 * 1024 * 1024)
+	public void atualizarFoto(Usuario usuario, UploadedFile foto) {
+		try {
+			InputStream inputStream = foto.getFile();
+
+			byte[] buffer = new byte[inputStream.available()];
+			inputStream.read(buffer);
+
+			File targetFile = new File("C:/foto.jpg");
+			OutputStream outStream = new FileOutputStream(targetFile);
+			outStream.write(buffer);
+
+			outStream.close();
+		} catch (IOException e) {
+			System.err.println("ERRO " + e.getMessage());
+		}
 	}
 
 	@AutenticacaoNecessaria
