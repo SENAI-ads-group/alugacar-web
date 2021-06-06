@@ -4,6 +4,9 @@ import java.util.List;
 
 import br.com.alugacar.entidades.Categoria;
 
+/**
+ * @author <a href="https://github.com/Patrick-Ribeiro">Patrick Ribeiro</a>
+ */
 public interface CategoriaDAO {
 
 	Categoria inserir(Categoria Categoria);

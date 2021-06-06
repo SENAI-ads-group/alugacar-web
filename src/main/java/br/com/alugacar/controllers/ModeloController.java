@@ -57,14 +57,15 @@ public class ModeloController {
 	@AutenticacaoNecessaria
 	public void listarModelosMarca(Marca marca) {
 		try {
+			List<Modelo> modelos = service.getModelosMarca(marca);
 			result.include("modeloExcluidoList", service.getExcluidos());
-			result.include("modeloList", service.getTodosMarca(marca));
+			result.include("modeloList", modelos);
 			result.forwardTo("/WEB-INF/jsp/modelo/listar.jsp");
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao listar modelos", e.getMessage());
 
 			validator.add(mensagemErro);
-			validator.onErrorRedirectTo(this).listar();
+			validator.onErrorRedirectTo(DashboardController.class).dashboard();
 		}
 	}
 

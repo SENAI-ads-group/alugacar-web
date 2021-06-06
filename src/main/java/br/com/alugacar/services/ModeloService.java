@@ -33,6 +33,16 @@ public class ModeloService {
 		}
 	}
 
+	public List<Modelo> getModelosMarca(Marca marca) {
+		try {
+			List<Modelo> modelos = dao.buscarExclusao(false);
+			return modelos.stream().filter(m -> m.getMarca().hashCode() == marca.hashCode())
+					.collect(Collectors.toList());
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
+	}
+
 	public List<Modelo> getExcluidos() {
 		try {
 			return dao.buscarExclusao(true);
@@ -41,18 +51,9 @@ public class ModeloService {
 		}
 	}
 
-	public List<Modelo> getTodosMarca(Marca marca) {
-		try {
-			List<Modelo> modelosAtivos = dao.buscarMarca(marca);
-			return modelosAtivos.stream().filter(m -> !m.getExcluido()).collect(Collectors.toList());
-		} catch (DAOException e) {
-			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
-		}
-	}
-
 	public Modelo adicionar(Modelo modelo) {
 		try {
-			modelo.setExcluido(true);
+			modelo.setExcluido(false);
 			Modelo modeloInserido = dao.inserir(modelo);
 
 			return modeloInserido;
@@ -133,7 +134,7 @@ public class ModeloService {
 
 	private void atualizarDados(Modelo origem, Modelo destino) {
 		destino.setDescricao(origem.getDescricao());
-		destino.setFoto(origem.getFoto());
 		destino.setMarca(origem.getMarca());
 	}
+
 }

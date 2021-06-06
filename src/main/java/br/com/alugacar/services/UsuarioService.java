@@ -1,5 +1,7 @@
 package br.com.alugacar.services;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,6 +12,9 @@ import br.com.alugacar.dao.exceptions.DAOException;
 import br.com.alugacar.entidades.Usuario;
 import br.com.alugacar.services.exceptions.ServiceException;
 import br.com.alugacar.sessions.UsuarioSession;
+import br.com.alugacar.util.FotoUtil;
+import br.com.alugacar.util.FotoUtil.ExtensaoFoto;
+import br.com.caelum.vraptor.observer.upload.UploadedFile;
 
 /**
  * @author <a href="https://github.com/Patrick-Ribeiro">Patrick Ribeiro</a>
@@ -122,6 +127,28 @@ public class UsuarioService {
 		}
 	}
 
+	public Usuario atualizarSenha(Integer id, String senhaAtual, String novaSenha) {
+		try {
+			Usuario obj = dao.buscarId(id);
+
+			if (obj == null)
+				throw new ServiceException("Usuário com ID " + id + " não encontrado");
+
+			if (!obj.getSenha().equals(senhaAtual))
+				throw new ServiceException("Senha atual inválida");
+
+			obj.setSenha(novaSenha);
+			Usuario usuarioAtualizado = dao.atualizar(id, obj);
+
+			if (usuarioAtualizado == null)
+				throw new ServiceException("Não foi possível atualizar o usuário");
+
+			return usuarioAtualizado;
+		} catch (DAOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
+	}
+
 	/**
 	 * Desativa um usuário do sistema
 	 * 
@@ -199,6 +226,22 @@ public class UsuarioService {
 		destino.setNome(origem.getNome());
 		destino.setEmail(origem.getEmail());
 		destino.setTipo(origem.getTipo());
+	}
+
+	public File getFoto(Usuario usuario) {
+		File foto = FotoUtil.getFoto("avatares", String.valueOf(usuario.getId()), ExtensaoFoto.JPG);
+		if (foto == null)
+			foto = FotoUtil.getFoto("avatares", "padrao", ExtensaoFoto.JPG);
+
+		return foto;
+	}
+
+	public void associarFoto(Usuario usuario, UploadedFile foto) {
+		try {
+			FotoUtil.salvarFoto(foto.getFile(), "avatares", String.valueOf(usuario.getId()), ExtensaoFoto.JPG);
+		} catch (IOException e) {
+			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
+		}
 	}
 
 }

@@ -1,6 +1,8 @@
 package br.com.alugacar.entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Categoria implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -8,6 +10,8 @@ public class Categoria implements Serializable {
 	private Integer id;
 	private String descricao;
 	private Boolean excluida;
+
+	private List<Veiculo> veiculos = new ArrayList<>();
 
 	public Categoria() {
 	}
@@ -40,6 +44,10 @@ public class Categoria implements Serializable {
 
 	public void setExcluida(Boolean excluido) {
 		this.excluida = excluido;
+	}
+
+	public List<Veiculo> getVeiculos() {
+		return veiculos;
 	}
 
 	@Override

@@ -61,7 +61,7 @@ public class MarcaController {
 	public List<Marca> listar() {
 		try {
 			List<Marca> marcasExcluidas = service.getExcluidas();
-
+			
 			result.include("marcaExcluidaList", marcasExcluidas);
 			return service.getAtivas();
 		} catch (ServiceException e) {

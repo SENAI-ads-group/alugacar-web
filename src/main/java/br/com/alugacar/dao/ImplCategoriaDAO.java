@@ -11,6 +11,9 @@ import java.util.List;
 import br.com.alugacar.dao.exceptions.DAOException;
 import br.com.alugacar.entidades.Categoria;
 
+/**
+ * @author <a href="https://github.com/Patrick-Ribeiro">Patrick Ribeiro</a>
+ */
 public class ImplCategoriaDAO implements CategoriaDAO {
 
 	@Override
@@ -18,8 +21,12 @@ public class ImplCategoriaDAO implements CategoriaDAO {
 		if (categoria == null) {
 			throw new IllegalStateException("A Categoria não pode ser nula");
 		}
-
-		final String SQL = "INSERT INTO categoria(descricao, excluida) VALUES(?,?)";
+		// @formatter:off
+		final String SQL = "INSERT INTO categoria("
+				+ "cat_descricao, "
+				+ "cat_excluida "
+				+ ") VALUES(?,?)";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -44,12 +51,16 @@ public class ImplCategoriaDAO implements CategoriaDAO {
 		} catch (Exception e) {
 			throw new DAOException(e.getMessage());
 		}
-
 	}
 
 	@Override
 	public Categoria atualizar(Integer id, Categoria categoria) {
-		final String SQL = "UPDATE categoria SET descricao = ?, excluida = ? WHERE id_categoria = ?";
+		// @formatter:off
+		final String SQL = "UPDATE categoria SET "
+				+ "cat_descricao = ?, "
+				+ "cat_excluida = ? "
+				+ "WHERE cat_id = ?";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -74,12 +85,15 @@ public class ImplCategoriaDAO implements CategoriaDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}
-
 	}
 
 	@Override
 	public Categoria buscarId(Integer id) {
-		final String SQL = "SELECT * FROM categoria WHERE id_categoria = ?";
+		// @formatter:off
+		final String SQL = "SELECT * "
+				+ "FROM categoria "
+				+ "WHERE cat_id = ?";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -96,12 +110,14 @@ public class ImplCategoriaDAO implements CategoriaDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}
-
 	}
 
 	@Override
 	public List<Categoria> buscarTodas() {
-		final String SQL = "SELECT * FROM categoria";
+		// @formatter:off
+		final String SQL = "SELECT * "
+				+ "FROM categoria";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
 
@@ -120,17 +136,23 @@ public class ImplCategoriaDAO implements CategoriaDAO {
 
 	@Override
 	public List<Categoria> buscarExclusao(boolean excluida) {
-		final String SQL = "SELECT * FROM categoria WHERE excluida = " + excluida;
+		// @formatter:off
+		final String SQL = "SELECT * "
+				+ "FROM categoria "
+				+ "WHERE cat_excluida = ?";
+		// @formatter:on
 
-		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
+		try (Connection connection = ConnectionFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(SQL)) {
 
-			ResultSet rs = st.executeQuery(SQL);
+			ps.setBoolean(1, excluida);
+			ResultSet rs = ps.executeQuery();
 
 			List<Categoria> categoriasEncontradas = new ArrayList<>();
 			while (rs.next())
 				categoriasEncontradas.add(instanciarCategoria(rs));
 
-			ConnectionFactory.closeConnection(connection, st, rs);
+			ConnectionFactory.closeConnection(connection, ps, rs);
 			return categoriasEncontradas;
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
@@ -139,7 +161,12 @@ public class ImplCategoriaDAO implements CategoriaDAO {
 
 	@Override
 	public boolean existeId(Integer id) {
-		final String SQL = "SELECT id_categoria FROM categoria WHERE id_categoria = ?";
+		// @formatter:off
+		final String SQL = "SELECT "
+				+ "cat_id "
+				+ "FROM categoria "
+				+ "WHERE cat_id = ?";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -158,9 +185,9 @@ public class ImplCategoriaDAO implements CategoriaDAO {
 	private Categoria instanciarCategoria(ResultSet rs) throws SQLException {
 		Categoria c = new Categoria();
 
-		c.setId(rs.getInt("id_categoria"));
-		c.setDescricao(rs.getString("descricao"));
-		c.setExcluida(rs.getBoolean("excluida"));
+		c.setId(rs.getInt("cat_id"));
+		c.setDescricao(rs.getString("cat_descricao"));
+		c.setExcluida(rs.getBoolean("cat_excluida"));
 
 		return c;
 	}

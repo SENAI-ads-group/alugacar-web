@@ -21,15 +21,20 @@ public class ImplModeloDAO implements ModeloDAO {
 		if (modelo == null) {
 			throw new IllegalStateException("O modelo não pode ser nulo");
 		}
-		final String SQL = "INSERT INTO modelo(descricao, foto, id_marca, excluido) VALUES(?,?,?,?)";
+		// @formatter:off
+		final String SQL = "INSERT INTO modelo("
+				+ "mod_descricao, "
+				+ "mod_marc_id, "
+				+ "mod_excluido"
+				+ ") VALUES(?,?,?)";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
 			ps.setString(1, modelo.getDescricao());
-			ps.setString(2, modelo.getFoto());
-			ps.setInt(3, modelo.getMarca().getId());
-			ps.setBoolean(4, modelo.getExcluido());
+			ps.setInt(2, modelo.getMarca().getId());
+			ps.setBoolean(3, modelo.getExcluido());
 
 			Modelo modeloInserido = null;
 
@@ -48,21 +53,25 @@ public class ImplModeloDAO implements ModeloDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}
-
 	}
 
 	@Override
 	public Modelo atualizar(Integer id, Modelo modelo) {
-		final String SQL = "UPDATE modelo SET descricao  = ?, foto = ?, id_marca = ?, excluido = ? WHERE id_modelo = ?";
+		// @formatter:off
+		final String SQL = "UPDATE modelo SET "
+				+ "mod_descricao  = ?, "
+				+ "mod_marc_id = ?, "
+				+ "mod_excluido = ? "
+				+ "WHERE mod_id = ?";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
 			ps.setString(1, modelo.getDescricao());
-			ps.setString(2, modelo.getFoto());
-			ps.setInt(3, modelo.getMarca().getId());
-			ps.setBoolean(4, modelo.getExcluido());
-			ps.setInt(5, id);
+			ps.setInt(2, modelo.getMarca().getId());
+			ps.setBoolean(3, modelo.getExcluido());
+			ps.setInt(4, id);
 
 			Modelo modeloAtualizado = null;
 
@@ -80,13 +89,18 @@ public class ImplModeloDAO implements ModeloDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}
-
 	}
 
 	@Override
 	public Modelo buscarId(Integer id) {
-		final String SQL = "SELECT marca.descricao AS descricao_marca, marca.logomarca_foto, marca.excluida AS marca_excluida, "
-				+ "modelo.* FROM modelo JOIN marca ON(marca.id_marca = modelo.id_marca) WHERE id_modelo = ?";
+		//@formatter:off
+		final String SQL = "SELECT "
+				+ "modelo.*, "
+				+ "marca.* "
+				+ "FROM modelo "
+				+ "JOIN marca ON(mod_marc_id = marc_id) "
+				+ "WHERE mod_id = ?";
+		//@formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -96,8 +110,7 @@ public class ImplModeloDAO implements ModeloDAO {
 
 			Modelo modeloEncontrado = null;
 			if (rs.next()) {
-				modeloEncontrado = instanciarModelo(rs);
-				modeloEncontrado.setMarca(instanciarMarca(rs));
+				modeloEncontrado = instanciarModelo(rs, instanciarMarca(rs));
 			}
 
 			ConnectionFactory.closeConnection(connection, ps, rs);
@@ -109,8 +122,13 @@ public class ImplModeloDAO implements ModeloDAO {
 
 	@Override
 	public List<Modelo> buscarTodos() {
-		final String SQL = "SELECT marca.descricao AS descricao_marca, marca.logomarca_foto, marca.excluida AS marca_excluida, "
-				+ "modelo.* FROM modelo JOIN marca ON(marca.id_marca = modelo.id_marca)";
+		//@formatter:off
+		final String SQL = "SELECT "
+				+ "modelo.*, "
+				+ "marca.* "
+				+ "FROM modelo "
+				+ "JOIN marca ON(mod_marc_id = marc_id)";
+		//@formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
 
@@ -120,15 +138,10 @@ public class ImplModeloDAO implements ModeloDAO {
 			Map<Integer, Marca> marcaMap = new HashMap<>();
 
 			while (rs.next()) {
-				Modelo modelo = instanciarModelo(rs);
-				Marca marca = instanciarMarca(rs);
+				Integer idMarca = rs.getInt("marc_id");
+				Marca marca = marcaMap.containsKey(idMarca) ? marcaMap.get(idMarca) : instanciarMarca(rs);
 
-				if (marcaMap.containsKey(marca.getId()))
-					modelo.setMarca(marcaMap.get(marca.getId()));
-				else
-					modelo.setMarca(marca);
-
-				modelosEncontrados.add(modelo);
+				modelosEncontrados.add(instanciarModelo(rs, marca));
 			}
 
 			ConnectionFactory.closeConnection(connection, st, rs);
@@ -140,59 +153,28 @@ public class ImplModeloDAO implements ModeloDAO {
 
 	@Override
 	public List<Modelo> buscarExclusao(boolean excluido) {
-		final String SQL = "SELECT marca.descricao AS descricao_marca, marca.logomarca_foto, marca.excluida AS marca_excluida, "
-				+ "modelo.* FROM modelo JOIN marca ON(marca.id_marca = modelo.id_marca) WHERE excluido = " + excluido;
-
-		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
-
-			ResultSet rs = st.executeQuery(SQL);
-
-			List<Modelo> modelosEncontrados = new ArrayList<>();
-			Map<Integer, Marca> marcaMap = new HashMap<>();
-
-			while (rs.next()) {
-				Modelo modelo = instanciarModelo(rs);
-				Marca marca = instanciarMarca(rs);
-
-				if (marcaMap.containsKey(marca.getId()))
-					modelo.setMarca(marcaMap.get(marca.getId()));
-				else
-					modelo.setMarca(marca);
-
-				modelosEncontrados.add(modelo);
-			}
-
-			ConnectionFactory.closeConnection(connection, st, rs);
-			return modelosEncontrados;
-		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
-		}
-	}
-
-	@Override
-	public List<Modelo> buscarMarca(Marca marca) {
-		final String SQL = "SELECT marca.descricao AS descricao_marca, marca.logomarca_foto, marca.excluida AS marca_excluida, "
-				+ "modelo.* FROM modelo JOIN marca ON(marca.id_marca = modelo.id_marca) WHERE modelo.id_marca = ?";
+		//@formatter:off
+		final String SQL = "SELECT "
+				+ "modelo.*, "
+				+ "marca.* "
+				+ "FROM modelo "
+				+ "JOIN marca ON(mod_marc_id = marc_id) "
+				+ "WHERE mod_excluido = ?";
+		//@formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
-				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
+				PreparedStatement ps = connection.prepareStatement(SQL)) {
 
-			ps.setInt(1, marca.getId());
+			ps.setBoolean(1, excluido);
 			ResultSet rs = ps.executeQuery();
 
 			List<Modelo> modelosEncontrados = new ArrayList<>();
 			Map<Integer, Marca> marcaMap = new HashMap<>();
-
 			while (rs.next()) {
-				Modelo modelo = instanciarModelo(rs);
-				marca = instanciarMarca(rs);
+				Integer idMarca = rs.getInt("marc_id");
+				Marca marca = marcaMap.containsKey(idMarca) ? marcaMap.get(idMarca) : instanciarMarca(rs);
 
-				if (marcaMap.containsKey(marca.getId()))
-					modelo.setMarca(marcaMap.get(marca.getId()));
-				else
-					modelo.setMarca(marca);
-
-				modelosEncontrados.add(modelo);
+				modelosEncontrados.add(instanciarModelo(rs, marca));
 			}
 
 			ConnectionFactory.closeConnection(connection, ps, rs);
@@ -204,7 +186,12 @@ public class ImplModeloDAO implements ModeloDAO {
 
 	@Override
 	public boolean existeId(Integer id) {
-		final String SQL = "SELECT * FROM modelo WHERE id_modelo = ?";
+		//@formatter:off
+		final String SQL = "SELECT "
+				+ "mod_id "
+				+ "FROM modelo "
+				+ "WHERE mod_id = ?";
+		//@formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -220,13 +207,13 @@ public class ImplModeloDAO implements ModeloDAO {
 		}
 	}
 
-	private Modelo instanciarModelo(ResultSet rs) throws SQLException {
+	private Modelo instanciarModelo(ResultSet rs, Marca marca) throws SQLException {
 		Modelo modelo = new Modelo();
 
-		modelo.setId(rs.getInt("id_modelo"));
-		modelo.setDescricao(rs.getString("descricao"));
-		modelo.setFoto(rs.getString("foto"));
-		modelo.setExcluido(rs.getBoolean("excluido"));
+		modelo.setId(rs.getInt("mod_id"));
+		modelo.setDescricao(rs.getString("mod_descricao"));
+		modelo.setExcluido(rs.getBoolean("mod_excluido"));
+		modelo.setMarca(marca);
 
 		return modelo;
 	}
@@ -234,10 +221,9 @@ public class ImplModeloDAO implements ModeloDAO {
 	private Marca instanciarMarca(ResultSet rs) throws SQLException {
 		Marca marca = new Marca();
 
-		marca.setId(rs.getInt("id_marca"));
-		marca.setDescricao(rs.getString("descricao_marca"));
-		marca.setLogomarcaFoto(rs.getString("logomarca_foto"));
-		marca.setExcluida(rs.getBoolean("marca_excluida"));
+		marca.setId(rs.getInt("marc_id"));
+		marca.setDescricao(rs.getString("marc_descricao"));
+		marca.setExcluida(rs.getBoolean("marc_excluida"));
 
 		return marca;
 	}

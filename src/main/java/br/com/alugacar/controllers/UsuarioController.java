@@ -1,10 +1,6 @@
 package br.com.alugacar.controllers;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -95,22 +91,49 @@ public class UsuarioController {
 		}
 	}
 
-	@Post("atualizar-foto")
+	@AutenticacaoNecessaria
+	@Get("foto/{usuario.id}")
+	public File foto(Usuario usuario) {
+		File foto = service.getFoto(usuario);
+		return foto;
+	}
+
+	@AutenticacaoNecessaria
+	@Post("atualizar/foto/{usuario.id}")
 	@UploadSizeLimit(sizeLimit = 50 * 1024 * 1024, fileSizeLimit = 30 * 1024 * 1024)
 	public void atualizarFoto(Usuario usuario, UploadedFile foto) {
 		try {
-			InputStream inputStream = foto.getFile();
+			service.associarFoto(usuario, foto);
 
-			byte[] buffer = new byte[inputStream.available()];
-			inputStream.read(buffer);
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Atualização do avatar",
+					"Avatar atualizado com sucesso!", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
 
-			File targetFile = new File("C:/foto.jpg");
-			OutputStream outStream = new FileOutputStream(targetFile);
-			outStream.write(buffer);
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar foto", e.getMessage());
 
-			outStream.close();
-		} catch (IOException e) {
-			System.err.println("ERRO " + e.getMessage());
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(this).listar();
+		}
+	}
+
+	@AutenticacaoNecessaria
+	@Post("atualizar/senha/{usuario.id}")
+	public void atualizarSenha(Usuario usuario, String senhaAtual, String novaSenha) {
+		try {
+			service.atualizarSenha(usuario.getId(), senhaAtual, novaSenha);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Atualização de senha",
+					"Senha atualizada com sucesso!", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar senha", e.getMessage());
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(this).listar();
 		}
 	}
 

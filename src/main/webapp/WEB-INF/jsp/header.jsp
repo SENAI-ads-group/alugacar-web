@@ -75,9 +75,9 @@
 					class="btn btn-sm btn-dual d-flex align-items-center"
 					id="page-header-user-dropdown" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false">
-					<img class="rounded-circle"
-						src="<c:url value="/assets/media/avatars/avatar10.jpg"/>"
-						alt="Header Avatar" style="width: 21px;"> <span
+					<img class="rounded-circle" alt="Header Avatar"
+						style="width: 21px; height: 21px;"
+						src="<c:url value="/usuarios/foto/${ usuarioLogado.usuario.id }"/>" /> <span
 						class="d-none d-sm-inline-block ml-2">${ usuarioLogado.usuario.nome }</span>
 					<i
 						class="fa fa-fw fa-angle-down d-none d-sm-inline-block ml-1 mt-1"></i>
@@ -87,7 +87,7 @@
 					aria-labelledby="page-header-user-dropdown">
 					<div class="p-3 text-center bg-primary-dark rounded-top">
 						<img class="img-avatar img-avatar48 img-avatar-thumb"
-							src="<c:url value="/assets/media/avatars/avatar10.jpg"/>" alt="">
+							src="<c:url value="/usuarios/foto/${ usuarioLogado.usuario.id }"/>" />
 						<p class="mt-2 mb-0 text-white font-w500">${ usuarioLogado.usuario.nome }</p>
 						<p class="mb-0 text-white-50 font-size-sm">Usuário ${ usuarioLogado.usuario.tipo.valor }</p>
 					</div>

@@ -22,13 +22,18 @@ public class Veiculo implements Serializable {
 	private Integer anoModelo;
 	private Combustivel combustivel;
 	private Double quilometragem;
+	private Boolean excluido;
+
+	private Categoria categoria;
+	private Modelo modelo;
 
 	public Veiculo() {
 	}
 
 	public Veiculo(Integer id, String placa, TipoVeiculo tipo, StatusVeiculo status, Double precoCompra,
 			Double precoVenda, String cor, Integer qtdPassageiros, Double capacidadeTanque, Integer anoFabricacao,
-			Integer anoModelo, Combustivel combustivel, Double quilometragem) {
+			Integer anoModelo, Combustivel combustivel, Double quilometragem, Boolean excluido, Categoria categoria,
+			Modelo modelo) {
 		this.id = id;
 		this.placa = placa;
 		this.tipo = tipo;
@@ -42,6 +47,9 @@ public class Veiculo implements Serializable {
 		this.anoModelo = anoModelo;
 		this.combustivel = combustivel;
 		this.quilometragem = quilometragem;
+		this.excluido = excluido;
+		this.categoria = categoria;
+		this.modelo = modelo;
 	}
 
 	public Integer getId() {
@@ -146,6 +154,36 @@ public class Veiculo implements Serializable {
 
 	public void setQuilometragem(Double quilometragem) {
 		this.quilometragem = quilometragem;
+	}
+
+	public Boolean getExcluido() {
+		return excluido;
+	}
+
+	public void setExcluido(Boolean excluido) {
+		this.excluido = excluido;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+	public Modelo getModelo() {
+		return modelo;
+	}
+
+	public void setModelo(Modelo modelo) {
+		this.modelo = modelo;
+	}
+
+	public boolean isDisponivel() {
+		if (status == null)
+			throw new IllegalStateException("O status do veículo está nulo");
+		return status.equals(StatusVeiculo.DISPONIVEL_PARA_ALUGAR);
 	}
 
 	@Override

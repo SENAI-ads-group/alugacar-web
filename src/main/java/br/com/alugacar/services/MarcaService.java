@@ -1,6 +1,7 @@
 package br.com.alugacar.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -28,7 +29,8 @@ public class MarcaService {
 
 	public List<Marca> getAtivas() {
 		try {
-			return dao.buscarExclusao(false);
+			List<Marca> marcas = dao.buscarExclusao(false);
+			return marcas;
 		} catch (DAOException e) {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
@@ -91,10 +93,11 @@ public class MarcaService {
 			if (mc == null)
 				throw new ServiceException("Marca com ID " + id + " não existe");
 
-			List<Modelo> modelos = modeloService.getTodosMarca(mc);
-			if (!modelos.isEmpty())
+			List<Modelo> modelosRelacionados = modeloService.getAtivos().stream()
+					.filter(m -> m.getMarca().getId() == id).collect(Collectors.toList());
+			if (!modelosRelacionados.isEmpty())
 				throw new ServiceException("Não é possível excluir esta marca, pois o modelo "
-						+ modelos.get(0).getDescricao() + " está associado à ela.");
+						+ mc.getModelos().get(0).getDescricao() + " está associado à ela.");
 
 			mc.setExcluida(true);
 			mc = dao.atualizar(id, mc);
@@ -129,7 +132,6 @@ public class MarcaService {
 
 	private void atualizarDados(Marca origem, Marca destino) {
 		destino.setDescricao(origem.getDescricao());
-		destino.setLogomarcaFoto(origem.getLogomarcaFoto());
 	}
 
 }

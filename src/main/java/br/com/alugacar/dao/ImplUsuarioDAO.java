@@ -25,8 +25,16 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 		if (buscarEmail(usuario.getEmail()) != null) {
 			throw new DAOException("O usuário com o email " + usuario.getEmail() + " já existe");
 		}
-
-		final String SQL = "INSERT INTO usuario (nome, email, senha, dica_senha, tipo_usuario, excluido) VALUES(?,?,?,?,?,?)";
+		// @formatter:off
+		final String SQL = "INSERT INTO usuario ("
+				+ "usu_nome, "
+				+ "usu_email, "
+				+ "usu_senha, "
+				+ "usu_dica_senha, "
+				+ "usu_tipo, "
+				+ "usu_excluido"
+				+ ") VALUES(?,?,?,?,?,?)";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -63,8 +71,16 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 		if (usuario == null)
 			throw new IllegalStateException("O usuário não pode ser nulo");
 
-		final String SQL = "UPDATE usuario SET nome = ?, email = ?, "
-				+ "senha = ?, dica_senha = ?, tipo_usuario = ?, excluido = ? WHERE id_usuario = ?";
+		// @formatter:off
+		final String SQL = "UPDATE usuario SET "
+				+ "usu_nome = ?, "
+				+ "usu_email = ?, "
+				+ "usu_senha = ?, "
+				+ "usu_dica_senha = ?, "
+				+ "usu_tipo = ?, "
+				+ "usu_excluido = ? "
+				+ "WHERE usu_id = ?";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -100,7 +116,11 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 		if (id == null)
 			throw new IllegalStateException("O ID não pode ser nulo");
 
-		final String SQL = "SELECT * FROM usuario WHERE id_usuario = ?";
+		// @formatter:off
+		final String SQL = "SELECT * "
+				+ "FROM usuario "
+				+ "WHERE usu_id = ?";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -124,7 +144,11 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 		if (email == null || email.isEmpty())
 			throw new IllegalStateException("O email não pode ser nulo ou vazio");
 
-		final String SQL = "SELECT * FROM usuario WHERE email = ?";
+		// @formatter:off
+		final String SQL = "SELECT * "
+				+ "FROM usuario "
+				+ "WHERE usu_email = ?";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -145,7 +169,10 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 
 	@Override
 	public List<Usuario> buscarTodos() {
-		final String SQL = "SELECT * FROM usuario";
+		// @formatter:off
+		final String SQL = "SELECT * "
+				+ "FROM usuario";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
 
@@ -164,17 +191,23 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 
 	@Override
 	public List<Usuario> buscarExclusao(boolean excluido) {
-		final String SQL = "SELECT * FROM usuario WHERE excluido = " + excluido;
+		// @formatter:off
+		final String SQL = "SELECT * "
+				+ "FROM usuario "
+				+ "WHERE usu_excluido = ?";
+		// @formatter:on
 
-		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
+		try (Connection connection = ConnectionFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(SQL)) {
 
-			ResultSet rs = st.executeQuery(SQL);
+			ps.setBoolean(1, excluido);
+			ResultSet rs = ps.executeQuery();
 
 			List<Usuario> usuariosEncontrados = new ArrayList<>();
 			while (rs.next())
 				usuariosEncontrados.add(instanciarUsuario(rs));
 
-			ConnectionFactory.closeConnection(connection, st, rs);
+			ConnectionFactory.closeConnection(connection, ps, rs);
 			return usuariosEncontrados;
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
@@ -183,7 +216,12 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 
 	@Override
 	public boolean existeId(Integer id) {
-		final String SQL = "SELECT id_usuario FROM usuario WHERE id_usuario = ?";
+		// @formatter:off
+		final String SQL = "SELECT "
+				+ "usu_id "
+				+ "FROM usuario "
+				+ "WHERE usu_id = ?";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -202,13 +240,13 @@ public class ImplUsuarioDAO implements UsuarioDAO {
 	private Usuario instanciarUsuario(ResultSet rs) throws SQLException {
 		Usuario u = new Usuario();
 
-		u.setId(rs.getInt("id_usuario"));
-		u.setNome(rs.getString("nome"));
-		u.setEmail(rs.getString("email"));
-		u.setSenha(rs.getString("senha"));
-		u.setDicaSenha(rs.getString("dica_senha"));
-		u.setTipo(TipoUsuario.valueOf(rs.getString("tipo_usuario")));
-		u.setExcluido(rs.getBoolean("excluido"));
+		u.setId(rs.getInt("usu_id"));
+		u.setNome(rs.getString("usu_nome"));
+		u.setEmail(rs.getString("usu_email"));
+		u.setSenha(rs.getString("usu_senha"));
+		u.setDicaSenha(rs.getString("usu_dica_senha"));
+		u.setTipo(TipoUsuario.valueOf(rs.getString("usu_tipo")));
+		u.setExcluido(rs.getBoolean("usu_excluido"));
 
 		return u;
 	}

@@ -1,22 +1,24 @@
 package br.com.alugacar.entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Marca implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
 	private String descricao;
-	private String logomarcaFoto;
 	private Boolean excluida;
+
+	private List<Modelo> modelos = new ArrayList<>();
 
 	public Marca() {
 	}
 
-	public Marca(Integer id, String descricao, String logomarcaFoto, Boolean excluida) {
+	public Marca(Integer id, String descricao, Boolean excluida) {
 		this.id = id;
 		this.descricao = descricao;
-		this.logomarcaFoto = logomarcaFoto;
 		this.excluida = excluida;
 	}
 
@@ -36,20 +38,16 @@ public class Marca implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public String getLogomarcaFoto() {
-		return logomarcaFoto;
-	}
-
-	public void setLogomarcaFoto(String logomarcaFoto) {
-		this.logomarcaFoto = logomarcaFoto;
-	}
-
 	public Boolean getExcluida() {
 		return excluida;
 	}
 
 	public void setExcluida(Boolean excluida) {
 		this.excluida = excluida;
+	}
+
+	public List<Modelo> getModelos() {
+		return modelos;
 	}
 
 	@Override

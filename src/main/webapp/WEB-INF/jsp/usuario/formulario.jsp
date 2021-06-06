@@ -105,7 +105,7 @@
 							<div class="py-4">
 								<div class="mb-3">
 									<img class="img-avatar" alt=""
-										src="<c:url value="/assets/media/avatars/avatar13.jpg"/>">
+										src="<c:url value="/usuarios/foto/${usuario.id}"/>" />
 								</div>
 								<h1 class="font-size-lg mb-0">${ usuario.nome }</h1>
 								<p class="font-size-sm text-muted">Usuário ${ usuario.tipo.valor }</p>
@@ -150,35 +150,79 @@
 								</form>
 							</div>
 						</div>
-						<div class="row justify-content-center">
-							<div class="col-md-10 col-lg-8">
-								<form action="atualizar-foto" method="POST">
-									<div class="form-group">
-										<label>Seu Avatar</label>
-										<div class="push">
-											<img class="img-avatar"
-												src="assets/media/avatars/avatar13.jpg" alt="">
-										</div>
-										<div class="custom-file">
-											<!-- Populating custom file input label with the selected filename (data-toggle="custom-file-input" is initialized in Helpers.coreBootstrapCustomFileInput()) -->
-											<input type="file" class="custom-file-input"
-												enctype="multipart/form-data"
-												data-toggle="custom-file-input" id="foto" name="foto">
-											<label class="custom-file-label" for="foto">Escolha a
-												nova foto</label>
-										</div>
-									</div>
-									<c:if test="${ usuarioLogado.usuario.id == usuario.id }">
-										<div class="form-group">
-											<button type="submit" class="btn btn-alt-success">Atualizar</button>
-										</div>
-									</c:if>
-								</form>
-							</div>
-						</div>
 					</div>
 				</div>
 				<!-- END Info -->
+
+				<c:if test="${ usuarioLogado.usuario.id == usuario.id }">
+					<!-- Avatar -->
+					<div class="block block-rounded">
+						<div class="block-header block-header-default">
+							<h3 class="block-title">Avatar</h3>
+						</div>
+						<div class="block-content">
+							<div class="row justify-content-center">
+								<div class="col-md-10 col-lg-8">
+									<form action="atualizar/foto/${ usuario.id }"
+										enctype="multipart/form-data" method="POST">
+										<div class="form-group">
+											<label>Seu Avatar</label>
+											<div class="push">
+												<img class="img-avatar" alt=""
+													src="<c:url value="/usuarios/foto/${usuario.id}"/>" />
+											</div>
+											<div class="custom-file">
+												<!-- Populating custom file input label with the selected filename (data-toggle="custom-file-input" is initialized in Helpers.coreBootstrapCustomFileInput()) -->
+												<input type="file" class="custom-file-input"
+													data-toggle="custom-file-input" id="foto" name="foto">
+												<label class="custom-file-label" for="foto">Escolha
+													a nova foto</label>
+											</div>
+										</div>
+										<div class="form-group">
+											<button type="submit" class="btn btn-alt-success">Atualizar</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END Avatar -->
+
+					<!-- Senha -->
+					<div class="block block-rounded">
+						<div class="block-header block-header-default">
+							<h3 class="block-title">Alteração de senha</h3>
+						</div>
+						<div class="block-content">
+							<div class="row justify-content-center">
+								<div class="col-md-10 col-lg-8">
+									<form action="atualizar/senha/${ usuario.id }" method="POST">
+										<div class="form-group">
+											<label for="senhaAtual">Senha atual</label> <input
+												type="password" class="form-control" id="senhaAtual"
+												name="senhaAtual">
+										</div>
+										<div class="form-group">
+											<label for="senhaAtual">Nova senha</label> <input
+												type="password" class="form-control" id="novaSenha"
+												name="novaSenha">
+										</div>
+										<div class="form-group">
+											<label for="senhaAtual">Confirmação de senha</label> <input
+												type="password" class="form-control" id="confirmacaoSenha"
+												name="confirmacaoSenha">
+										</div>
+										<div class="form-group">
+											<button type="submit" class="btn btn-alt-success">Atualizar</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END Avatar -->
+				</c:if>
 
 			</div>
 			<!-- END Page Content -->

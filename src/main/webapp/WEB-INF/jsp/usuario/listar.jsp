@@ -115,7 +115,7 @@
 									<tr>
 										<td class="text-center"><img
 											class="img-avatar img-avatar48" alt=""
-											src="<c:url value="/assets/media/avatars/avatar8.jpg"/>"></td>
+											src="<c:url value="/usuarios/foto/${ u.id }"/>" /></td>
 										<td class="font-w600 font-size-sm"><a
 											href="<c:url value="${ u.id }"/>">${ u.nome }</a></td>
 										<td class="d-none d-md-table-cell font-size-sm"><em
@@ -228,13 +228,16 @@
 
 	<c:forEach var="notificacao" items="${ notificacoes }">
 		<script>
-			$.notify({
-				title : '<b><c:out value="${ notificacao.mensagem.category }"/></b>',
-				icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
-				message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
-			}, {
-				type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
-			});
+			$
+					.notify(
+							{
+								title : '<b><c:out value="${ notificacao.mensagem.category }"/></b>',
+								icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
+								message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
+							},
+							{
+								type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
+							});
 		</script>
 	</c:forEach>
 

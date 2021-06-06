@@ -7,17 +7,15 @@ public class Modelo implements Serializable {
 
 	private Integer id;
 	private String descricao;
-	private String foto;
 	private Marca marca;
 	private Boolean excluido;
 
 	public Modelo() {
 	}
 
-	public Modelo(Integer id, String descricao, String foto, Marca marca, Boolean excluido) {
+	public Modelo(Integer id, String descricao, Marca marca, Boolean excluido) {
 		this.id = id;
 		this.descricao = descricao;
-		this.foto = foto;
 		this.marca = marca;
 		this.excluido = excluido;
 	}
@@ -36,14 +34,6 @@ public class Modelo implements Serializable {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public String getFoto() {
-		return foto;
-	}
-
-	public void setFoto(String foto) {
-		this.foto = foto;
 	}
 
 	public Marca getMarca() {
