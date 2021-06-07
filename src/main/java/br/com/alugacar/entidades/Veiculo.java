@@ -11,6 +11,7 @@ public class Veiculo implements Serializable {
 
 	private Integer id;
 	private String placa;
+	private String renavam;
 	private TipoVeiculo tipo;
 	private StatusVeiculo status;
 	private Double precoCompra;
@@ -30,12 +31,13 @@ public class Veiculo implements Serializable {
 	public Veiculo() {
 	}
 
-	public Veiculo(Integer id, String placa, TipoVeiculo tipo, StatusVeiculo status, Double precoCompra,
+	public Veiculo(Integer id, String placa, String renavam, TipoVeiculo tipo, StatusVeiculo status, Double precoCompra,
 			Double precoVenda, String cor, Integer qtdPassageiros, Double capacidadeTanque, Integer anoFabricacao,
 			Integer anoModelo, Combustivel combustivel, Double quilometragem, Boolean excluido, Categoria categoria,
 			Modelo modelo) {
 		this.id = id;
 		this.placa = placa;
+		this.renavam = renavam;
 		this.tipo = tipo;
 		this.status = status;
 		this.precoCompra = precoCompra;
@@ -66,6 +68,14 @@ public class Veiculo implements Serializable {
 
 	public void setPlaca(String placa) {
 		this.placa = placa;
+	}
+
+	public String getRenavam() {
+		return renavam;
+	}
+
+	public void setRenavam(String renavam) {
+		this.renavam = renavam;
 	}
 
 	public TipoVeiculo getTipo() {
@@ -191,6 +201,7 @@ public class Veiculo implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((renavam == null) ? 0 : renavam.hashCode());
 		return result;
 	}
 
@@ -207,6 +218,11 @@ public class Veiculo implements Serializable {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (renavam == null) {
+			if (other.renavam != null)
+				return false;
+		} else if (!renavam.equals(other.renavam))
 			return false;
 		return true;
 	}

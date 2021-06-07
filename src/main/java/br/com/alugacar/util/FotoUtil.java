@@ -8,6 +8,8 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 
+import br.com.caelum.vraptor.observer.upload.UploadedFile;
+
 public class FotoUtil {
 
 	static final String PATH_FOTOS = System.getProperty("user.home") + "/alugacar/imagens/";
@@ -23,6 +25,18 @@ public class FotoUtil {
 			throws FileNotFoundException, IOException {
 		File fotoSalva = new File(PATH_FOTOS + subpasta + "/" + nomeFoto + "." + extensao.name());
 		IOUtils.copyLarge(inpsFoto, new FileOutputStream(fotoSalva));
+	}
+
+	public static boolean validarFotoUpload(UploadedFile foto) {
+		String nomeFoto = foto.getFileName().toUpperCase();
+		boolean isValida = false;
+		for (ExtensaoFoto extensao : ExtensaoFoto.values()) {
+			if (nomeFoto.contains("." + extensao.name())) {
+				isValida = true;
+				break;
+			}
+		}
+		return isValida;
 	}
 
 	public enum ExtensaoFoto {

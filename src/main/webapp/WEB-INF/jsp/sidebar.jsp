@@ -55,6 +55,11 @@
 				</a>
 					<ul class="nav-main-submenu">
 						<li class="nav-main-item"><a class="nav-main-link"
+							href="<c:url value="/veiculos/listar"/>"> <i
+								class="nav-main-link-icon fa fa-eye"></i> <span
+								class="nav-main-link-name">Visualizar</span>
+						</a></li>
+						<li class="nav-main-item"><a class="nav-main-link"
 							href="<c:url value="/marcas/listar"/>"> <i
 								class="nav-main-link-icon fab fa-black-tie"></i> <span
 								class="nav-main-link-name">Marcas</span>

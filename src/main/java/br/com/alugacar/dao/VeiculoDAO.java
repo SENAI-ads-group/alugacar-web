@@ -61,6 +61,10 @@ public interface VeiculoDAO {
 	 */
 	Veiculo buscarId(Integer id);
 
+	Veiculo buscarPlaca(String placa);
+
+	Veiculo buscarRenavam(String renavam);
+
 	/**
 	 * Retorna todos os veículos da base de dados.
 	 * 

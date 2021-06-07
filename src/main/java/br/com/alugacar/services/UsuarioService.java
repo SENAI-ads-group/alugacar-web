@@ -238,6 +238,9 @@ public class UsuarioService {
 
 	public void associarFoto(Usuario usuario, UploadedFile foto) {
 		try {
+			if (!FotoUtil.validarFotoUpload(foto))
+				throw new ServiceException("O formato da foto é inválido");
+
 			FotoUtil.salvarFoto(foto.getFile(), "avatares", String.valueOf(usuario.getId()), ExtensaoFoto.JPG);
 		} catch (IOException e) {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());

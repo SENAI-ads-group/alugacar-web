@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 
+<%@ page import="br.com.alugacar.entidades.enums.StatusVeiculo"%>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!doctype html>
@@ -10,7 +12,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Usuários</title>
+<title>Alugacar | Marcas</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -29,7 +31,8 @@
 
 <!-- Icons -->
 <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-<link rel="shortcut icon" href="assets/media/favicons/favicon.png">
+<link rel="shortcut icon"
+	href="<c:url value="/assets/media/favicons/favicon.png"/>">
 <link rel="icon" type="image/png" sizes="192x192"
 	href="<c:url value="/assets/media/favicons/favicon-192x192.png"/>">
 <link rel="apple-touch-icon" sizes="180x180"
@@ -55,22 +58,21 @@
 
 		<!-- Main Container -->
 		<main id="main-container">
-			<!-- Hero -->
 			<div class="bg-body-light">
 				<div class="content content-full">
 					<div
 						class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
 						<h1 class="flex-sm-fill h3 my-2">
-							Usuários <small
+							Veículos <small
 								class="d-block d-sm-inline-block mt-2 mt-sm-0 font-size-base font-w400 text-muted">Cadastro
-								de usuários do sistema</small>
+								de veículos</small>
 						</h1>
 						<nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
 							<ol class="breadcrumb breadcrumb-alt">
 								<li class="breadcrumb-item"><a class="link-fx"
 									href="<c:url value="/dashboard"/>">Dashboard</a></li>
 								<li class="breadcrumb-item" aria-current="page"><a
-									class="link-fx" href="<c:url value="/usuarios/listar"/>">Usuários</a></li>
+									class="link-fx" href="<c:url value="/veiculos/listar"/>">Veículos</a></li>
 							</ol>
 						</nav>
 					</div>
@@ -80,68 +82,78 @@
 
 			<!-- Page Content -->
 			<div class="content">
-				<!-- Users Table -->
+				<!-- Partial Table -->
 				<div class="block block-rounded">
-					<div class="block-header">
-						<h3 class="block-title"></h3>
+					<div class="block-header block-header-default">
+						<h3 class="block-title">Listagem de veículos</h3>
 						<div class="block-options">
-							<a type="button" class="btn btn-sm btn-alt-dark mr-1 mb-3"
-								data-toggle="modal" data-target="#recuperacao-form-modal"
-								href=""> <i class="fa fa-fw fa fa-trash-restore mr-1"></i>
-								Recuperar Exclusão
-							</a>
+							<div class="btn-group" role="group">
+								<a type="button" class="btn btn-sm btn-alt-dark mr-1 mb-3"
+									data-toggle="modal" data-target="#recuperacao-form-modal"
+									href=""> <i class="fa fa-fw fa fa-trash-restore mr-1"></i>
+									Recuperar Exclusão
+								</a> <a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
+									href="<c:url value="adicionar"/>"><i
+									class="fa fa-fw fa-plus mr-1"></i>Adicionar </a>
+							</div>
 						</div>
 					</div>
 					<div class="block-content">
-						<table class="table table-bordered table-striped table-vcenter">
+						<table class="table table-striped table-vcenter">
 							<thead>
 								<tr>
-									<th class="text-center" style="width: 100px;"><i
-										class="far fa-user"></i></th>
-									<th>Nome</th>
-									<th class="d-none d-md-table-cell" style="width: 30%;">Email</th>
-									<th class="d-none d-sm-table-cell" style="width: 15%;">Tipo</th>
+									<th class="text-center" style="width: 50px;">Placa</th>
+									<th>Modelo</th>
+									<th>Ano</th>
+									<th>Cor</th>
+									<th>Combustível</th>
+									<th>Quilometragem</th>
+									<th>Categoria</th>
+									<th>Tipo</th>
+									<th>Status</th>
 									<th class="text-center" style="width: 100px;">Ações</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${ usuarioList }" var="u">
+								<c:forEach var="v" items="${ veiculoList }">
 									<tr>
-										<td class="text-center"><img
-											class="img-avatar img-avatar48" alt=""
-											src="<c:url value="/usuarios/foto/${ u.id }"/>" /></td>
+										<td class="font-w600 font-size-sm">${ v.placa }</td>
 										<td class="font-w600 font-size-sm"><a
-											href="<c:url value="${ u.id }"/>">${ u.nome }</a></td>
-										<td class="d-none d-md-table-cell font-size-sm"><em
-											class="text-muted">${ u.email }</em></td>
-
-
-										<td class="d-none d-sm-table-cell"><c:if
-												test="${ u.tipo.administrador }">
-												<span class="badge badge-success">Administrador</span>
-											</c:if> <c:if test="${ !u.tipo.administrador }">
-												<span class="badge badge-primary">Padrão</span>
+											href="<c:url value="/modelos/${ v.modelo.id }"/>">${ v.modelo.descricao }</a></td>
+										<td class="font-size-sm">${ v.anoFabricacao }/${ v.anoModelo }</td>
+										<td class="font-size-sm">${ v.cor }</td>
+										<td class="font-size-sm">${ v.combustivel.nomeFormatado }</td>
+										<td class="font-size-sm">${ v.quilometragem }</td>
+										<td class="font-w600 font-size-sm"><a
+											href="<c:url value="/categorias/${ v.categoria.id }"/>">${ v.categoria.descricao }</a></td>
+										<td class="font-size-sm">${ v.tipo.nomeFormatado }</td>
+										<td class="font-size-md"><c:if
+												test="${ v.status eq StatusVeiculo.DISPONIVEL_PARA_ALUGAR }">
+												<span class="badge badge-success">${ v.status.nomeFormatado }</span>
+											</c:if> <c:if
+												test="${ v.status eq StatusVeiculo.PENDENTE_DE_DEVOLUCAO }">
+												<span class="badge badge-warning">${ v.status.nomeFormatado }</span>
+											</c:if> <c:if test="${ v.status eq StatusVeiculo.EM_MANUTENCAO }">
+												<span class="badge badge-danger">${ v.status.nomeFormatado }</span>
+											</c:if> <c:if test="${ v.status eq StatusVeiculo.VENDIDO }">
+												<span class="badge badge-info">${ v.status.nomeFormatado }</span>
 											</c:if></td>
-
 										<td class="text-center">
 											<div class="btn-group">
 												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
-													title="Visualizar" href="<c:url value="${ u.id }"/>"> <i
-													class="fa fa-fw fa fa-eye"></i>
+													title="Editar"
+													href="<c:url value="/veiculos/placa/${ v.placa }"/>"> <i
+													class="fa fa-fw fa-pencil-alt"></i>
 												</a>
-												<c:if
-													test="${ usuarioLogado.usuario.tipo.administrador && usuarioLogado.usuario.id != u.id }">
-													<form id="form-excluir" method="POST"
-														action="<c:url value="excluir/${ u.id }"/>">
-														<button type="submit" class="btn btn-sm btn-alt-primary"
-															data-toggle="tooltip" title="Excluir">
-															<i class="fa fa-fw fa-times"></i>
-														</button>
-													</form>
-												</c:if>
+												<form method="POST"
+													action="<c:url value="excluir/${ v.id }"/>">
+													<button type="submit" class="btn btn-sm btn-alt-primary"
+														data-toggle="tooltip" title="Excluir">
+														<i class="fa fa-fw fa-times"></i>
+													</button>
+												</form>
 											</div>
 										</td>
-
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -167,7 +179,7 @@
 			<div class="modal-content">
 				<div class="block block-rounded block-themed block-transparent mb-0">
 					<div class="block-header bg-primary-dark">
-						<h3 class="block-title">Recuperação de usuário</h3>
+						<h3 class="block-title">Recuperação de marca</h3>
 						<div class="block-options">
 							<button type="button" class="btn-block-option"
 								data-dismiss="modal" aria-label="Close">
@@ -176,13 +188,13 @@
 						</div>
 					</div>
 					<form id="form-recuperar"
-						action="<c:url value="/usuarios/recuperar"/>" method="POST">
+						action="<c:url value="/marcas/recuperar"/>" method="POST">
 						<div class="block-content font-size-sm">
 							<div class="form-group">
-								<select class="custom-select" id="usuario.id" name="usuario.id">
-									<option value="0">Selecione um usuário</option>
-									<c:forEach var="u" items="${ usuarioInativoList }">
-										<option value="${ u.id }">${ u.email }</option>
+								<select class="custom-select" id="marca.id" name="marca.id">
+									<option value="0">Selecione uma marca</option>
+									<c:forEach var="m" items="${ marcaExcluidaList }">
+										<option value="${ m.id }">${ m.descricao }</option>
 									</c:forEach>
 								</select>
 							</div>
@@ -199,7 +211,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- END Apps Modal -->
 
 	<script src="<c:url value="/assets/js/oneui.core.min.js"/>"></script>
 	<script src="<c:url value="/assets/js/oneui.app.min.js"/>"></script>
@@ -211,9 +222,9 @@
 	<c:forEach var="error" items="${ errors }">
 		<script>
 			$.notify({
-				title : '<b><c:url value="${ error.category }"/></b>',
-				icon : 'fa fa-times mr-1',
-				message : '<br><c:out value="${ error.message }"/>'
+				title : `<b><c:url value="${ error.category }"/></b>`,
+				icon : `fa fa-times mr-1`,
+				message : `<br><c:out value="${ error.message }"/>`
 			}, {
 				type : 'danger'
 			});
@@ -225,12 +236,12 @@
 			$
 					.notify(
 							{
-								title : '<b><c:out value="${ notificacao.mensagem.category }"/></b>',
-								icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
-								message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
+								title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
+								icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
+								message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
 							},
 							{
-								type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
+								type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
 							});
 		</script>
 	</c:forEach>

@@ -173,10 +173,11 @@
 											</div>
 											<div class="custom-file">
 												<!-- Populating custom file input label with the selected filename (data-toggle="custom-file-input" is initialized in Helpers.coreBootstrapCustomFileInput()) -->
-												<input type="file" class="custom-file-input"
-													data-toggle="custom-file-input" id="foto" name="foto">
-												<label class="custom-file-label" for="foto">Escolha
-													a nova foto</label>
+												<input type="file" accept="image/*"
+													class="custom-file-input" data-toggle="custom-file-input"
+													id="foto" name="foto"> <label
+													class="custom-file-label" for="foto">Escolha a nova
+													foto</label>
 											</div>
 										</div>
 										<div class="form-group">
@@ -259,12 +260,12 @@
 			$
 					.notify(
 							{
-								title : '<b>${ notificacao.mensagem.category }</b>',
-								icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
-								message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
+								title : '_$t${ notificacao.mensagem.category }_$ta',
+								icon : '_$tag__________________________________________',
+								message : '_$ta_$tag_____________________________________________'
 							},
 							{
-								type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
+								type : '_$tag___________________________________________'
 							});
 		</script>
 	</c:forEach>
