@@ -71,7 +71,7 @@
 											class="fa fa-fw fa-eye mr-1"></i> Visualizar detalhes</a>
 									</div>
 									<div class="alert alert-warning" role="alert">
-										<p class="mb-0"><%=exception.getCause().getMessage()%></p>
+										<p class="mb-0"><%=exception.getMessage()%></p>
 									</div>
 								</div>
 							</div>

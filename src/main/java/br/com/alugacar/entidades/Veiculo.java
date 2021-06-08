@@ -2,6 +2,10 @@ package br.com.alugacar.entidades;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import br.com.alugacar.entidades.enums.Combustivel;
 import br.com.alugacar.entidades.enums.StatusVeiculo;
 import br.com.alugacar.entidades.enums.TipoVeiculo;
@@ -10,22 +14,55 @@ public class Veiculo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
+	@NotNull
+	@Size(min = 7, max = 7, message = "{veiculo.placa.size}")
 	private String placa;
+
+	@NotNull
+	@Size(min = 11, max = 11, message = "{veiculo.renavam.size}")
 	private String renavam;
+
+	@NotNull
 	private TipoVeiculo tipo;
+
+	@NotNull
 	private StatusVeiculo status;
+
+	@NotNull
+	@Min(value = 0, message = "{veiculo.precoCompra.min}")
 	private Double precoCompra;
+
+	@Min(value = 0, message = "{veiculo.precoVenda.min}")
 	private Double precoVenda;
+
+	@Size(min = 1, max = 20, message = "{veiculo.cor.size}")
 	private String cor;
+
+	@NotNull
 	private Integer qtdPassageiros;
+
+	@NotNull
 	private Double capacidadeTanque;
+
+	@NotNull
 	private Integer anoFabricacao;
+
+	@NotNull
 	private Integer anoModelo;
+
+	@NotNull
 	private Combustivel combustivel;
+
+	@NotNull
 	private Double quilometragem;
+
+	@NotNull
 	private Boolean excluido;
 
+	@NotNull
 	private Categoria categoria;
+
+	@NotNull
 	private Modelo modelo;
 
 	public Veiculo() {

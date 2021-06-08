@@ -89,7 +89,7 @@ public class ImplVeiculoDAO implements VeiculoDAO {
 	@Override
 	public Veiculo atualizar(Integer id, Veiculo veiculo) {
 		// @formatter:off
-		final String SQL = "UPDATE veiculo SET"
+		final String SQL = "UPDATE veiculo SET "
 				+ "veic_placa = ?, "
 				+ "veic_renavam = ?, "
 				+ "veic_tipo = ?, "

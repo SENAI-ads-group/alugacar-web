@@ -2,6 +2,8 @@ package br.com.alugacar.dao;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import br.com.alugacar.dao.exceptions.DAOException;
 import br.com.alugacar.entidades.Veiculo;
 
@@ -27,7 +29,7 @@ public interface VeiculoDAO {
 	 *                                  parâmetro.
 	 * 
 	 */
-	Veiculo inserir(Veiculo veiculo);
+	Veiculo inserir(@Valid Veiculo veiculo);
 
 	/**
 	 * Atualiza todas as informações de um veículo da base de dados.
@@ -44,7 +46,7 @@ public interface VeiculoDAO {
 	 * @exception DAOException          Caso ocorra algum erro de comunicação com a
 	 *                                  base de dados.
 	 */
-	Veiculo atualizar(Integer id, Veiculo veiculo);
+	Veiculo atualizar(Integer id, @Valid Veiculo veiculo);
 
 	/**
 	 * Busca um veículo da base de dados pelo ID.

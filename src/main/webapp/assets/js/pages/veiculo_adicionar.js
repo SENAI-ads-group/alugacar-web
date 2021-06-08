@@ -51,144 +51,119 @@
                 key: "initWizardValidation",
                 value: function() {
                     One.helpers("validation");
-                    var a = jQuery(".js-wizard-validation-form"),
+                    var a = jQuery(".js-validation-form"),
                         e = jQuery(".js-wizard-validation2-form");
                     a.add(e).on("keyup keypress", (function(a) {
                         if (13 === (a.keyCode || a.which) && "textarea" !== a.target.tagName.toLowerCase()) return a.preventDefault(), !1
                     }));
                     var i = a.validate({
-                            rules: {
-                                "veiculo.placa": {
-                                    required: !0,
-                                    minlength: 7,
-                                    maxlength: 7,
-                                    pattern: "[A-Za-z]{3}[0-9][0-9A-Za-z][0-9]{2}"
-                                },
-                                "veiculo.renavam": {
-                                    required: !0,
-                                    minlength: 11,
-                                    maxlength: 11,
-                                    pattern: "[0-9]{11}"
-                                },
-                                "veiculo.modelo.id": {
-                                    required: !0,
-                                },
-                                "veiculo.tipo": {
-                                    required: !0
-                                },
-                                "veiculo.categoria.id": {
-                                    required: !0
-                                },
-                                "veiculo.qtdPassageiros": {
-                                    required: !0,
-                                    maxlength: 3,
-                                    pattern: "[0-9]+"
-                                },
-                                "veiculo.anoFabricacao": {
-                                    required: !0,
-                                    maxlength: 4,
-                                    pattern: "[0-9]+"
-                                },
-                                "veiculo.anoModelo": {
-                                    required: !0,
-                                    maxlength: 4,
-                                    pattern: "[0-9]+"
-                                },
-                                "veiculo.quilometragem": {
-                                    required: !0,
-                                    pattern: "[0-9]+"
-                                },
-                                "veiculo.cor": {
-                                    required: !0,
-                                    maxlength: 20,
-                                    pattern: "[A-Z a-z]+"
-                                },
-                                "veiculo.capacidadeTanque": {
-                                    required: !0,
-                                    maxlength: 4,
-                                    pattern: "[0-9]+"
-                                },
-                                "veiculo.precoCompra": {
-                                    required: !0,
-                                    money: true
-                                },
+                        rules: {
+                            "veiculo.placa": {
+                                required: !0,
+                                minlength: 7,
+                                maxlength: 7,
+                                pattern: "[A-Za-z]{3}[0-9][0-9A-Za-z][0-9]{2}"
                             },
-                            messages: {
-                                "veiculo.placa": {
-                                    required: "Informe a placa do veículo.",
-                                    minlength: "A placa deve conter 7 dígitos.",
-                                    maxlength: "A placa deve conter 7 dígitos.",
-                                    pattern: "Formato inválido. A placa deve se estabelecer no padrão brasileiro ou do Mercosul!"
-                                },
-                                "veiculo.renavam": {
-                                    required: "Informe o renavam do veículo.",
-                                    minlength: "O renavam deve conter 11 dígitos.",
-                                    maxlength: "O renavam deve conter 11 dígitos.",
-                                    pattern: "Formato inválido. Digite apenas os números do renavam."
-                                },
-                                "veiculo.modelo.id": "Selecione o modelo do veículo.",
-                                "veiculo.tipo": "Selecione o tipo do veículo.",
-                                "veiculo.categoria": "Selecione a categoria do veículo.",
-                                "veiculo.qtdPassageiros": {
-                                    required: "Informe a quantidade de passageiros do veículo.",
-                                    maxlength: "Quantidade de passageiros inválida.",
-                                    pattern: "Formato inválido. Digite apenas números."
-                                },
-                                "veiculo.anoFabricacao": {
-                                    required: "Informe o ano de fabricação do veículo.",
-                                    maxlength: "Ano de fabricação inválido.",
-                                    pattern: "Formato inválido. Digite apenas números."
-                                },
-                                "veiculo.anoModelo": {
-                                    required: "Informe a quantidade de passageiros do veículo.",
-                                    maxlength: "Ano do modelo inválido.",
-                                    pattern: "Formato inválido. Digite apenas números."
-                                },
-                                "veiculo.quilometragem": {
-                                    required: "Informe a quilometragem atual do veículo.",
-                                    pattern: "Formato inválido. Digite apenas números."
-                                },
-                                "veiculo.cor": {
-                                    required: "Informe a cor do veículo.",
-                                    maxlength: "A cor deve conter no máximo 20 caractéres.",
-                                    pattern: "Formato inválido. Uma cor deve conter apenas letras"
-                                },
-                                "veiculo.capacidadeTanque": {
-                                    required: "Informe a capacidade do tanque do veículo.",
-                                    maxlength: "Capacidade inválida.",
-                                    pattern: "Formato inválido. Digite apenas números"
-                                },
-                                "veiculo.precoCompra": {
-                                    required: "Informe o preço de compra do veículo.",
-                                    money: "Formato inválido"
-                                }
-                            }
-                        }),
-                        t = e.validate({
-                            rules: {
-                                "wizard-validation2-firstname": {
-                                    required: !0,
-                                    minlength: 2
-                                },
-                                "wizard-validation2-lastname": { required: !0, minlength: 2 },
-                                "wizard-validation2-email": { required: !0, email: !0 },
-                                "wizard-validation2-bio": { required: !0, minlength: 5 },
-                                "wizard-validation2-location": { required: !0 },
-                                "wizard-validation2-skills": { required: !0 },
-                                "wizard-validation2-terms": { required: !0 }
+                            "veiculo.renavam": {
+                                required: !0,
+                                minlength: 11,
+                                maxlength: 11,
+                                pattern: "[0-9]{11}"
                             },
-                            messages: {
-                                "wizard-validation2-firstname": {
-                                    required: "Please enter a firstname",
-                                    minlength: "Your firtname must consist of at least 2 characters"
-                                },
-                                "wizard-validation2-lastname": { required: "Please enter a lastname", minlength: "Your lastname must consist of at least 2 characters" },
-                                "wizard-validation2-email": "Please enter a valid email address",
-                                "wizard-validation2-bio": "Let us know a few thing about yourself",
-                                "wizard-validation2-skills": "Please select a skill!",
-                                "wizard-validation2-terms": "You must agree to the service terms!"
+                            "veiculo.modelo.id": {
+                                required: !0,
+                            },
+                            "veiculo.tipo": {
+                                required: !0
+                            },
+                            "veiculo.categoria.id": {
+                                required: !0
+                            },
+                            "veiculo.qtdPassageiros": {
+                                required: !0,
+                                maxlength: 3,
+                                pattern: "[0-9]+"
+                            },
+                            "veiculo.anoFabricacao": {
+                                required: !0,
+                                maxlength: 4,
+                                pattern: "[0-9]+"
+                            },
+                            "veiculo.anoModelo": {
+                                required: !0,
+                                maxlength: 4,
+                                pattern: "[0-9]+"
+                            },
+                            "veiculo.quilometragem": {
+                                required: !0,
+                                pattern: "[0-9]+"
+                            },
+                            "veiculo.cor": {
+                                required: !0,
+                                maxlength: 20,
+                                pattern: "[A-Z a-z]+"
+                            },
+                            "veiculo.capacidadeTanque": {
+                                required: !0,
+                                maxlength: 4,
+                                pattern: "[0-9]+"
+                            },
+                            "veiculo.precoCompra": {
+                                required: !0,
+                                money: true
+                            },
+                        },
+                        messages: {
+                            "veiculo.placa": {
+                                required: "Informe a placa do veículo.",
+                                minlength: "A placa deve conter 7 dígitos.",
+                                maxlength: "A placa deve conter 7 dígitos.",
+                                pattern: "Formato inválido. A placa deve se estabelecer no padrão brasileiro ou do Mercosul!"
+                            },
+                            "veiculo.renavam": {
+                                required: "Informe o renavam do veículo.",
+                                minlength: "O renavam deve conter 11 dígitos.",
+                                maxlength: "O renavam deve conter 11 dígitos.",
+                                pattern: "Formato inválido. Digite apenas os números do renavam."
+                            },
+                            "veiculo.modelo.id": "Selecione o modelo do veículo.",
+                            "veiculo.tipo": "Selecione o tipo do veículo.",
+                            "veiculo.categoria": "Selecione a categoria do veículo.",
+                            "veiculo.qtdPassageiros": {
+                                required: "Informe a quantidade de passageiros do veículo.",
+                                maxlength: "Quantidade de passageiros inválida.",
+                                pattern: "Formato inválido. Digite apenas números."
+                            },
+                            "veiculo.anoFabricacao": {
+                                required: "Informe o ano de fabricação do veículo.",
+                                maxlength: "Ano de fabricação inválido.",
+                                pattern: "Formato inválido. Digite apenas números."
+                            },
+                            "veiculo.anoModelo": {
+                                required: "Informe a quantidade de passageiros do veículo.",
+                                maxlength: "Ano do modelo inválido.",
+                                pattern: "Formato inválido. Digite apenas números."
+                            },
+                            "veiculo.quilometragem": {
+                                required: "Informe a quilometragem atual do veículo.",
+                                pattern: "Formato inválido. Digite apenas números."
+                            },
+                            "veiculo.cor": {
+                                required: "Informe a cor do veículo.",
+                                maxlength: "A cor deve conter no máximo 20 caractéres.",
+                                pattern: "Formato inválido. Uma cor deve conter apenas letras"
+                            },
+                            "veiculo.capacidadeTanque": {
+                                required: "Informe a capacidade do tanque do veículo.",
+                                maxlength: "Capacidade inválida.",
+                                pattern: "Formato inválido. Digite apenas números"
+                            },
+                            "veiculo.precoCompra": {
+                                required: "Informe o preço de compra do veículo.",
+                                money: "Formato inválido"
                             }
-                        });
+                        }
+                    });
                     jQuery(".js-wizard-validation").bootstrapWizard({
                         tabClass: "",
                         onTabShow: function(a, e, i) {
@@ -198,16 +173,7 @@
                         },
                         onNext: function(e, t, r) { if (!a.valid()) return i.focusInvalid(), !1 },
                         onTabClick: function(a, e, i) { return jQuery("a", e).blur(), !1 }
-                    }), jQuery(".js-wizard-validation2").bootstrapWizard({
-                        tabClass: "",
-                        onTabShow: function(a, e, i) {
-                            var t = (i + 1) / e.find("li").length * 100,
-                                r = e.parents(".block").find('[data-wizard="progress"] > .progress-bar');
-                            r.length && r.css({ width: t + 1 + "%" })
-                        },
-                        onNext: function(a, i, r) { if (!e.valid()) return t.focusInvalid(), !1 },
-                        onTabClick: function(a, e, i) { return jQuery("a", e).blur(), !1 }
-                    })
+                    });
                 }
             }, { key: "init", value: function() { this.initWizardDefaults(), this.initWizardSimple(), this.initWizardValidation() } }], (t = null) && i(e.prototype, t), r && i(e, r), a
         }();

@@ -123,7 +123,7 @@
 					<!-- END Step Tabs -->
 
 					<!-- Form -->
-					<form class="js-wizard-validation-form"
+					<form class="js-validation-form"
 						action="<c:url value="cadastrar"/>" method="POST">
 						<!-- Steps Content -->
 						<div class="block-content block-content-full tab-content px-md-5"
@@ -338,6 +338,7 @@
 								type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
 							});
 		</script>
+
 	</c:forEach>
 
 </body>

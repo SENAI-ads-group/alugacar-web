@@ -3,6 +3,7 @@ package br.com.alugacar.controllers;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 
 import br.com.alugacar.annotations.AutenticacaoNecessaria;
 import br.com.alugacar.entidades.Veiculo;
@@ -20,6 +21,7 @@ import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.interceptor.IncludeParameters;
 import br.com.caelum.vraptor.validator.SimpleMessage;
 import br.com.caelum.vraptor.validator.Validator;
 
@@ -68,7 +70,7 @@ public class VeiculoController {
 
 	@AutenticacaoNecessaria
 	@Post
-	public void cadastrar(Veiculo veiculo) {
+	public void cadastrar(@Valid Veiculo veiculo) {
 		try {
 			service.inserir(veiculo);
 
@@ -102,6 +104,114 @@ public class VeiculoController {
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).listar();
 			return null;
+		}
+	}
+
+	@AutenticacaoNecessaria
+	@IncludeParameters
+	@Post("atualizar/informacoes/{veiculo.id}")
+	public void atualizarInformacoes(Veiculo veiculo) {
+		validator.onErrorRedirectTo(this).listar();
+		try {
+			Veiculo v = service.atualizarInformacoes(veiculo);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Informações básicas atualizadas com sucesso!",
+					"As informações básicas foram atualizadas", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).formulario(v);
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar formulário do veículo", e.getMessage());
+
+			validator.add(mensagemErro);
+		}
+	}
+
+	@AutenticacaoNecessaria
+	@IncludeParameters
+	@Post("atualizar/detalhes/{veiculo.id}")
+	public void atualizarDetalhes(Veiculo veiculo) {
+		try {
+			Veiculo v = service.atualizarDetalhes(veiculo);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Detalhes atualizados com sucesso!",
+					"Os detalhes do veículo foram atualizados", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).formulario(v);
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar formulário do veículo", e.getMessage());
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(this).listar();
+		}
+	}
+
+	@AutenticacaoNecessaria
+	@IncludeParameters
+	@Post("atualizar/extras/{veiculo.id}")
+	public void atualizarExtras(Veiculo veiculo) {
+		try {
+			Veiculo v = service.atualizarExtras(veiculo);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Informações extras atualizadas com sucesso!",
+					"As informações extras foram atualizadas", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).formulario(v);
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar formulário do veículo", e.getMessage());
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(this).listar();
+		}
+	}
+
+	@AutenticacaoNecessaria
+	@Post("excluir/{veiculo.id}")
+	public void excluir(Veiculo veiculo) {
+		validator.onErrorRedirectTo(this).listar();
+
+		try {
+			Veiculo v = service.getId(veiculo.getId());
+			service.excluir(veiculo.getId());
+
+			String s = String.format("O veículo %s %s %s %s foi excluído.",
+					v.getModelo().getMarca().getDescricao(), v.getModelo().getDescricao(), v.getCor(), v.getPlaca());
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Veículo excluído com sucesso!", s,
+					TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir veículo", e.getMessage());
+
+			validator.add(mensagemErro);
+		}
+	}
+	
+	@AutenticacaoNecessaria
+	@Post("recuperar")
+	public void recuperar(Veiculo veiculo) {
+		validator.onErrorRedirectTo(this).listar();
+
+		try {
+			Veiculo v = service.getId(veiculo.getId());
+			service.recuperar(veiculo.getId());
+
+			String s = String.format("O veículo %s %s %s %s foi recuperado.",
+					v.getModelo().getMarca().getDescricao(), v.getModelo().getDescricao(), v.getCor(), v.getPlaca());
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Veículo recuperado com sucesso!", s,
+					TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao recuperar veículo", e.getMessage());
+
+			validator.add(mensagemErro);
 		}
 	}
 

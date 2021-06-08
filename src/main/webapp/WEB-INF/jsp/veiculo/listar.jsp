@@ -12,7 +12,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Marcas</title>
+<title>Alugacar | Veículos</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -188,13 +188,13 @@
 						</div>
 					</div>
 					<form id="form-recuperar"
-						action="<c:url value="/marcas/recuperar"/>" method="POST">
+						action="<c:url value="/veiculos/recuperar"/>" method="POST">
 						<div class="block-content font-size-sm">
 							<div class="form-group">
-								<select class="custom-select" id="marca.id" name="marca.id">
-									<option value="0">Selecione uma marca</option>
-									<c:forEach var="m" items="${ marcaExcluidaList }">
-										<option value="${ m.id }">${ m.descricao }</option>
+								<select class="custom-select" id="veiculo.id" name="veiculo.id">
+									<option value="0">Selecione um veículo</option>
+									<c:forEach var="v" items="${ veicExcluidoList }">
+										<option value="${ v.id }">${ v.modelo.marca.descricao } ${ v.modelo.descricao } ${ v.cor } ${ v.placa }</option>
 									</c:forEach>
 								</select>
 							</div>
