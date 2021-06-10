@@ -22,13 +22,6 @@ public class TipoAcessorioService {
 		}
 	}
 	
-	public List<TipoAcessorio> getExcluidas() {
-		try {
-			return dao.buscarExclusao(true);
-		} catch (DAOException e) {
-			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
-		}
-	}
 	
 	public TipoAcessorio inserir(TipoAcessorio tipoAcessorio) {
 		try {

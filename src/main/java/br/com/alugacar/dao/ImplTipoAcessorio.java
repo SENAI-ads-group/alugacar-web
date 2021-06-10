@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import br.com.alugacar.dao.exceptions.DAOException;
 import br.com.alugacar.entidades.Acessorio;
 import br.com.alugacar.entidades.TipoAcessorio;
@@ -22,12 +21,16 @@ public class ImplTipoAcessorio implements TipoAcessorioDAO {
 			throw new IllegalStateException("O tipo de acessório não pode ser nulo");
 		}
 
-		final String SQL = "INSERT INTO tipoAcessorio(descricao) VALUES(?)";
+		// @formatter:off
+		final String SQL = "INSERT INTO tipo_acessorio("
+				                     +"tpaces_descricao"
+				                      +") VALUES(?)";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
-			ps.setString(2, tipo.getDescricao());
+			ps.setString(1, tipo.getDescricao());
 
 			TipoAcessorio tipoAcessorioInserido = null;
 
@@ -50,7 +53,12 @@ public class ImplTipoAcessorio implements TipoAcessorioDAO {
 
 	@Override
 	public TipoAcessorio atualizar(Integer id, TipoAcessorio tipo) {
-		final String SQL = "UPDATE tipoAcessorio SET descricao  = ? WHERE id_tpacessorio = ?";
+
+		// @formatter:off
+		final String SQL = "UPDATE tipo_acessorio SET"
+				+"tpaces_descricao  = ?"
+				+"WHERE tpaces_id = ?";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -78,7 +86,7 @@ public class ImplTipoAcessorio implements TipoAcessorioDAO {
 
 	@Override
 	public TipoAcessorio buscarId(Integer id) {
-		final String SQL = "SELECT tipoAcessorio.*, acessorio.valor AS acessorio_valor, acessorio.status_acessorio FROM tipoAcessorio JOIN acessorio ON (acessorio.id_tpAcessorio = tipoAcessorio.id_tpAcessorio) WHERE tipoAcessorio.id_tpAcessorio = ?";
+		final String SQL = "SELECT tipo_acessorio.* FROM tipo_acessorio JOIN acessorio ON (acessorio.aces_tpaces_id = tipo_acessorio.tpaces_id) WHERE tipo_acessorio.tpaces_id = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -101,7 +109,11 @@ public class ImplTipoAcessorio implements TipoAcessorioDAO {
 
 	@Override
 	public List<TipoAcessorio> buscarTodos() {
-		final String SQL = "";
+		
+       //@formatter:off
+		final String SQL = "SELECT * "
+				+"FROM tipo_acessorio";
+		//@formatter:off
 
 		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
 
@@ -110,7 +122,7 @@ public class ImplTipoAcessorio implements TipoAcessorioDAO {
 			List<TipoAcessorio> acessoriosEncontrados = new ArrayList<>();
 
 			while (rs.next()) {
-				
+
 				TipoAcessorio tpacessorio = instanciarTipoAcessorio(rs);
 
 				acessoriosEncontrados.add(tpacessorio);
@@ -135,7 +147,7 @@ public class ImplTipoAcessorio implements TipoAcessorioDAO {
 			List<TipoAcessorio> acessoriosEncontrados = new ArrayList<>();
 
 			while (rs.next()) {
-				
+
 				TipoAcessorio tpacessorio = instanciarTipoAcessorio(rs);
 
 				acessoriosEncontrados.add(tpacessorio);
@@ -150,7 +162,7 @@ public class ImplTipoAcessorio implements TipoAcessorioDAO {
 
 	@Override
 	public boolean existeId(Integer id) {
-		final String SQL = "SELECT * FROM acessorio WHERE id_acessorio = ?";
+		final String SQL = "SELECT * FROM tipo_acessorio WHERE tpaces_id = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -169,8 +181,8 @@ public class ImplTipoAcessorio implements TipoAcessorioDAO {
 	private TipoAcessorio instanciarTipoAcessorio(ResultSet rs) throws SQLException {
 		TipoAcessorio tpacessorio = new TipoAcessorio();
 
-		tpacessorio.setId(rs.getInt("id_tp"));
-		tpacessorio.setDescricao(rs.getString("descricao"));
+		tpacessorio.setId(rs.getInt("tpaces_id"));
+		tpacessorio.setDescricao(rs.getString("tpaces_descricao"));
 
 		return tpacessorio;
 	}

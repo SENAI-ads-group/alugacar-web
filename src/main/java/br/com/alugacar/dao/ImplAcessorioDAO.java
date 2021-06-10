@@ -106,8 +106,7 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 
 	@Override
 	public List<Acessorio> buscarTodas() {
-		final String SQL = "SELECT marca.descricao AS descricao_marca, marca.logomarca_foto, marca.excluida AS marca_excluida, "
-				+ "modelo.* FROM modelo JOIN marca ON(marca.id_marca = modelo.id_marca)";
+		final String SQL = "SELECT acessorio.*, tipo_acessorio.* FROM acessorio JOIN tipo_acessorio ON (tpaces_id = aces_tpaces_id)";
 
 		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
 
@@ -162,37 +161,6 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 			}
 
 			ConnectionFactory.closeConnection(connection, ps, rs);
-			return acessoriosEncontrados;
-		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
-		}
-	}
-
-	@Override
-	public List<Acessorio> buscarExclusao(boolean excluido) {
-		final String SQL = "SELECT marca.descricao AS descricao_marca, marca.logomarca_foto, marca.excluida AS marca_excluida, "
-				+ "modelo.* FROM modelo JOIN marca ON(marca.id_marca = modelo.id_marca) WHERE excluido = " + excluido;
-
-		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
-
-			ResultSet rs = st.executeQuery(SQL);
-
-			List<Acessorio> acessoriosEncontrados = new ArrayList<>();
-			Map<Integer, TipoAcessorio> tipoMap = new HashMap<>();
-
-			while (rs.next()) {
-				Acessorio acessorio = instanciarAcessorio(rs);
-				TipoAcessorio tpacessorio = instanciarTipoAcessorio(rs);
-
-				if (tipoMap.containsKey(tpacessorio.getId()))
-					acessorio.setTipo(tipoMap.get(tpacessorio.getId()));
-				else
-					acessorio.setTipo(tpacessorio);
-
-				acessoriosEncontrados.add(acessorio);
-			}
-
-			ConnectionFactory.closeConnection(connection, st, rs);
 			return acessoriosEncontrados;
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());

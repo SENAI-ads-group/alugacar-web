@@ -19,8 +19,6 @@ public interface AcessorioDAO {
 
 	List<Acessorio> buscarTodas();
 	
-	List<Acessorio> buscarExclusao(boolean excluida);
-	
 	boolean existeId(Integer id);
 	
 }

@@ -9,12 +9,11 @@ import br.com.alugacar.dao.exceptions.DAOException;
 import br.com.alugacar.entidades.Acessorio;
 import br.com.alugacar.services.exceptions.ServiceException;
 
-
 public class AcessorioService {
 
 	@Inject
 	private AcessorioDAO dao;
-	
+
 	public List<Acessorio> getTodos() {
 		try {
 			return dao.buscarTodas();
@@ -22,18 +21,9 @@ public class AcessorioService {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
 	}
-	
-	public List<Acessorio> getExcluidas() {
-		try {
-			return dao.buscarExclusao(true);
-		} catch (DAOException e) {
-			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
-		}
-	}
-	
+
 	public Acessorio inserir(Acessorio acessorio) {
 		try {
-			
 
 			Acessorio ac = dao.inserir(acessorio);
 			if (ac == null) {
@@ -44,7 +34,7 @@ public class AcessorioService {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
 	}
-	
+
 	public Acessorio getId(Integer id) {
 		try {
 			Acessorio acessorioEncontrado = dao.buscarId(id);
@@ -57,7 +47,7 @@ public class AcessorioService {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
 	}
-	
+
 	public Acessorio atualizar(Integer id, Acessorio acessorio) {
 		try {
 			Acessorio ac = dao.buscarId(id);
@@ -72,8 +62,7 @@ public class AcessorioService {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
 	}
-	
-	
+
 	private void atualizarDados(Acessorio origem, Acessorio destino) {
 		destino.setStatus(origem.getStatus());
 		destino.setTipo(origem.getTipo());

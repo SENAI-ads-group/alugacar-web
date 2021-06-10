@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import br.com.alugacar.annotations.AutenticacaoNecessaria;
 import br.com.alugacar.entidades.Acessorio;
 import br.com.alugacar.services.AcessorioService;
+import br.com.alugacar.services.TipoAcessorioService;
 import br.com.alugacar.services.exceptions.ServiceException;
 import br.com.alugacar.util.Notificacao;
 import br.com.alugacar.util.NotificacaoUtil;
@@ -21,11 +22,13 @@ import br.com.caelum.vraptor.validator.SimpleMessage;
 import br.com.caelum.vraptor.validator.Validator;
 
 @Controller
-@Path("acessorios")
+@Path("acessorio")
 public class AcessorioController {
 
 	@Inject
 	private Result result;
+	@Inject
+	TipoAcessorioService tservice;
 	@Inject
 	private AcessorioService service;
 	@Inject
@@ -35,8 +38,9 @@ public class AcessorioController {
 	@Get
 	public List<Acessorio> listar() {
 		try {
-			result.include("catExcluidaList", service.getExcluidas());
+result.include("tipoAcessorioList", tservice.getTodos());
 			return service.getTodos();
+			
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar acessórios", e.getMessage());
 
@@ -49,6 +53,14 @@ public class AcessorioController {
 	@AutenticacaoNecessaria
 	@Get
 	public void adicionar() {
+		result.include("tipoAcessorioList", tservice.getTodos());
+		
+	}
+	
+	@AutenticacaoNecessaria
+	@Get("tipos/adicionar")
+	public void adicionarTipo() {
+		
 	}
 
 	@AutenticacaoNecessaria

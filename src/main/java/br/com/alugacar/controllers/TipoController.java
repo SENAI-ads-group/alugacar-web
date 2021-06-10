@@ -21,8 +21,8 @@ import br.com.caelum.vraptor.validator.SimpleMessage;
 import br.com.caelum.vraptor.validator.Validator;
 
 @Controller
-@Path("tipoAcessorios")
-public class TipoAcessorioController {
+@Path("tipos")
+public class TipoController {
 
 	@Inject
 	private Result result;
@@ -30,13 +30,14 @@ public class TipoAcessorioController {
 	private TipoAcessorioService service;
 	@Inject
 	private Validator validator;
-	
+
 	@AutenticacaoNecessaria
-	@Get
+	@Get("listar")
 	public List<TipoAcessorio> listar() {
 		try {
-			result.include("catExcluidaList", service.getExcluidas());
+			
 			return service.getTodos();
+			
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar os tipos de acessórios", e.getMessage());
 
@@ -45,19 +46,19 @@ public class TipoAcessorioController {
 			return null;
 		}
 	}
-	
+
 	@AutenticacaoNecessaria
 	@Get
 	public void adicionar() {
 	}
-	
+
 	@AutenticacaoNecessaria
-	@Get("{tipoacessorio.id}")
-	public TipoAcessorio formulario(TipoAcessorio tpAcessorio) {
-		if (tpAcessorio.getId() == null)
-			return tpAcessorio;
+	@Get("visualizar/{tipo.id}")
+	public TipoAcessorio formulario(TipoAcessorio tipo) {
+		if (tipo.getId() == null)
+			return tipo;
 		try {
-			TipoAcessorio tpAcessorioEncontrado = service.getId(tpAcessorio.getId());
+			TipoAcessorio tpAcessorioEncontrado = service.getId(tipo.getId());
 
 			return tpAcessorioEncontrado;
 		} catch (ServiceException e) {
@@ -65,14 +66,14 @@ public class TipoAcessorioController {
 
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).listar();
-			return tpAcessorio;
+			return tipo;
 		}
 	}
-	
+
 	@AutenticacaoNecessaria
 	@Post("atualizar")
-	public void atualizar(TipoAcessorio tpacessorio) {
-		if (!TipoAcessorioValidation.validarTipoAcessorio(tpacessorio)) {
+	public void atualizar(TipoAcessorio tipo) {
+		if (!TipoAcessorioValidation.validarTipoAcessorio(tipo)) {
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Nada feito!",
 					"O tipo de acessório não foi atualizado, pois não é válido", TipoNotificacao.AVISO);
 			NotificacaoUtil.adicionarNotificacao(result, notificacao);
@@ -81,7 +82,7 @@ public class TipoAcessorioController {
 		}
 
 		try {
-			service.atualizar(tpacessorio.getId(), tpacessorio);
+			service.atualizar(tipo.getId(), tipo);
 
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Tipo de acessório atualizado!",
 					"tipo de acessório atualizado com sucesso!", TipoNotificacao.SUCESSO);
@@ -95,11 +96,11 @@ public class TipoAcessorioController {
 			validator.onErrorRedirectTo(this).listar();
 		}
 	}
-	
+
 	@AutenticacaoNecessaria
 	@Post("cadastrar")
-	public void cadastrar(TipoAcessorio tpAcessorio) {
-		if (!TipoAcessorioValidation.validarTipoAcessorio(tpAcessorio)) {
+	public void cadastrar(TipoAcessorio tipo) {
+		if (!TipoAcessorioValidation.validarTipoAcessorio(tipo)) {
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Nada feito!",
 					"Nehum tipo de acessório foi adicionado, pois o tipo é inválido.", TipoNotificacao.AVISO);
 			NotificacaoUtil.adicionarNotificacao(result, notificacao);
@@ -108,10 +109,9 @@ public class TipoAcessorioController {
 		}
 
 		try {
-			service.inserir(tpAcessorio);
+			service.inserir(tipo);
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Novo tipo de acessório adicionado!",
-					"acessório " + tpAcessorio.getDescricao() + " adicionado com sucesso!",
-					TipoNotificacao.SUCESSO);
+					"acessório " + tipo.getDescricao() + " adicionado com sucesso!", TipoNotificacao.SUCESSO);
 			NotificacaoUtil.adicionarNotificacao(result, notificacao);
 
 			result.redirectTo(this).listar();
@@ -122,5 +122,5 @@ public class TipoAcessorioController {
 			validator.onErrorRedirectTo(this).listar();
 		}
 	}
-	
+
 }
