@@ -4,9 +4,10 @@ import java.io.Serializable;
 
 import br.com.alugacar.entidades.enums.TipoEndereco;
 
-public class EnderecoCliente implements Serializable {
+public class EnderecoMotorista implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private String descricao;
 	private String cep;
 	private String logradouro;
 	private String complemento;
@@ -16,13 +17,14 @@ public class EnderecoCliente implements Serializable {
 	private String pais;
 	private TipoEndereco tipo;
 
-	private Cliente cliente;
+	private Motorista motorista;
 
-	public EnderecoCliente() {
+	public EnderecoMotorista() {
 	}
 
-	public EnderecoCliente(String cep, String logradouro, String complemento, Integer numero, String bairro,
-			String cidade, String pais, TipoEndereco tipo, Cliente cliente) {
+	public EnderecoMotorista(String descricao, String cep, String logradouro, String complemento, Integer numero,
+			String bairro, String cidade, String pais, TipoEndereco tipo, Motorista motorista) {
+		this.descricao = descricao;
 		this.cep = cep;
 		this.logradouro = logradouro;
 		this.complemento = complemento;
@@ -31,7 +33,15 @@ public class EnderecoCliente implements Serializable {
 		this.cidade = cidade;
 		this.pais = pais;
 		this.tipo = tipo;
-		this.cliente = cliente;
+		this.motorista = motorista;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	public String getCep() {
@@ -98,21 +108,21 @@ public class EnderecoCliente implements Serializable {
 		this.tipo = tipo;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public Motorista getMotorista() {
+		return motorista;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setMotorista(Motorista motorista) {
+		this.motorista = motorista;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
 		result = prime * result + ((complemento == null) ? 0 : complemento.hashCode());
 		result = prime * result + ((logradouro == null) ? 0 : logradouro.hashCode());
+		result = prime * result + ((motorista == null) ? 0 : motorista.hashCode());
 		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
 		return result;
 	}
@@ -125,12 +135,7 @@ public class EnderecoCliente implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EnderecoCliente other = (EnderecoCliente) obj;
-		if (cliente == null) {
-			if (other.cliente != null)
-				return false;
-		} else if (!cliente.equals(other.cliente))
-			return false;
+		EnderecoMotorista other = (EnderecoMotorista) obj;
 		if (complemento == null) {
 			if (other.complemento != null)
 				return false;
@@ -140,6 +145,11 @@ public class EnderecoCliente implements Serializable {
 			if (other.logradouro != null)
 				return false;
 		} else if (!logradouro.equals(other.logradouro))
+			return false;
+		if (motorista == null) {
+			if (other.motorista != null)
+				return false;
+		} else if (!motorista.equals(other.motorista))
 			return false;
 		if (numero == null) {
 			if (other.numero != null)

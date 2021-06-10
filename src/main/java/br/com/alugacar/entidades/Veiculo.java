@@ -42,7 +42,7 @@ public class Veiculo implements Serializable {
 	private Integer qtdPassageiros;
 
 	@NotNull
-	private Double capacidadeTanque;
+	private Integer capacidadeTanque;
 
 	@NotNull
 	private Integer anoFabricacao;
@@ -54,7 +54,7 @@ public class Veiculo implements Serializable {
 	private Combustivel combustivel;
 
 	@NotNull
-	private Double quilometragem;
+	private Integer quilometragem;
 
 	@NotNull
 	private Boolean excluido;
@@ -69,8 +69,8 @@ public class Veiculo implements Serializable {
 	}
 
 	public Veiculo(Integer id, String placa, String renavam, TipoVeiculo tipo, StatusVeiculo status, Double precoCompra,
-			Double precoVenda, String cor, Integer qtdPassageiros, Double capacidadeTanque, Integer anoFabricacao,
-			Integer anoModelo, Combustivel combustivel, Double quilometragem, Boolean excluido, Categoria categoria,
+			Double precoVenda, String cor, Integer qtdPassageiros, Integer capacidadeTanque, Integer anoFabricacao,
+			Integer anoModelo, Combustivel combustivel, Integer quilometragem, Boolean excluido, Categoria categoria,
 			Modelo modelo) {
 		this.id = id;
 		this.placa = placa;
@@ -163,11 +163,11 @@ public class Veiculo implements Serializable {
 		this.qtdPassageiros = qtdPassageiros;
 	}
 
-	public Double getCapacidadeTanque() {
+	public Integer getCapacidadeTanque() {
 		return capacidadeTanque;
 	}
 
-	public void setCapacidadeTanque(Double capacidadeTanque) {
+	public void setCapacidadeTanque(Integer capacidadeTanque) {
 		this.capacidadeTanque = capacidadeTanque;
 	}
 
@@ -195,11 +195,11 @@ public class Veiculo implements Serializable {
 		this.combustivel = combustivel;
 	}
 
-	public Double getQuilometragem() {
+	public Integer getQuilometragem() {
 		return quilometragem;
 	}
 
-	public void setQuilometragem(Double quilometragem) {
+	public void setQuilometragem(Integer quilometragem) {
 		this.quilometragem = quilometragem;
 	}
 
