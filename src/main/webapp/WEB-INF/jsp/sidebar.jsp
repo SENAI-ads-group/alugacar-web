@@ -75,11 +75,23 @@
 								class="nav-main-link-name">Categorias</span>
 						</a></li>
 					</ul></li>
-
 				<li class="nav-main-item"><a
 					class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
 					aria-haspopup="true" aria-expanded="false" href=""> <i
-						class="nav-main-link-icon fa fa-user"></i> <span
+						class="nav-main-link-icon fa fa-user-friends"></i> <span
+						class="nav-main-link-name">Clientes</span>
+				</a>
+					<ul class="nav-main-submenu">
+						<li class="nav-main-item"><a class="nav-main-link"
+							href="<c:url value="/clientes/listar"/>"> <i
+								class="nav-main-link-icon fa fa-eye"></i> <span
+								class="nav-main-link-name">Visualizar</span>
+						</a></li>
+					</ul></li>
+				<li class="nav-main-item"><a
+					class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+					aria-haspopup="true" aria-expanded="false" href=""> <i
+						class="nav-main-link-icon fa fa-users"></i> <span
 						class="nav-main-link-name">Usuários</span>
 				</a>
 					<ul class="nav-main-submenu">
@@ -90,6 +102,20 @@
 						</a></li>
 					</ul></li>
 				<!-- END Cadastro -->
+				<li class="nav-main-heading">Movimentos</li>
+				<li class="nav-main-item"><a
+					class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+					aria-haspopup="true" aria-expanded="false" href=""> <i
+						class="nav-main-link-icon fa fa-handshake"></i> <span
+						class="nav-main-link-name">Locações</span>
+				</a>
+					<ul class="nav-main-submenu">
+						<li class="nav-main-item"><a class="nav-main-link"
+							href="<c:url value="/locacoes/listar"/>"> <i
+								class="nav-main-link-icon fa fa-eye"></i> <span
+								class="nav-main-link-name">Visualizar</span>
+						</a></li>
+					</ul></li>
 			</ul>
 		</div>
 		<!-- END Side Navigation -->

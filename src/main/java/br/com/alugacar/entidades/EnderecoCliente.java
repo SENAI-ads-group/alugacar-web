@@ -7,6 +7,7 @@ import br.com.alugacar.entidades.enums.TipoEndereco;
 public class EnderecoCliente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private String descricao;
 	private String cep;
 	private String logradouro;
 	private String complemento;
@@ -21,8 +22,9 @@ public class EnderecoCliente implements Serializable {
 	public EnderecoCliente() {
 	}
 
-	public EnderecoCliente(String cep, String logradouro, String complemento, Integer numero, String bairro,
-			String cidade, String pais, TipoEndereco tipo, Cliente cliente) {
+	public EnderecoCliente(String descricao, String cep, String logradouro, String complemento, Integer numero,
+			String bairro, String cidade, String pais, TipoEndereco tipo, Cliente cliente) {
+		this.descricao = descricao;
 		this.cep = cep;
 		this.logradouro = logradouro;
 		this.complemento = complemento;
@@ -32,6 +34,14 @@ public class EnderecoCliente implements Serializable {
 		this.pais = pais;
 		this.tipo = tipo;
 		this.cliente = cliente;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	public String getCep() {

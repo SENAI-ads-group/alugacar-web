@@ -10,7 +10,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Veículo</title>
+<title>Alugacar | Locação</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -60,18 +60,18 @@
 					<div
 						class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
 						<h1 class="flex-sm-fill h3 my-2">
-							Veículos <small
-								class="d-block d-sm-inline-block mt-2 mt-sm-0 font-size-base font-w400 text-muted">Adição
-								de novo veículo</small>
+							Locação <small
+								class="d-block d-sm-inline-block mt-2 mt-sm-0 font-size-base font-w400 text-muted">Lançamento
+								de nova locação</small>
 						</h1>
 						<nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
 							<ol class="breadcrumb breadcrumb-alt">
 								<li class="breadcrumb-item"><a class="link-fx"
 									href="<c:url value="/dashboard"/>">Dashboard</a></li>
 								<li class="breadcrumb-item" aria-current="page"><a
-									class="link-fx" href="<c:url value="/veiculos/listar"/>">Veículos</a></li>
+									class="link-fx" href="<c:url value="/locacoes/listar"/>">Locações</a></li>
 								<li class="breadcrumb-item" aria-current="page"><a
-									class="link-fx" href="<c:url value="/veiculos/adicionar"/>">Novo</a></li>
+									class="link-fx" href="<c:url value="/locacoes/adicionar"/>">Nova</a></li>
 							</ol>
 						</nav>
 					</div>
@@ -113,10 +113,10 @@
 					<!-- Step Tabs -->
 					<ul class="nav nav-tabs nav-tabs-alt nav-justified" role="tablist">
 						<li class="nav-item"><a class="nav-link active"
-							href="#wizard-passo1" data-toggle="tab">1. Informações
-								Básicas</a></li>
+							href="#wizard-passo1" data-toggle="tab">1. Retirada e
+								Devolução</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="#wizard-passo2" data-toggle="tab">2. Detalhes</a></li>
+							href="#wizard-passo2" data-toggle="tab">2. Motorista</a></li>
 						<li class="nav-item"><a class="nav-link"
 							href="#wizard-passo3" data-toggle="tab">3. Extras</a></li>
 					</ul>
@@ -131,44 +131,14 @@
 							<!-- Step 1 -->
 							<div class="tab-pane active" id="wizard-passo1" role="tabpanel">
 								<div class="form-group">
-									<label for="veiculo.placa">Placa</label> <input
-										class="form-control" type="text" id="veiculo.placa"
-										name="veiculo.placa">
+									<label for="locacao.dataRetirada">Data de Retirada</label> <input
+										class="form-control" type="date" id="locacao.dataRetirada"
+										name="locacao.dataRetirada">
 								</div>
 								<div class="form-group">
-									<label for="veiculo.renavam">Renavam</label> <input
-										class="form-control" type="text" id="veiculo.renavam"
-										name="veiculo.renavam">
-								</div>
-								<div class="form-group">
-									<label for="">Modelo</label> <select class="custom-select"
-										id="veiculo.modelo.id" name="veiculo.modelo.id"
-										style="width: 100%;" data-placeholder="Escolha um modelo">
-										<c:forEach var="mo" items="${ modeloList }">
-											<option value="${ mo.id }">${ mo.marca.descricao }
-												${ mo.descricao }</option>
-										</c:forEach>
-									</select>
-								</div>
-								<div class="form-group">
-									<label for="">Tipo de Veículo</label> <select
-										class="custom-select" id="veiculo.tipo" name="veiculo.tipo"
-										style="width: 100%;"
-										data-placeholder="Escolha um tipo de veículo">
-										<c:forEach var="tipo" items="${ tipoList }">
-											<option value="${ tipo }">${ tipo.nomeFormatado }</option>
-										</c:forEach>
-									</select>
-								</div>
-								<div class="form-group">
-									<label for="">Categoria do Veículo</label> <select
-										class="custom-select" id="veiculo.categoria.id"
-										name="veiculo.categoria.id" style="width: 100%;"
-										data-placeholder="Escolha um tipo de veículo">
-										<c:forEach var="cat" items="${ categoriaList }">
-											<option value="${ cat.id }">${ cat.descricao }</option>
-										</c:forEach>
-									</select>
+									<label for="locacao.dataDevolucao">Data de Devolução</label> <input
+										class="form-control" type="date" id="locacao.dataDevolucao"
+										name="locacao.dataDevolucao">
 								</div>
 							</div>
 							<!-- END Step 1 -->
@@ -176,84 +146,42 @@
 							<!-- Step 2 -->
 							<div class="tab-pane" id="wizard-passo2" role="tabpanel">
 								<div class="form-group">
-									<label for="veiculo.qtdPassageiros">Quantidade de
-										Passageiros</label> <input class="form-control" type="text"
-										id="veiculo.qtdPassageiros" name="veiculo.qtdPassageiros">
+									<label for="locacao.motorista.nome">Nome</label> <input
+										class="form-control" type="text" id="locacao.motorista.nome"
+										name="locacao.motorista.nome">
 								</div>
 								<div class="form-group">
-									<label for="veiculo.anoFabricacao">Ano de Fabricação</label> <input
-										class="form-control" type="text" id="veiculo.anoFabricacao"
-										name="veiculo.anoFabricacao">
+									<label for="locacao.motorista.cpf">CPF</label> <input
+										class="form-control" type="text" id="locacao.motorista.cpf"
+										name="locacao.motorista.cpf">
 								</div>
 								<div class="form-group">
-									<label for="veiculo.anoModelo">Ano do Modelo</label> <input
-										class="form-control" type="text" id="veiculo.anoModelo"
-										name="veiculo.anoModelo">
+									<label for="locacao.motorista.registroGeral">Registro
+										Geral</label> <input class="form-control" type="text"
+										id="locacao.motorista.registroGeral"
+										name="locacao.motorista.registroGeral">
 								</div>
 								<div class="form-group">
-									<label for="veiculo.quilometragem">Quilometragem</label>
-									<div class="input-group">
-										<input class="form-control" type="text"
-											id="veiculo.quilometragem" name="veiculo.quilometragem">
-										<div class="input-group-prepend">
-											<span class="input-group-text"> KM </span>
-										</div>
-									</div>
+									<label for="locacao.motorista.dataNascimento">Data de
+										Nascimento</label> <input class="form-control" type="date"
+										id="locacao.motorista.dataNascimento"
+										name="locacao.motorista.dataNascimento">
 								</div>
 								<div class="form-group">
-									<label for="veiculo.cor">Cor</label> <input
-										class="form-control" type="text" id="veiculo.cor"
-										name="veiculo.cor">
-								</div>
+									<label for="locacao.motorista.registroCNH">Registro da CNH</label> <input
+										class="form-control" type="text" id="locacao.motorista.registroCNH"
+										name="locacao.motorista.registroCNH">
+								</div>								
 								<div class="form-group">
-									<label for="">Tipo de Combustível</label> <select
-										class="custom-select" id="veiculo.combustivel"
-										name="veiculo.combustivel" style="width: 100%;"
-										data-placeholder="Escolha um tipo de veículo">
-										<c:forEach var="comb" items="${ combustivelList }">
-											<option value="${ comb }">${ comb.nomeFormatado }</option>
-										</c:forEach>
-									</select>
-								</div>
-								<div class="form-group">
-									<label for="veiculo.capacidadeTanque">Capacidade do
-										Tanque</label>
-									<div class="input-group">
-										<input class="form-control" type="text"
-											id="veiculo.capacidadeTanque" name="veiculo.capacidadeTanque">
-										<div class="input-group-prepend">
-											<span class="input-group-text"> L </span>
-										</div>
-									</div>
+									<label for="locacao.motorista.validadeCNH">Validade da CNH</label> <input
+										class="form-control" type="date" id="locacao.motorista.validadeCNH"
+										name="locacao.motorista.validadeCNH">
 								</div>
 							</div>
 							<!-- END Step 2 -->
 
 							<!-- Step 3 -->
-							<div class="tab-pane" id="wizard-passo3" role="tabpanel">
-								<div class="form-group">
-									<label for="veiculo.precoCompra">Preço de Compra</label>
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<span class="input-group-text"> R$ </span>
-										</div>
-										<input type="text" class="form-control text-center"
-											id="veiculo.precoCompra" name="veiculo.precoCompra"
-											placeholder="0,00">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="veiculo.precoVenda">Preço de Venda</label>
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<span class="input-group-text"> R$ </span>
-										</div>
-										<input type="text" class="form-control text-center"
-											id="veiculo.precoVenda" name="veiculo.precoVenda"
-											placeholder="0,00">
-									</div>
-								</div>
-							</div>
+							<div class="tab-pane" id="wizard-passo3" role="tabpanel"></div>
 							<!-- END Step 3 -->
 						</div>
 						<!-- END Steps Content -->
@@ -338,9 +266,7 @@
 								type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
 							});
 		</script>
-
 	</c:forEach>
-
 </body>
 
 </html>

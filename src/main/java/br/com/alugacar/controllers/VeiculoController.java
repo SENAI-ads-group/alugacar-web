@@ -3,7 +3,6 @@ package br.com.alugacar.controllers;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 
 import br.com.alugacar.annotations.AutenticacaoNecessaria;
 import br.com.alugacar.entidades.Veiculo;
@@ -25,6 +24,9 @@ import br.com.caelum.vraptor.interceptor.IncludeParameters;
 import br.com.caelum.vraptor.validator.SimpleMessage;
 import br.com.caelum.vraptor.validator.Validator;
 
+/**
+ * @author <a href="https://github.com/Patrick-Ribeiro">Patrick Ribeiro</a>
+ */
 @Path("veiculos")
 @Controller
 public class VeiculoController {
@@ -70,7 +72,7 @@ public class VeiculoController {
 
 	@AutenticacaoNecessaria
 	@Post
-	public void cadastrar(@Valid Veiculo veiculo) {
+	public void cadastrar(Veiculo veiculo) {
 		try {
 			service.inserir(veiculo);
 
@@ -110,7 +112,7 @@ public class VeiculoController {
 	@AutenticacaoNecessaria
 	@IncludeParameters
 	@Post("atualizar/informacoes/{veiculo.id}")
-	public void atualizarInformacoes(@Valid Veiculo veiculo) {
+	public void atualizarInformacoes(Veiculo veiculo) {
 		validator.onErrorRedirectTo(this).listar();
 
 		try {
@@ -131,7 +133,7 @@ public class VeiculoController {
 	@AutenticacaoNecessaria
 	@IncludeParameters
 	@Post("atualizar/detalhes/{veiculo.id}")
-	public void atualizarDetalhes(@Valid Veiculo veiculo) {
+	public void atualizarDetalhes(Veiculo veiculo) {
 		validator.onErrorRedirectTo(this).listar();
 
 		try {
