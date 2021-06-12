@@ -50,4 +50,64 @@ public class VeiculoService {
 		return v;
 	}
 
+	public Veiculo atualizarInformacoes(Veiculo veiculo) {
+		Veiculo obj = dao.buscarId(veiculo.getId());
+		if (obj == null)
+			throw new ServiceException("Não foi possível encontrar um veículo com o ID " + veiculo.getId());
+		obj.setPlaca(veiculo.getPlaca());
+		obj.setRenavam(veiculo.getRenavam());
+		obj.setModelo(veiculo.getModelo());
+		obj.setCategoria(veiculo.getCategoria());
+		obj.setTipo(veiculo.getTipo());
+
+		obj = atualizar(obj.getId(), obj);
+		return obj;
+	}
+
+	public Veiculo atualizarDetalhes(Veiculo veiculo) {
+		Veiculo obj = dao.buscarId(veiculo.getId());
+		if (obj == null)
+			throw new ServiceException("Não foi possível encontrar um veículo com o ID " + veiculo.getId());
+		obj.setQtdPassageiros(veiculo.getQtdPassageiros());
+		obj.setAnoFabricacao(veiculo.getAnoFabricacao());
+		obj.setAnoModelo(veiculo.getAnoModelo());
+		obj.setQuilometragem(veiculo.getQuilometragem());
+		obj.setCor(veiculo.getCor());
+		obj.setCombustivel(veiculo.getCombustivel());
+		obj.setCapacidadeTanque(veiculo.getCapacidadeTanque());
+
+		obj = atualizar(obj.getId(), obj);
+		return obj;
+	}
+
+	public Veiculo atualizarExtras(Veiculo veiculo) {
+		Veiculo obj = getId(veiculo.getId());
+		obj.setPrecoCompra(veiculo.getPrecoCompra());
+		obj.setPrecoVenda(veiculo.getPrecoVenda());
+
+		obj = atualizar(obj.getId(), obj);
+		return obj;
+	}
+
+	public void excluir(Integer id) {
+		Veiculo obj = getId(id);
+		obj.setExcluido(true);
+
+		atualizar(obj.getId(), obj);
+	}
+
+	public void recuperar(Integer id) {
+		Veiculo obj = getId(id);
+		obj.setExcluido(false);
+
+		atualizar(obj.getId(), obj);
+	}
+
+	private Veiculo atualizar(Integer id, Veiculo obj) {
+		Veiculo v = dao.atualizar(id, obj);
+		if (v == null)
+			throw new ServiceException("Não foi possível atualizar o veículo com o ID " + id);
+		return v;
+	}
+
 }

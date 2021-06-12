@@ -101,7 +101,7 @@
 					<c:if test="${ usuarioLogado.usuario.tipo.administrador }">
 						<div class="col-6">
 							<form id="form-excluir" method="POST"
-								action="<c:url value="excluir/${ veiculo.id }"/>">
+								action="<c:url value="/veiculos/excluir/${ veiculo.id }"/>">
 								<a class="block block-rounded block-link-shadow text-center"
 									onclick="document.getElementById('form-excluir').submit()">
 									<div class="block-content block-content-full">
@@ -128,7 +128,8 @@
 					<div class="block-content">
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="atualizar/informacoes/${ veiculo.id }"
+								<form class="js-info-validation"
+									action="<c:url value="/veiculos/atualizar/informacoes/${ veiculo.id }"/>"
 									method="POST">
 									<div class="form-group">
 										<label for="veiculo.id">ID</label> <input type="text"
@@ -203,7 +204,9 @@
 					<div class="block-content">
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="atualizar/detalhes/${ veiculo.id }" method="POST">
+								<form class="js-details-validation"
+									action="<c:url value="/veiculos/atualizar/detalhes/${ veiculo.id }"/>"
+									method="POST">
 									<div class="form-group">
 										<label for="veiculo.qtdPassageiros">Quantidade de
 											Passageiros</label> <input class="form-control" type="text"
@@ -287,7 +290,9 @@
 					<div class="block-content">
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="atualizar/extras/${ veiculo.id }" method="POST">
+								<form class="js-extras-validation"
+									action="<c:url value="/veiculos/atualizar/extras/${ veiculo.id }"/>"
+									method="POST">
 									<div class="form-group">
 										<label for="veiculo.precoCompra">Preço de Compra</label>
 										<div class="input-group">
@@ -338,8 +343,16 @@
 
 	<!-- Page JS Plugins -->
 	<script
+		src="<c:url value="/assets/js/plugins/jquery-bootstrap-wizard/bs4/jquery.bootstrap.wizard.min.js"/>"></script>
+	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
+	<script
+		src="<c:url value="/assets/js/plugins/jquery-validation/jquery.validate.min.js"/>"></script>
+	<script
+		src="<c:url value="/assets/js/plugins/jquery-validation/additional-methods.js"/>"></script>
 
+	<!-- Page JS Code -->
+	<script src="<c:url value="/assets/js/pages/veiculo_form.js"/>"></script>
 
 	<c:forEach var="error" items="${errors}">
 		<script>
@@ -358,12 +371,12 @@
 			$
 					.notify(
 							{
-								title : '_$t${ notificacao.mensagem.category }_$ta',
-								icon : '_$tag__________________________________________',
-								message : '_$ta_$tag_____________________________________________'
+								title : '<b><c:out value="${ notificacao.mensagem.category }"/></b>',
+								icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
+								message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
 							},
 							{
-								type : '_$tag___________________________________________'
+								type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
 							});
 		</script>
 	</c:forEach>

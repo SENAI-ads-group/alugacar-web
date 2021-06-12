@@ -4,15 +4,6 @@
  * Copyright (c) 2020
  */
 ! function(a) {
-    jQuery.validator.addMethod(
-        "money",
-        function(value, element) {
-            var isValidMoney = /^\d+(\.|\,)\d{2}$/.test(value);
-            return this.optional(element) || isValidMoney;
-        },
-        "Insert "
-    );
-
     var e = {};
 
     function i(t) { if (e[t]) return e[t].exports; var r = e[t] = { i: t, l: !1, exports: {} }; return a[t].call(r.exports, r, r.exports, i), r.l = !0, r.exports }

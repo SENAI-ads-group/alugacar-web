@@ -2,6 +2,10 @@ package br.com.alugacar.entidades;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import br.com.alugacar.entidades.enums.Combustivel;
 import br.com.alugacar.entidades.enums.StatusVeiculo;
 import br.com.alugacar.entidades.enums.TipoVeiculo;
@@ -10,30 +14,63 @@ public class Veiculo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
+	@NotNull
+	@Size(min = 7, max = 7, message = "{veiculo.placa.size}")
 	private String placa;
+
+	@NotNull
+	@Size(min = 11, max = 11, message = "{veiculo.renavam.size}")
 	private String renavam;
+
+	@NotNull
 	private TipoVeiculo tipo;
+
+	@NotNull
 	private StatusVeiculo status;
+
+	@NotNull
+	@Min(value = 0, message = "{veiculo.precoCompra.min}")
 	private Double precoCompra;
+
+	@Min(value = 0, message = "{veiculo.precoVenda.min}")
 	private Double precoVenda;
+
+	@Size(min = 1, max = 20, message = "{veiculo.cor.size}")
 	private String cor;
+
+	@NotNull
 	private Integer qtdPassageiros;
-	private Double capacidadeTanque;
+
+	@NotNull
+	private Integer capacidadeTanque;
+
+	@NotNull
 	private Integer anoFabricacao;
+
+	@NotNull
 	private Integer anoModelo;
+
+	@NotNull
 	private Combustivel combustivel;
-	private Double quilometragem;
+
+	@NotNull
+	private Integer quilometragem;
+
+	@NotNull
 	private Boolean excluido;
 
+	@NotNull
 	private Categoria categoria;
+
+	@NotNull
 	private Modelo modelo;
 
 	public Veiculo() {
 	}
 
 	public Veiculo(Integer id, String placa, String renavam, TipoVeiculo tipo, StatusVeiculo status, Double precoCompra,
-			Double precoVenda, String cor, Integer qtdPassageiros, Double capacidadeTanque, Integer anoFabricacao,
-			Integer anoModelo, Combustivel combustivel, Double quilometragem, Boolean excluido, Categoria categoria,
+			Double precoVenda, String cor, Integer qtdPassageiros, Integer capacidadeTanque, Integer anoFabricacao,
+			Integer anoModelo, Combustivel combustivel, Integer quilometragem, Boolean excluido, Categoria categoria,
 			Modelo modelo) {
 		this.id = id;
 		this.placa = placa;
@@ -126,11 +163,11 @@ public class Veiculo implements Serializable {
 		this.qtdPassageiros = qtdPassageiros;
 	}
 
-	public Double getCapacidadeTanque() {
+	public Integer getCapacidadeTanque() {
 		return capacidadeTanque;
 	}
 
-	public void setCapacidadeTanque(Double capacidadeTanque) {
+	public void setCapacidadeTanque(Integer capacidadeTanque) {
 		this.capacidadeTanque = capacidadeTanque;
 	}
 
@@ -158,11 +195,11 @@ public class Veiculo implements Serializable {
 		this.combustivel = combustivel;
 	}
 
-	public Double getQuilometragem() {
+	public Integer getQuilometragem() {
 		return quilometragem;
 	}
 
-	public void setQuilometragem(Double quilometragem) {
+	public void setQuilometragem(Integer quilometragem) {
 		this.quilometragem = quilometragem;
 	}
 

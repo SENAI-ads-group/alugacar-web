@@ -1,11 +1,11 @@
 package br.com.alugacar.entidades.enums;
 
-public enum TipoTelefone {
-	MOVEL("Móvel"), FIXO("Fixo");
-	
+public enum TipoEndereco {
+	CONTATO("Contato"), COBRANCA("Cobrança");
+
 	private String nomeFormatado;
 
-	private TipoTelefone(String nomeFormatado) {
+	private TipoEndereco(String nomeFormatado) {
 		this.nomeFormatado = nomeFormatado;
 	}
 

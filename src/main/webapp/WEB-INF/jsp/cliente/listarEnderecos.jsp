@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 
-<%@ page import="br.com.alugacar.entidades.enums.StatusVeiculo"%>
-
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!doctype html>
@@ -12,7 +10,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Veículos</title>
+<title>Alugacar | Clientes</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -58,21 +56,28 @@
 
 		<!-- Main Container -->
 		<main id="main-container">
+			<!-- Hero -->
 			<div class="bg-body-light">
 				<div class="content content-full">
 					<div
 						class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
 						<h1 class="flex-sm-fill h3 my-2">
-							Veículos <small
+							Endereços <small
 								class="d-block d-sm-inline-block mt-2 mt-sm-0 font-size-base font-w400 text-muted">Cadastro
-								de veículos</small>
+								de endereços de cliente</small>
 						</h1>
 						<nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
 							<ol class="breadcrumb breadcrumb-alt">
 								<li class="breadcrumb-item"><a class="link-fx"
 									href="<c:url value="/dashboard"/>">Dashboard</a></li>
 								<li class="breadcrumb-item" aria-current="page"><a
-									class="link-fx" href="<c:url value="/veiculos/listar"/>">Veículos</a></li>
+									class="link-fx" href="<c:url value="/clientes/listar"/>">Clientes</a></li>
+								<li class="breadcrumb-item" aria-current="page"><a
+									class="link-fx"
+									href="<c:url value="/clientes/${ cliente.id }"/>">${ cliente.nome }</a></li>
+								<li class="breadcrumb-item" aria-current="page"><a
+									class="link-fx"
+									href="<c:url value="/clientes/${ cliente.id }/enderecos"/>">Endereços</a></li>
 							</ol>
 						</nav>
 					</div>
@@ -82,19 +87,16 @@
 
 			<!-- Page Content -->
 			<div class="content">
-				<!-- Partial Table -->
+				<!-- Users Table -->
 				<div class="block block-rounded">
 					<div class="block-header block-header-default">
-						<h3 class="block-title">Listagem de veículos</h3>
+						<h3 class="block-title">Endereços do cliente ${ cliente.nome }</h3>
 						<div class="block-options">
 							<div class="btn-group" role="group">
-								<a type="button" class="btn btn-sm btn-alt-dark mr-1 mb-3"
-									data-toggle="modal" data-target="#recuperacao-form-modal"
-									href=""> <i class="fa fa-fw fa fa-trash-restore mr-1"></i>
-									Recuperar Exclusão
-								</a> <a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
-									href="<c:url value="adicionar"/>"><i
-									class="fa fa-fw fa-plus mr-1"></i>Adicionar </a>
+								<a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
+									data-toggle="modal" data-target="#adicionar-form-modal" href="">
+									<i class="fa fa-fw fa-plus mr-1"></i> Adicionar
+								</a>
 							</div>
 						</div>
 					</div>
@@ -102,51 +104,33 @@
 						<table class="table table-striped table-vcenter">
 							<thead>
 								<tr>
-									<th class="text-center" style="width: 50px;">Placa</th>
-									<th>Modelo</th>
-									<th>Ano</th>
-									<th>Cor</th>
-									<th>Combustível</th>
-									<th>Quilometragem</th>
-									<th>Categoria</th>
-									<th>Tipo</th>
-									<th>Status</th>
+									<th>Descrição</th>
+									<th>CEP</th>
+									<th>Logradouro</th>
+									<th>Bairro</th>
+									<th>Cidade</th>
+									<th>País</th>
 									<th class="text-center" style="width: 100px;">Ações</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="v" items="${ veiculoList }">
+								<c:forEach var="end" items="${ enderecoClienteList }">
 									<tr>
-										<td class="font-w600 font-size-sm">${ v.placa }</td>
-										<td class="font-w600 font-size-sm"><a
-											href="<c:url value="/modelos/${ v.modelo.id }"/>">${ v.modelo.descricao }</a></td>
-										<td class="font-size-sm">${ v.anoFabricacao }/${ v.anoModelo }</td>
-										<td class="font-size-sm">${ v.cor }</td>
-										<td class="font-size-sm">${ v.combustivel.nomeFormatado }</td>
-										<td class="font-size-sm">${ v.quilometragem } KM</td>
-										<td class="font-w600 font-size-sm"><a
-											href="<c:url value="/categorias/${ v.categoria.id }"/>">${ v.categoria.descricao }</a></td>
-										<td class="font-size-sm">${ v.tipo.nomeFormatado }</td>
-										<td class="font-size-md"><c:if
-												test="${ v.status eq StatusVeiculo.DISPONIVEL_PARA_ALUGAR }">
-												<span class="font-size-sm font-w600 px-2 py-1 rounded  bg-success-light text-success">${ v.status.nomeFormatado }</span>
-											</c:if> <c:if
-												test="${ v.status eq StatusVeiculo.PENDENTE_DE_DEVOLUCAO }">
-												<span class="font-size-sm font-w600 px-2 py-1 rounded  bg-warning-light text-warning">${ v.status.nomeFormatado }</span>
-											</c:if> <c:if test="${ v.status eq StatusVeiculo.EM_MANUTENCAO }">
-												<span class="font-size-sm font-w600 px-2 py-1 rounded  bg-danger-light text-danger">${ v.status.nomeFormatado }</span>
-											</c:if> <c:if test="${ v.status eq StatusVeiculo.VENDIDO }">
-												<span class="font-size-sm font-w600 px-2 py-1 rounded  bg-info-light text-info">${ v.status.nomeFormatado }</span>
-											</c:if></td>
+										<td>${ end.descricao }</td>
+										<td>${ end.cep }</td>
+										<td>${ end.logradouro }</td>
+										<td>${ end.bairro }</td>
+										<td>${ end.cidade }-${ end.estado }</td>
+										<td>${ end.pais }</td>
 										<td class="text-center">
 											<div class="btn-group">
 												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
 													title="Editar"
-													href="<c:url value="/veiculos/placa/${ v.placa }"/>"> <i
-													class="fa fa-fw fa-pencil-alt"></i>
+													href="<c:url value="/enderecos/cliente/${ cliente.id }/${ end }"/>">
+													<i class="fa fa-fw fa-pencil-alt"></i>
 												</a>
-												<form method="POST"
-													action="<c:url value="excluir/${ v.id }"/>">
+												<form id="form-excluir" method="POST"
+													action="<c:url value="/clientes/${ cliente.id }/excluir/endereco/${ end }"/>">
 													<button type="submit" class="btn btn-sm btn-alt-primary"
 														data-toggle="tooltip" title="Excluir">
 														<i class="fa fa-fw fa-times"></i>
@@ -179,7 +163,7 @@
 			<div class="modal-content">
 				<div class="block block-rounded block-themed block-transparent mb-0">
 					<div class="block-header bg-primary-dark">
-						<h3 class="block-title">Recuperação de marca</h3>
+						<h3 class="block-title">Recuperação de cliente</h3>
 						<div class="block-options">
 							<button type="button" class="btn-block-option"
 								data-dismiss="modal" aria-label="Close">
@@ -188,13 +172,13 @@
 						</div>
 					</div>
 					<form id="form-recuperar"
-						action="<c:url value="/veiculos/recuperar"/>" method="POST">
+						action="<c:url value="/clientes/recuperar"/>" method="POST">
 						<div class="block-content font-size-sm">
 							<div class="form-group">
-								<select class="custom-select" id="veiculo.id" name="veiculo.id">
-									<option value="0">Selecione um veículo</option>
-									<c:forEach var="v" items="${ veicExcluidoList }">
-										<option value="${ v.id }">${ v.modelo.marca.descricao } ${ v.modelo.descricao } ${ v.cor } ${ v.placa }</option>
+								<select class="custom-select" id="cliente.id" name="cliente.id">
+									<option value="0">Selecione um cliente</option>
+									<c:forEach var="cli" items="${ cliExcluidoList }">
+										<option value="${ cli.id }">${ cli.nome }</option>
 									</c:forEach>
 								</select>
 							</div>
@@ -205,6 +189,47 @@
 
 							<a class="btn btn-primary" data-dismiss="modal"
 								onclick="document.getElementById('form-recuperar').submit()">Recuperar</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="adicionar-form-modal" tabindex="-1"
+		role="dialog" aria-labelledby="modal-block-vcenter" aria-hidden="true"
+		style="display: none;">
+		<div class="modal-dialog modal-md modal-dialog-centered"
+			role="document">
+			<div class="modal-content">
+				<div class="block block-rounded block-themed block-transparent mb-0">
+					<div class="block-header bg-primary-dark">
+						<h3 class="block-title">Tipo de cliente a ser adicionado</h3>
+						<div class="block-options">
+							<button type="button" class="btn-block-option"
+								data-dismiss="modal" aria-label="Close">
+								<i class="si si-close"></i>
+							</button>
+						</div>
+					</div>
+					<form id="form-adicionar"
+						action="<c:url value="/clientes/adicionar"/>" method="GET">
+						<div class="block-content font-size-sm">
+							<div class="form-group">
+								<select class="custom-select" id="tipo" name="tipo">
+									<option value="0">Selecione o tipo de cliente</option>
+									<c:forEach var="cliTipo" items="${ tipoClienteList }">
+										<option value="${ cliTipo }">${ cliTipo.nomeFormatado }</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+						<div
+							class="block-content block-content-full text-right border-top">
+							<a class="btn btn-alt-primary mr-1" data-dismiss="modal" href="">Cancelar</a>
+
+							<a class="btn btn-primary" data-dismiss="modal"
+								onclick="document.getElementById('form-adicionar').submit()">OK</a>
 						</div>
 					</form>
 				</div>

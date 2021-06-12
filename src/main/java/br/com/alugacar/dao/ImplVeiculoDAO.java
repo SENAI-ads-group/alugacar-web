@@ -58,11 +58,11 @@ public class ImplVeiculoDAO implements VeiculoDAO {
 			ps.setDouble(6, veiculo.getPrecoVenda());
 			ps.setString(7, veiculo.getCor());
 			ps.setInt(8, veiculo.getQtdPassageiros());
-			ps.setDouble(9, veiculo.getCapacidadeTanque());
+			ps.setInt(9, veiculo.getCapacidadeTanque());
 			ps.setInt(10, veiculo.getAnoFabricacao());
 			ps.setInt(11, veiculo.getAnoModelo());
 			ps.setString(12, veiculo.getCombustivel().name());
-			ps.setDouble(13, veiculo.getQuilometragem());
+			ps.setInt(13, veiculo.getQuilometragem());
 			ps.setInt(14, veiculo.getCategoria().getId());
 			ps.setInt(15, veiculo.getModelo().getId());
 			ps.setBoolean(16, veiculo.getExcluido());
@@ -89,7 +89,7 @@ public class ImplVeiculoDAO implements VeiculoDAO {
 	@Override
 	public Veiculo atualizar(Integer id, Veiculo veiculo) {
 		// @formatter:off
-		final String SQL = "UPDATE veiculo SET"
+		final String SQL = "UPDATE veiculo SET "
 				+ "veic_placa = ?, "
 				+ "veic_renavam = ?, "
 				+ "veic_tipo = ?, "
@@ -121,11 +121,11 @@ public class ImplVeiculoDAO implements VeiculoDAO {
 			ps.setDouble(6, veiculo.getPrecoVenda());
 			ps.setString(7, veiculo.getCor());
 			ps.setInt(8, veiculo.getQtdPassageiros());
-			ps.setDouble(9, veiculo.getCapacidadeTanque());
+			ps.setInt(9, veiculo.getCapacidadeTanque());
 			ps.setInt(10, veiculo.getAnoFabricacao());
 			ps.setInt(11, veiculo.getAnoModelo());
 			ps.setString(12, veiculo.getCombustivel().name());
-			ps.setDouble(13, veiculo.getQuilometragem());
+			ps.setInt(13, veiculo.getQuilometragem());
 			ps.setInt(14, veiculo.getCategoria().getId());
 			ps.setInt(15, veiculo.getModelo().getId());
 			ps.setBoolean(16, veiculo.getExcluido());
@@ -377,11 +377,11 @@ public class ImplVeiculoDAO implements VeiculoDAO {
 		v.setPrecoVenda(rs.getDouble("veic_preco_venda"));
 		v.setCor(rs.getString("veic_cor"));
 		v.setQtdPassageiros(rs.getInt("veic_qtd_passageiros"));
-		v.setCapacidadeTanque(rs.getDouble("veic_capac_tanque"));
+		v.setCapacidadeTanque(rs.getInt("veic_capac_tanque"));
 		v.setAnoFabricacao(rs.getInt("veic_ano_fab"));
 		v.setAnoModelo(rs.getInt("veic_ano_mod"));
 		v.setCombustivel(Combustivel.valueOf(rs.getString("veic_combustivel")));
-		v.setQuilometragem(rs.getDouble("veic_quilometragem"));
+		v.setQuilometragem(rs.getInt("veic_quilometragem"));
 		v.setExcluido(rs.getBoolean("veic_excluido"));
 
 		v.setCategoria(categoria);

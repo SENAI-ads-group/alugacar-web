@@ -23,11 +23,11 @@ import br.com.caelum.vraptor.observer.upload.UploadedFile;
 import br.com.caelum.vraptor.validator.SimpleMessage;
 import br.com.caelum.vraptor.validator.Validator;
 
-@Path("usuarios")
-@Controller
 /**
  * @author <a href="https://github.com/Patrick-Ribeiro">Patrick Ribeiro</a>
  */
+@Path("usuarios")
+@Controller
 public class UsuarioController {
 
 	@Inject
