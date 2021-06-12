@@ -59,10 +59,9 @@ public class ImplTipoAcessorio implements TipoAcessorioDAO {
 				+"tpaces_descricao  = ?"
 				+"WHERE tpaces_id = ?";
 		// @formatter:on
-
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
-
+System.out.println("MEU ID É :   " + id);
 			ps.setString(1, tipo.getDescricao());
 			ps.setInt(2, id);
 
@@ -86,7 +85,7 @@ public class ImplTipoAcessorio implements TipoAcessorioDAO {
 
 	@Override
 	public TipoAcessorio buscarId(Integer id) {
-		final String SQL = "SELECT tipo_acessorio.* FROM tipo_acessorio JOIN acessorio ON (acessorio.aces_tpaces_id = tipo_acessorio.tpaces_id) WHERE tipo_acessorio.tpaces_id = ?";
+		final String SQL = "SELECT * FROM tipo_acessorio WHERE tpaces_id = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -112,7 +111,7 @@ public class ImplTipoAcessorio implements TipoAcessorioDAO {
 		
        //@formatter:off
 		final String SQL = "SELECT * "
-				+"FROM tipo_acessorio";
+				+"FROM tipo_acessorio ORDER BY tpaces_id";
 		//@formatter:off
 
 		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
@@ -186,15 +185,9 @@ public class ImplTipoAcessorio implements TipoAcessorioDAO {
 
 		return tpacessorio;
 	}
+	
+	
 
-	private Acessorio instanciarAcessorio(ResultSet rs) throws SQLException {
-		Acessorio acessorio = new Acessorio();
 
-		acessorio.setId(rs.getInt("id_marca"));
-		acessorio.setValor(rs.getDouble("valor"));
-		acessorio.setStatus(StatusAcessorio.valueOf(rs.getString("status_acessorio")));
-
-		return acessorio;
-	}
 
 }

@@ -7,7 +7,7 @@ public class TipoAcessorioValidation {
 	public static boolean validarTipoAcessorio(TipoAcessorio tpAcessorio) {
 		if (tpAcessorio == null)
 			return false;
-		if (tpAcessorio.getDescricao().trim().isEmpty())
+		if (tpAcessorio.getDescricao() == "")
 			return false;
 
 		return true;

@@ -85,9 +85,9 @@
 							<div class="col-md-10 col-lg-8">
 								<form action="<c:url value="cadastrar"/>" method="POST">
 									<div class="form-group">
-										<label for="tipo.descricao">Descrição</label> <input
-											type="text" class="form-control" id="tipo.descricao"
-											name="tipo.descricao" value="${ tipo.descricao }">
+										<label for="acessorio.valor">Valor</label> <input
+											type="text" class="form-control" id="acessorio.valor"
+											name="acessorio.valor" >
 									</div>
 									<div class="form-group">
 										<div class="input-group">

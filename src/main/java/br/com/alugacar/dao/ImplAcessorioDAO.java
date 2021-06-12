@@ -20,10 +20,10 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 	@Override
 	public Acessorio inserir(Acessorio acessorio) {
 		if (acessorio == null) {
-			throw new IllegalStateException("A marca não pode ser nula");
+			throw new IllegalStateException("O acessório não pode ser nulo");
 		}
 
-		final String SQL = "INSERT INTO acessorio(valor, status_acessorio, id_tpAcessorio) VALUES(?,?,?)";
+		final String SQL = "INSERT INTO acessorio(aces_valor , aces_status, aces_tpaces_id) VALUES(?,?,?)";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -53,15 +53,14 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 
 	@Override
 	public Acessorio atualizar(Integer id, Acessorio acessorio) {
-		final String SQL = "UPDATE acessorio SET valor  = ?, status_acessorio = ?, id_tpAcessorio = ? WHERE id_acessorio = ?";
+		final String SQL = "UPDATE acessorio SET aces_valor  = ?,  aces_tpaces_id=? WHERE aces_acessorio  = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
 			ps.setDouble(1, acessorio.getValor());
-			ps.setString(2, acessorio.getStatus().name());
-			ps.setInt(3, acessorio.getTipo().getId());
-			ps.setInt(4, id);
+			ps.setInt(2, acessorio.getTipo().getId());
+			ps.setInt(3, id);
 
 			Acessorio acessorioInserido = null;
 
@@ -83,7 +82,8 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 
 	@Override
 	public Acessorio buscarId(Integer id) {
-		final String SQL = "SELECT tipoAcessorio.*, acessorio.valor AS acessorio_valor, acessorio.status_acessorio FROM tipoAcessorio JOIN acessorio ON (acessorio.id_tpAcessorio = tipoAcessorio.id_tpAcessorio) WHERE tipoAcessorio.id_tpAcessorio = ?";
+		final String SQL = "SELECT acessorio.*, tipo_acessorio.tpaces_descricao, tipo_acessorio.tpaces_id FROM acessorio JOIN tipo_acessorio ON "
+				+"(acessorio.aces_tpaces_id = tipo_acessorio.tpaces_id) WHERE acessorio.aces_acessorio = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -169,7 +169,7 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 
 	@Override
 	public boolean existeId(Integer id) {
-		final String SQL = "SELECT * FROM acessorio WHERE id_acessorio = ?";
+		final String SQL = "SELECT * FROM acessorio WHERE aces_acessorio = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -188,9 +188,9 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 	private Acessorio instanciarAcessorio(ResultSet rs) throws SQLException {
 		Acessorio acessorio = new Acessorio();
 
-		acessorio.setId(rs.getInt("id_marca"));
-		acessorio.setValor(rs.getDouble("valor"));
-		acessorio.setStatus(StatusAcessorio.valueOf(rs.getString("status_acessorio")));
+		acessorio.setId(rs.getInt("aces_acessorio"));
+		acessorio.setValor (rs.getDouble("aces_valor"));
+		acessorio.setStatus(StatusAcessorio.valueOf(rs.getString("aces_status")));
 
 		return acessorio;
 	}
@@ -198,8 +198,8 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 	private TipoAcessorio instanciarTipoAcessorio(ResultSet rs) throws SQLException {
 		TipoAcessorio tpacessorio = new TipoAcessorio();
 
-		tpacessorio.setId(rs.getInt("id_tp"));
-		tpacessorio.setDescricao(rs.getString("descricao"));
+		tpacessorio.setId(rs.getInt("tpaces_id"));
+		tpacessorio.setDescricao(rs.getString("tpaces_descricao"));
 
 		return tpacessorio;
 	}

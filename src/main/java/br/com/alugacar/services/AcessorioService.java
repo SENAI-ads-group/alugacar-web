@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import br.com.alugacar.dao.AcessorioDAO;
 import br.com.alugacar.dao.exceptions.DAOException;
 import br.com.alugacar.entidades.Acessorio;
+import br.com.alugacar.entidades.enums.StatusAcessorio;
 import br.com.alugacar.services.exceptions.ServiceException;
 
 public class AcessorioService {
@@ -24,7 +25,7 @@ public class AcessorioService {
 
 	public Acessorio inserir(Acessorio acessorio) {
 		try {
-
+			acessorio.setStatus(StatusAcessorio.DISPONIVEL_PARA_ALUGAR);
 			Acessorio ac = dao.inserir(acessorio);
 			if (ac == null) {
 				throw new ServiceException("Acessório " + ac.getTipo().getDescricao() + " não foi inserido!");

@@ -61,7 +61,7 @@
 				<div class="row">
 					<div class="col-6">
 						<a class="block block-rounded block-link-shadow text-center"
-							href="<c:url value="/acessorio/listar"/>">
+							href="<c:out value="listar"/>">
 							<div class="block-content block-content-full">
 								<div class="font-size-h2 text-dark">
 									<i class="fa fa-arrow-left"></i>
@@ -83,20 +83,25 @@
 					<div class="block-content">
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="<c:url value="cadastrar"/>" method="POST">
+								<form action="<c:url value="/acessorio/tipos/atualizar"/>"
+									method="POST">
 									<div class="form-group">
-										<label for="tipo.descricao">Descrição</label> <input
-											type="text" class="form-control" id="tipo.descricao"
-											name="tipo.descricao" value="${ tipo.descricao }">
+										<label for="tipoAcessorio.id">ID</label> <input type="text"
+											class="form-control" id="tipoAcessorio.id" name="tipoAcessorio.id"
+											value="${ tipoAcessorio.id }"readonly>
 									</div>
 									<div class="form-group">
-										<button type="submit" class="btn btn-alt-success">Adicionar</button>
+										<label for=tipoAcessorio.descricao>Descrição</label> <input
+											type="text" class="form-control" id="tipoAcessorio.descricao"
+											name="tipoAcessorio.descricao" value="${ tipoAcessorio.descricao }">
+									</div>
+									<div class="form-group">
+										<button type="submit" class="btn btn-alt-success">Atualizar</button>
 									</div>
 								</form>
 							</div>
 						</div>
 					</div>
-
 					<!-- END Info -->
 				</div>
 
@@ -121,9 +126,9 @@
 	<c:forEach var="error" items="${ errors }">
 		<script>
 			$.notify({
-				title : '<b><c:url value="${ error.category }"/></b>',
-				icon : 'fa fa-times mr-1',
-				message : '<br><c:out value="${ error.message }"/>'
+				title : `<b><c:url value="${ error.category }"/></b>`,
+				icon : `fa fa-times mr-1`,
+				message : `<br><c:out value="${ error.message }"/>`
 			}, {
 				type : 'danger'
 			});
@@ -135,12 +140,12 @@
 			$
 					.notify(
 							{
-								title : '<b><c:out value="${ notificacao.mensagem.category }"/></b>',
-								icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
-								message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
+								title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
+								icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
+								message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
 							},
 							{
-								type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
+								type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
 							});
 		</script>
 	</c:forEach>

@@ -10,7 +10,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Tipo de Acessório</title>
+<title>Alugacar | Acessorio</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -61,7 +61,7 @@
 				<div class="row">
 					<div class="col-6">
 						<a class="block block-rounded block-link-shadow text-center"
-							href="<c:url value="/acessorio/listar"/>">
+							href="<c:out value="listar"/>">
 							<div class="block-content block-content-full">
 								<div class="font-size-h2 text-dark">
 									<i class="fa fa-arrow-left"></i>
@@ -83,20 +83,45 @@
 					<div class="block-content">
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="<c:url value="cadastrar"/>" method="POST">
+								<form action="<c:url value="/acessorio/atualizar"/>"
+									method="POST">
 									<div class="form-group">
-										<label for="tipo.descricao">Descrição</label> <input
-											type="text" class="form-control" id="tipo.descricao"
-											name="tipo.descricao" value="${ tipo.descricao }">
+										<div>
+											<label for="acessorio.id">ID</label> <input type="text"
+												class="form-control" id="acessorio.id" name="acessorio.id"
+												value="${ acessorio.id }" readonly>
+										</div>
+
+										<div>
+											<label for="acessorio.valor">Valor</label> <input type="text"
+												class="form-control" id="acessorio.valor"
+												name="acessorio.valor" value="${ acessorio.valor }">
+										</div>
+
+										<div>
+											<label for="acessorio.status">Status</label> <input
+												type="text" class="form-control" id="acessorio.status"
+												name="acessorio.status" value="${ acessorio.status }"
+												readonly>
+										</div>
+									</div>
+									<div>
+										<label for="">Tipo</label> <select class="custom-select"
+											id="acessorio.tipo.id" name="acessorio.tipo.id"
+											style="width: 100%;">
+											<c:forEach var="tipo" items="${ tipoAcessorioList }">
+												<option value="${ tipo.id }"
+													${ acessorio.tipo.id == tipo.id ? 'selected' : '' }>${ tipo.descricao }</option>
+											</c:forEach>
+										</select>
 									</div>
 									<div class="form-group">
-										<button type="submit" class="btn btn-alt-success">Adicionar</button>
+										<button type="submit" class="btn btn-alt-success">Atualizar</button>
 									</div>
 								</form>
 							</div>
 						</div>
 					</div>
-
 					<!-- END Info -->
 				</div>
 
@@ -121,9 +146,9 @@
 	<c:forEach var="error" items="${ errors }">
 		<script>
 			$.notify({
-				title : '<b><c:url value="${ error.category }"/></b>',
-				icon : 'fa fa-times mr-1',
-				message : '<br><c:out value="${ error.message }"/>'
+				title : `<b><c:url value="${ error.category }"/></b>`,
+				icon : `fa fa-times mr-1`,
+				message : `<br><c:out value="${ error.message }"/>`
 			}, {
 				type : 'danger'
 			});
@@ -135,12 +160,12 @@
 			$
 					.notify(
 							{
-								title : '<b><c:out value="${ notificacao.mensagem.category }"/></b>',
-								icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
-								message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
+								title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
+								icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
+								message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
 							},
 							{
-								type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
+								type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
 							});
 		</script>
 	</c:forEach>
