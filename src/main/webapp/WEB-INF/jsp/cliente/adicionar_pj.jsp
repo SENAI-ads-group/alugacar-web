@@ -238,8 +238,9 @@
 							<!-- Step 4 -->
 							<div class="tab-pane" id="wizard-passo4" role="tabpanel">
 								<div class="form-group">
-									<label for="email.email">Email</label> <input type="text"
-										class="form-control" id="email.email" name="email.email">
+									<label for="emailCliente.email">Email</label> <input
+										type="text" class="form-control" id="emailCliente.email"
+										name="emailCliente.email">
 								</div>
 							</div>
 							<!-- END Step 4 -->

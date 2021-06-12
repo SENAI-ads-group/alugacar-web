@@ -1,23 +1,25 @@
 package br.com.alugacar.entidades;
 
-public class EmailCliente extends Email {
+import java.io.Serializable;
+
+public class Email implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Cliente cliente;
+	private String email;
 
-	public Cliente getCliente() {
-		return cliente;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		return result;
 	}
 
@@ -29,11 +31,11 @@ public class EmailCliente extends Email {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EmailCliente other = (EmailCliente) obj;
-		if (cliente == null) {
-			if (other.cliente != null)
+		Email other = (Email) obj;
+		if (email == null) {
+			if (other.email != null)
 				return false;
-		} else if (!cliente.equals(other.cliente))
+		} else if (!email.equals(other.email))
 			return false;
 		return true;
 	}

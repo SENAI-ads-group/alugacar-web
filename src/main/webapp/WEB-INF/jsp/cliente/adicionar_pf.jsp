@@ -203,6 +203,15 @@
 										name="endereco.cidade">
 								</div>
 								<div class="form-group">
+									<label for="endereco.estado">Estado</label> <select
+										class="custom-select" id="endereco.estado"
+										name="endereco.estado" style="width: 100%;">
+										<c:forEach var="est" items="${ estadoList }">
+											<option value="${ est }">${ est.nome }</option>
+										</c:forEach>
+									</select>
+								</div>
+								<div class="form-group">
 									<label for="endereco.pais">País</label> <input type="text"
 										class="form-control" id="endereco.pais" name="endereco.pais">
 								</div>

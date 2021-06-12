@@ -4,12 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Cliente implements Serializable {
+public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
 	private String nome;
 	private String cpfCnpj;
+	private Boolean excluido;
 
 	private List<TelefoneCliente> telefones = new ArrayList<>();
 	private List<EmailCliente> emails = new ArrayList<>();
@@ -18,11 +19,12 @@ public abstract class Cliente implements Serializable {
 	public Cliente() {
 	}
 
-	public Cliente(Integer id, String nome, String cpfCnpj, List<TelefoneCliente> telefones, List<EmailCliente> emails,
-			List<EnderecoCliente> enderecos) {
+	public Cliente(Integer id, String nome, String cpfCnpj, Boolean excluido, List<TelefoneCliente> telefones,
+			List<EmailCliente> emails, List<EnderecoCliente> enderecos) {
 		this.id = id;
 		this.nome = nome;
 		this.cpfCnpj = cpfCnpj;
+		this.excluido = excluido;
 		this.telefones = telefones;
 		this.emails = emails;
 		this.enderecos = enderecos;
@@ -50,6 +52,14 @@ public abstract class Cliente implements Serializable {
 
 	public void setCpfCnpj(String cpfCnpj) {
 		this.cpfCnpj = cpfCnpj;
+	}
+
+	public Boolean getExcluido() {
+		return excluido;
+	}
+
+	public void setExcluido(Boolean excluido) {
+		this.excluido = excluido;
 	}
 
 	public List<TelefoneCliente> getTelefones() {

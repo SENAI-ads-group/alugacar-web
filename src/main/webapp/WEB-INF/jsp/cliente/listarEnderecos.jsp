@@ -62,9 +62,9 @@
 					<div
 						class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
 						<h1 class="flex-sm-fill h3 my-2">
-							Clientes <small
+							Endereços <small
 								class="d-block d-sm-inline-block mt-2 mt-sm-0 font-size-base font-w400 text-muted">Cadastro
-								de clientes</small>
+								de endereços de cliente</small>
 						</h1>
 						<nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
 							<ol class="breadcrumb breadcrumb-alt">
@@ -72,6 +72,12 @@
 									href="<c:url value="/dashboard"/>">Dashboard</a></li>
 								<li class="breadcrumb-item" aria-current="page"><a
 									class="link-fx" href="<c:url value="/clientes/listar"/>">Clientes</a></li>
+								<li class="breadcrumb-item" aria-current="page"><a
+									class="link-fx"
+									href="<c:url value="/clientes/${ cliente.id }"/>">${ cliente.nome }</a></li>
+								<li class="breadcrumb-item" aria-current="page"><a
+									class="link-fx"
+									href="<c:url value="/clientes/${ cliente.id }/enderecos"/>">Endereços</a></li>
 							</ol>
 						</nav>
 					</div>
@@ -84,14 +90,10 @@
 				<!-- Users Table -->
 				<div class="block block-rounded">
 					<div class="block-header block-header-default">
-						<h3 class="block-title">Listagem de clientes</h3>
+						<h3 class="block-title">Endereços do cliente ${ cliente.nome }</h3>
 						<div class="block-options">
 							<div class="btn-group" role="group">
-								<a type="button" class="btn btn-sm btn-alt-dark mr-1 mb-3"
-									data-toggle="modal" data-target="#recuperacao-form-modal"
-									href=""> <i class="fa fa-fw fa fa-trash-restore mr-1"></i>
-									Recuperar Exclusão
-								</a> <a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
+								<a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
 									data-toggle="modal" data-target="#adicionar-form-modal" href="">
 									<i class="fa fa-fw fa-plus mr-1"></i> Adicionar
 								</a>
@@ -102,41 +104,33 @@
 						<table class="table table-striped table-vcenter">
 							<thead>
 								<tr>
-									<th class="text-center" style="width: 50px;">ID</th>
-									<th>Nome</th>
-									<th>CPF / CNPJ</th>
+									<th>Descrição</th>
+									<th>CEP</th>
+									<th>Logradouro</th>
+									<th>Bairro</th>
+									<th>Cidade</th>
+									<th>País</th>
 									<th class="text-center" style="width: 100px;">Ações</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="cli" items="${ clienteList }">
+								<c:forEach var="end" items="${ enderecoClienteList }">
 									<tr>
-										<th class="text-center" scope="row">${ cli.id }</th>
-										<td class="font-w600 font-size-sm"><a
-											href="<c:url value="/clientes/${ cli.id }"/>">${ cli.nome }</a></td>
-										<td>${ cli.cpfCnpj }</td>
+										<td>${ end.descricao }</td>
+										<td>${ end.cep }</td>
+										<td>${ end.logradouro }</td>
+										<td>${ end.bairro }</td>
+										<td>${ end.cidade }-${ end.estado }</td>
+										<td>${ end.pais }</td>
 										<td class="text-center">
 											<div class="btn-group">
 												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
-													title="Emails"
-													href="<c:url value="/clientes/${ cli.id }/emails"/>"> <i
-													class="fa fa-fw fa-at"></i>
-												</a> <a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
-													title="Telefones"
-													href="<c:url value="/clientes/${ cli.id }/telefones"/>">
-													<i class="fa fa-fw fa-phone-alt"></i>
-												</a> <a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
-													title="Endereços"
-													href="<c:url value="/clientes/${ cli.id }/enderecos"/>">
-													<i class="fa fa-fw fa-map-marker-alt"></i>
-												</a> 
-												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
 													title="Editar"
-													href="<c:url value="/clientes/${ cli.id }"/>"> <i
-													class="fa fa-fw fa-pencil-alt"></i>
+													href="<c:url value="/enderecos/cliente/${ cliente.id }/${ end }"/>">
+													<i class="fa fa-fw fa-pencil-alt"></i>
 												</a>
 												<form id="form-excluir" method="POST"
-													action="<c:url value="excluir/${ cli.id }"/>">
+													action="<c:url value="/clientes/${ cliente.id }/excluir/endereco/${ end }"/>">
 													<button type="submit" class="btn btn-sm btn-alt-primary"
 														data-toggle="tooltip" title="Excluir">
 														<i class="fa fa-fw fa-times"></i>
