@@ -85,18 +85,25 @@
 							<div class="col-md-10 col-lg-8">
 								<form action="<c:url value="cadastrar"/>" method="POST">
 									<div class="form-group">
+									<div>
 										<label for="acessorio.valor">Valor</label> <input
-											type="text" class="form-control" id="acessorio.valor"
+											type="number" class="form-control" id="acessorio.valor"
 											name="acessorio.valor" >
 									</div>
-									<div class="form-group">
-										<div class="input-group">
-											<label for="">Tipo</label> <select class="custom-select"
+									<div>
+												<label for="">Tipo</label> <select class="custom-select"
 												id="acessorio.tipo.id" name="acessorio.tipo.id"
 												style="width: 100%;">
 												<c:forEach var="tipo" items="${ tipoAcessorioList }">
 													<option value="${ tipo.id }">${ tipo.descricao }</option>
 												</c:forEach>
+											</select>
+									</div>
+									</div>
+									
+									
+									<div class="form-group">
+										<div class="input-group">
 											</select>
 											<div class = "input-group-append" >
 												<a type="button" class="btn btn-alt-success"  href ="<c:url value = "/acessorio/tipos/adicionar" />" >Adicionar Tipo</a>
@@ -104,7 +111,7 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<button type="submit" class="btn btn-alt-success">Adicionar</button>
+										<button type="submit" class="btn btn-alt-success">Adicionar Acessório</button>
 									</div>
 								</form>
 							</div>

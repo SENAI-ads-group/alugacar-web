@@ -61,7 +61,7 @@
 				<div class="row">
 					<div class="col-6">
 						<a class="block block-rounded block-link-shadow text-center"
-							href="<c:out value="listar"/>">
+							href="<c:out value="listartipo"/>">
 							<div class="block-content block-content-full">
 								<div class="font-size-h2 text-dark">
 									<i class="fa fa-arrow-left"></i>
@@ -88,10 +88,10 @@
 									<div class="form-group">
 										<label for="tipoAcessorio.id">ID</label> <input type="text"
 											class="form-control" id="tipoAcessorio.id" name="tipoAcessorio.id"
-											value="${ tipoAcessorio.id }"readonly>
+											value="${ tipoAcessorio.id }" readonly>
 									</div>
 									<div class="form-group">
-										<label for=tipoAcessorio.descricao>Descrição</label> <input
+										<label for="tipoAcessorio.descricao">Descrição</label> <input
 											type="text" class="form-control" id="tipoAcessorio.descricao"
 											name="tipoAcessorio.descricao" value="${ tipoAcessorio.descricao }">
 									</div>

@@ -106,7 +106,7 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 
 	@Override
 	public List<Acessorio> buscarTodas() {
-		final String SQL = "SELECT acessorio.*, tipo_acessorio.* FROM acessorio JOIN tipo_acessorio ON (tpaces_id = aces_tpaces_id)";
+		final String SQL = "SELECT acessorio.*, tipo_acessorio.* FROM acessorio JOIN tipo_acessorio ON (tpaces_id = aces_tpaces_id) ORDER BY aces_acessorio";
 
 		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
 

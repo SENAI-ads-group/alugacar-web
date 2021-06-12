@@ -69,6 +69,8 @@ public class AcessorioController {
 		if (tipo.getId() == null)
 			return tipo;
 		try {
+			
+			result.include("tipoAcessorioList", tservice.getTodos());
 			TipoAcessorio tpAcessorioEncontrado = tservice.getId(tipo.getId());
 
 			return tpAcessorioEncontrado;
@@ -160,8 +162,8 @@ public class AcessorioController {
 	
 	@AutenticacaoNecessaria
 	@Post("tipos/atualizar")
-	public void atualizar(TipoAcessorio tipo) {
-		if (!TipoAcessorioValidation.validarTipoAcessorio(tipo)) {
+	public void atualizar(TipoAcessorio tipoAcessorio) {
+		if (!TipoAcessorioValidation.validarTipoAcessorio(tipoAcessorio)) {
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Nada feito!",
 					"O tipo de acessório não foi atualizado, pois não é válido", TipoNotificacao.AVISO);
 			NotificacaoUtil.adicionarNotificacao(result, notificacao);
@@ -170,8 +172,8 @@ public class AcessorioController {
 		}
 
 		try {
-			System.out.println("MEU ID É O :   " + tipo.getId());
-			tservice.atualizar(tipo.getId(), tipo);
+			System.out.println("MEU ID É O ______________" + tipoAcessorio.getId());
+			tservice.atualizar(tipoAcessorio.getId(), tipoAcessorio);
 
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Tipo de acessório atualizado!",
 					"tipo de acessório atualizado com sucesso!", TipoNotificacao.SUCESSO);
@@ -209,6 +211,22 @@ public class AcessorioController {
 
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).listar();
+		}
+	}
+	
+	@AutenticacaoNecessaria
+	@Post("tipos/listartipo")
+	public List<TipoAcessorio> listartipo() {
+		try {
+			
+			return tservice.getTodos();
+
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar acessórios", e.getMessage());
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(DashboardController.class).dashboard();
+			return null;
 		}
 	}
 

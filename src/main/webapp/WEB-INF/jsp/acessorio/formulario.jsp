@@ -91,29 +91,27 @@
 												class="form-control" id="acessorio.id" name="acessorio.id"
 												value="${ acessorio.id }" readonly>
 										</div>
-
 										<div>
-											<label for="acessorio.valor">Valor</label> <input type="text"
+											<label for="acessorio.valor">Valor</label> <input type="number"
 												class="form-control" id="acessorio.valor"
 												name="acessorio.valor" value="${ acessorio.valor }">
 										</div>
-
 										<div>
 											<label for="acessorio.status">Status</label> <input
 												type="text" class="form-control" id="acessorio.status"
 												name="acessorio.status" value="${ acessorio.status }"
 												readonly>
 										</div>
-									</div>
-									<div>
-										<label for="">Tipo</label> <select class="custom-select"
-											id="acessorio.tipo.id" name="acessorio.tipo.id"
-											style="width: 100%;">
-											<c:forEach var="tipo" items="${ tipoAcessorioList }">
-												<option value="${ tipo.id }"
-													${ acessorio.tipo.id == tipo.id ? 'selected' : '' }>${ tipo.descricao }</option>
-											</c:forEach>
-										</select>
+										<div>
+											<label for="">Tipo</label> <select class="custom-select"
+												id="acessorio.tipo.id" name="acessorio.tipo.id"
+												style="width: 100%;">
+												<c:forEach var="tipo" items="${ tipoAcessorioList }">
+													<option value="${ tipo.id }"
+														${ acessorio.tipo.id == tipo.id ? 'selected' : '' }>${ tipo.descricao }</option>
+												</c:forEach>
+											</select>
+										</div>
 									</div>
 									<div class="form-group">
 										<button type="submit" class="btn btn-alt-success">Atualizar</button>

@@ -55,13 +55,13 @@ public class ImplTipoAcessorio implements TipoAcessorioDAO {
 	public TipoAcessorio atualizar(Integer id, TipoAcessorio tipo) {
 
 		// @formatter:off
-		final String SQL = "UPDATE tipo_acessorio SET"
-				+"tpaces_descricao  = ?"
+		final String SQL = "UPDATE tipo_acessorio SET "
+				+"tpaces_descricao = ? "
 				+"WHERE tpaces_id = ?";
 		// @formatter:on
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
-System.out.println("MEU ID É :   " + id);
+
 			ps.setString(1, tipo.getDescricao());
 			ps.setInt(2, id);
 
@@ -85,7 +85,10 @@ System.out.println("MEU ID É :   " + id);
 
 	@Override
 	public TipoAcessorio buscarId(Integer id) {
-		final String SQL = "SELECT * FROM tipo_acessorio WHERE tpaces_id = ?";
+		final String SQL = "SELECT * "
+				+ "FROM tipo_acessorio "
+				+ "WHERE tpaces_id = ?";
+		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
