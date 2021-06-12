@@ -116,7 +116,7 @@ public class ImplCategoriaDAO implements CategoriaDAO {
 	public List<Categoria> buscarTodas() {
 		// @formatter:off
 		final String SQL = "SELECT * "
-				+ "FROM categoria";
+				+ "FROM categoria ORDER BY cat_id";
 		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {

@@ -54,7 +54,7 @@
 		<%@ include file="../sidebar.jsp"%>
 
 		<!-- Main Container -->
-		<main id="main-container">		
+		<main id="main-container">
 			<!-- Page Content -->
 			<div class="content">
 				<!-- Quick Actions -->
@@ -83,7 +83,8 @@
 					<div class="block-content">
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="<c:url value="cadastrar"/>" method="POST">
+								<form class="js-validation-form"
+									action="<c:url value="cadastrar"/>" method="POST">
 									<div class="form-group">
 										<label for="categoria.descricao">Descrição</label> <input
 											type="text" class="form-control" id="categoria.descricao"
@@ -117,6 +118,12 @@
 	<!-- Notifications JS Plugin -->
 	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
+	<script
+		src="<c:url value="/assets/js/plugins/jquery-validation/jquery.validate.min.js"/>"></script>
+
+	<!-- Page JS Code -->
+	<script src="<c:url value="/assets/js/pages/cadastrar_categoria.js"/>"></script>
+
 
 	<c:forEach var="error" items="${ errors }">
 		<script>
@@ -132,13 +139,16 @@
 
 	<c:forEach var="notificacao" items="${ notificacoes }">
 		<script>
-			$.notify({
-				title : '<b><c:out value="${ notificacao.mensagem.category }"/></b>',
-				icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
-				message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
-			}, {
-				type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
-			});
+			$
+					.notify(
+							{
+								title : '<b><c:out value="${ notificacao.mensagem.category }"/></b>',
+								icon : '<c:out value="${ notificacao.tipo.iconeCSS }"/>',
+								message : '<br><c:out value="${ notificacao.mensagem.message }"/>'
+							},
+							{
+								type : '<c:out value="${ notificacao.tipo.classeCSS }"/>'
+							});
 		</script>
 	</c:forEach>
 

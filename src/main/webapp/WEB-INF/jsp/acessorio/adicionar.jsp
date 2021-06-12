@@ -83,7 +83,7 @@
 					<div class="block-content">
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="<c:url value="cadastrar"/>" method="POST">
+								<form class="js-validation-form" action="<c:url value="cadastrar"/>" method="POST">
 									<div class="form-group">
 									<div>
 										<label for="acessorio.valor">Valor</label> <input
@@ -138,6 +138,12 @@
 	<!-- Notifications JS Plugin -->
 	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
+	<script
+		src="<c:url value="/assets/js/plugins/jquery-validation/jquery.validate.min.js"/>"></script>
+
+	<!-- Page JS Code -->
+	<script src="<c:url value="/assets/js/pages/cadastrar_acessorio.js"/>"></script>
+
 
 	<c:forEach var="error" items="${ errors }">
 		<script>
