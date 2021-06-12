@@ -10,7 +10,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Categoria</title>
+<title>Alugacar | Tipo de Acessório</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -74,7 +74,7 @@
 					</div>
 					<div class="col-6">
 						<form id="form-excluir"
-							action="<c:url value="excluir/${ categoria.id }"/>" method="POST">
+							action="<c:url value="excluir/${ tipo.id }"/>" method="POST">
 							<a class="block block-rounded block-link-shadow text-center"
 								onclick="document.getElementById('form-excluir').submit()"
 								${ usuarioLogado.usuario.tipo.administrador ? '' : 'hidden' }>
@@ -85,7 +85,7 @@
 								</div>
 								<div class="block-content py-2 bg-body-light">
 									<p class="font-w600 font-size-sm text-danger mb-0">Excluir
-										Categoria</p>
+										Tipo </p>
 								</div>
 							</a>
 						</form>
@@ -101,17 +101,17 @@
 					<div class="block-content">
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="<c:url value="/categorias/atualizar"/>"
+								<form action="<c:url value="/tipos/atualizar"/>"
 									method="POST">
 									<div class="form-group">
-										<label for="categoria.id">ID</label> <input type="text"
-											class="form-control" id="categoria.id" name="categoria.id"
-											value="${ categoria.id }" readonly>
+										<label for="tipo.id">ID</label> <input type="text"
+											class="form-control" id="tipo.id" name="tipo.id"
+											value="${ tipo.id }" readonly>
 									</div>
 									<div class="form-group">
-										<label for="categoria.descricao">Descrição</label> <input
-											type="text" class="form-control" id="categoria.descricao"
-											name="categoria.descricao" value="${ categoria.descricao }">
+										<label for="tipo.descricao">Descrição</label> <input
+											type="text" class="form-control" id="tipo.descricao"
+											name="tipo.descricao" value="${ tipo.descricao }">
 									</div>
 									<div class="form-group">
 										<button type="submit" class="btn btn-alt-success">Atualizar</button>

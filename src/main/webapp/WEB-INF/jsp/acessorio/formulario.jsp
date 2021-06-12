@@ -10,7 +10,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Categoria</title>
+<title>Alugacar | Acessorio</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -72,24 +72,6 @@
 							</div>
 						</a>
 					</div>
-					<div class="col-6">
-						<form id="form-excluir"
-							action="<c:url value="excluir/${ categoria.id }"/>" method="POST">
-							<a class="block block-rounded block-link-shadow text-center"
-								onclick="document.getElementById('form-excluir').submit()"
-								${ usuarioLogado.usuario.tipo.administrador ? '' : 'hidden' }>
-								<div class="block-content block-content-full">
-									<div class="font-size-h2 text-danger">
-										<i class="fa fa-times"></i>
-									</div>
-								</div>
-								<div class="block-content py-2 bg-body-light">
-									<p class="font-w600 font-size-sm text-danger mb-0">Excluir
-										Categoria</p>
-								</div>
-							</a>
-						</form>
-					</div>
 				</div>
 				<!-- END Quick Actions -->
 
@@ -101,17 +83,35 @@
 					<div class="block-content">
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="<c:url value="/categorias/atualizar"/>"
+								<form action="<c:url value="/acessorio/atualizar"/>"
 									method="POST">
 									<div class="form-group">
-										<label for="categoria.id">ID</label> <input type="text"
-											class="form-control" id="categoria.id" name="categoria.id"
-											value="${ categoria.id }" readonly>
-									</div>
-									<div class="form-group">
-										<label for="categoria.descricao">Descrição</label> <input
-											type="text" class="form-control" id="categoria.descricao"
-											name="categoria.descricao" value="${ categoria.descricao }">
+										<div>
+											<label for="acessorio.id">ID</label> <input type="text"
+												class="form-control" id="acessorio.id" name="acessorio.id"
+												value="${ acessorio.id }" readonly>
+										</div>
+										<div>
+											<label for="acessorio.valor">Valor</label> <input type="number"
+												class="form-control" id="acessorio.valor"
+												name="acessorio.valor" value="${ acessorio.valor }">
+										</div>
+										<div>
+											<label for="acessorio.status">Status</label> <input
+												type="text" class="form-control" id="acessorio.status"
+												name="acessorio.status" value="${ acessorio.status }"
+												readonly>
+										</div>
+										<div>
+											<label for="">Tipo</label> <select class="custom-select"
+												id="acessorio.tipo.id" name="acessorio.tipo.id"
+												style="width: 100%;">
+												<c:forEach var="tipo" items="${ tipoAcessorioList }">
+													<option value="${ tipo.id }"
+														${ acessorio.tipo.id == tipo.id ? 'selected' : '' }>${ tipo.descricao }</option>
+												</c:forEach>
+											</select>
+										</div>
 									</div>
 									<div class="form-group">
 										<button type="submit" class="btn btn-alt-success">Atualizar</button>
@@ -155,15 +155,16 @@
 
 	<c:forEach var="notificacao" items="${ notificacoes }">
 		<script>
-			$.notify(
-				{
-					title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
-					icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
-					message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
-				},
-				{
-					type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
-				});
+			$
+					.notify(
+							{
+								title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
+								icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
+								message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
+							},
+							{
+								type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
+							});
 		</script>
 	</c:forEach>
 
