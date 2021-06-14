@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.alugacar.entidades.Cliente;
 import br.com.alugacar.entidades.EmailCliente;
+import br.com.alugacar.entidades.Endereco;
 import br.com.alugacar.entidades.EnderecoCliente;
 import br.com.alugacar.entidades.TelefoneCliente;
 
@@ -31,7 +32,9 @@ public interface ClienteDAO {
 
 	Cliente adicionarEndereco(Cliente cliente, EnderecoCliente endereco);
 
-	Cliente removerEndereco(Cliente cliente, EnderecoCliente endereco);
+	void removerEndereco(Integer idCliente, Integer idEndereco);
+
+	Endereco atualizarEndereco(Integer idCliente, Integer idEndereco, Endereco endereco);
 
 	Cliente adicionarTelefone(Cliente cliente, TelefoneCliente telefone);
 

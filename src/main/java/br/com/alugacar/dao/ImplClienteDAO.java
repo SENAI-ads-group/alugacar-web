@@ -328,28 +328,73 @@ public class ImplClienteDAO implements ClienteDAO {
 	}
 
 	@Override
-	public Cliente removerEndereco(Cliente cliente, EnderecoCliente endereco) {
+	public void removerEndereco(Integer idCliente, Integer idEndereco) {
 		// @formatter:off
 		final String SQL= "DELETE FROM endereco_cliente "
 				+ "WHERE endcli_cli_id = ?, "
-				+ "AND endcli_cep = ?,"
-				+ "AND endcli_numero = ?, "
-				+ "AND endcli_complemento = ?,"
-				+ "AND endcli_tipo = ?";
+				+ "AND endcli_id = ?";
 		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
-			ps.setInt(1, cliente.getId());
-			ps.setString(2, endereco.getCep());
-			ps.setInt(3, endereco.getNumero());
-			ps.setString(4, endereco.getComplemento());
-			ps.setString(5, endereco.getTipo().name());
+			ps.setInt(1, idCliente);
+			ps.setInt(1, idEndereco);
 
 			ps.executeUpdate();
 
 			ConnectionFactory.closeConnection(connection, ps);
-			return cliente;
+		} catch (SQLException e) {
+			throw new DAOException(e.getMessage());
+		}
+	}
+
+	@Override
+	public Endereco atualizarEndereco(Integer idCliente, Integer idEndereco, Endereco endereco) {
+		// @formatter:off
+		final String SQL= "UPDATE endereco_cliente SET "
+				+ "endcli_descricao = ?, "
+				+ "endcli_cep = ?, "
+				+ "endcli_logradouro = ?, "
+				+ "endcli_numero = ?, "
+				+ "endcli_complemento = ?, "
+				+ "endcli_bairro = ?, "
+				+ "endcli_cidade = ?, "
+				+ "endcli_estado = ?, "
+				+ "endcli_pais = ?, "
+				+ "endcli_tipo = ? "
+				+ "WHERE endcli_id = ? "
+				+ "AND endcli_cli_id = ?";
+		// @formatter:on
+
+		try (Connection connection = ConnectionFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
+			ps.setString(1, endereco.getDescricao());
+			ps.setString(2, endereco.getCep());
+			ps.setString(3, endereco.getLogradouro());
+			ps.setInt(4, endereco.getNumero());
+			ps.setString(5, endereco.getComplemento());
+			ps.setString(6, endereco.getBairro());
+			ps.setString(7, endereco.getCidade());
+			ps.setString(8, endereco.getEstado().name());
+			ps.setString(9, endereco.getPais());
+			ps.setString(10, endereco.getTipo().name());
+			ps.setInt(11, idCliente);
+			ps.setInt(12, idEndereco);
+			ps.executeUpdate();
+
+			Endereco enderecoAtualizado = null;
+
+			int linhasAfetadas = ps.executeUpdate();
+			ResultSet rs = null;
+			if (linhasAfetadas > 0) {
+				rs = ps.getGeneratedKeys();
+				if (rs.next()) {
+					enderecoAtualizado = endereco;
+					enderecoAtualizado.setId(rs.getInt(1));
+				}
+			}
+			ConnectionFactory.closeConnection(connection, ps);
+			return enderecoAtualizado;
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}
@@ -482,6 +527,7 @@ public class ImplClienteDAO implements ClienteDAO {
 	private EnderecoCliente instanciarEndereco(ResultSet rs, Cliente cliente) throws SQLException {
 		EnderecoCliente end = new EnderecoCliente();
 
+		end.setId(rs.getInt("endcli_id"));
 		end.setDescricao(rs.getString("endcli_descricao"));
 		end.setCep(rs.getString("endcli_cep"));
 		end.setLogradouro(rs.getString("endcli_logradouro"));
@@ -515,4 +561,5 @@ public class ImplClienteDAO implements ClienteDAO {
 
 		return email;
 	}
+
 }

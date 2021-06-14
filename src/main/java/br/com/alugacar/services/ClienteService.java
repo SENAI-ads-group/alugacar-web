@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import br.com.alugacar.dao.ClienteDAO;
 import br.com.alugacar.entidades.Cliente;
+import br.com.alugacar.entidades.Endereco;
 import br.com.alugacar.entidades.EnderecoCliente;
 import br.com.alugacar.services.exceptions.ServiceException;
 
@@ -25,14 +26,21 @@ public class ClienteService {
 	public List<Cliente> getTodos() {
 		return dao.buscarTodos();
 	}
-	
+
 	public Cliente getId(Integer id) {
 		return dao.buscarId(id);
 	}
 
 	public void excluirEndereco(Cliente cliente, EnderecoCliente endereco) {
-		dao.removerEndereco(cliente, endereco);
-		
+		dao.removerEndereco(cliente.getId(), endereco.getId());
+
+	}
+
+	public Endereco atualizarEndereco(Cliente cliente, Endereco endereco) {
+		Endereco e = dao.atualizarEndereco(cliente.getId(), endereco.getId(), endereco);
+		if (e == null)
+			throw new ServiceException("Não foi possível atualizar o endereco");
+		return e;
 	}
 
 }

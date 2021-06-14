@@ -10,7 +10,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Clientes</title>
+<title>Alugacar | Endereços de Cliente</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -126,7 +126,7 @@
 											<div class="btn-group">
 												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
 													title="Editar"
-													href="<c:url value="/enderecos/cliente/${ cliente.id }/${ end }"/>">
+													href="<c:url value="/clientes/${ cliente.id }/enderecos/${ end.id }"/>">
 													<i class="fa fa-fw fa-pencil-alt"></i>
 												</a>
 												<form id="form-excluir" method="POST"

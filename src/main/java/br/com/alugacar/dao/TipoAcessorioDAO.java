@@ -2,7 +2,6 @@ package br.com.alugacar.dao;
 
 import java.util.List;
 
-import br.com.alugacar.entidades.Acessorio;
 import br.com.alugacar.entidades.TipoAcessorio;
 
 public interface TipoAcessorioDAO {
