@@ -106,7 +106,7 @@
 						</div>
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="cadastrar" method="POST">
+								<form class="js-validation-form"  action="cadastrar" method="POST">
 									<div class="form-group">
 										<label for="modelo.descricao">Descrição</label> <input
 											type="text" class="form-control" id="modelo.descricao"
@@ -149,6 +149,11 @@
 	<!-- Notifications JS Plugin -->
 	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
+	<script
+		src="<c:url value="/assets/js/plugins/jquery-validation/jquery.validate.min.js"/>"></script>
+
+	<!-- Page JS Code -->
+	<script src="<c:url value="/assets/js/pages/cadastrar_modelo.js"/>"></script>
 
 	<c:forEach var="error" items="${ errors }">
 		<script>

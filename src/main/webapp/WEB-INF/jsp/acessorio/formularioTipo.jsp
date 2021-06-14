@@ -83,17 +83,20 @@
 					<div class="block-content">
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="<c:url value="/acessorio/tipos/atualizar"/>"
+								<form class="js-validation-form"
+									action="<c:url value="/acessorio/tipos/atualizar"/>"
 									method="POST">
 									<div class="form-group">
 										<label for="tipoAcessorio.id">ID</label> <input type="text"
-											class="form-control" id="tipoAcessorio.id" name="tipoAcessorio.id"
-											value="${ tipoAcessorio.id }" readonly>
+											class="form-control" id="tipoAcessorio.id"
+											name="tipoAcessorio.id" value="${ tipoAcessorio.id }"
+											readonly>
 									</div>
 									<div class="form-group">
 										<label for="tipoAcessorio.descricao">Descrição</label> <input
 											type="text" class="form-control" id="tipoAcessorio.descricao"
-											name="tipoAcessorio.descricao" value="${ tipoAcessorio.descricao }">
+											name="tipoAcessorio.descricao"
+											value="${ tipoAcessorio.descricao }">
 									</div>
 									<div class="form-group">
 										<button type="submit" class="btn btn-alt-success">Atualizar</button>
@@ -122,6 +125,11 @@
 	<!-- Notifications JS Plugin -->
 	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
+	<script
+		src="<c:url value="/assets/js/plugins/jquery-validation/jquery.validate.min.js"/>"></script>
+
+	<!-- Page JS Code -->
+	<script src="<c:url value="/assets/js/pages/cadastrar_tipo.js"/>"></script>
 
 	<c:forEach var="error" items="${ errors }">
 		<script>

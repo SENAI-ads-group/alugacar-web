@@ -56,7 +56,7 @@ public class ImplMarcaDAO implements MarcaDAO {
 		// @formatter:off
 		final String SQL = "UPDATE marca SET "
 				+ "marc_descricao = ?, "
-				+ "marc_excluida = ?, "
+				+ "marc_excluida = ? "
 				+ "WHERE marc_id = ?";
 		// @formatter:on
 

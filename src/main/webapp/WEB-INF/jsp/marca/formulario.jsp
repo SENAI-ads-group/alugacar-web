@@ -111,7 +111,7 @@
 						</div>
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form action="<c:url value = "atualizar"/>" method="POST">
+								<form class="js-validation-form"  action="<c:url value = "atualizar"/>" method="POST">
 									<div class="form-group">
 										<label for="marca.id">ID</label> <input type="text"
 											class="form-control" id="marca.id" name="marca.id"
@@ -145,6 +145,42 @@
 
 	<script src="<c:url value="/assets/js/oneui.core.min.js"/>"></script>
 	<script src="<c:url value="/assets/js/oneui.app.min.js"/>"></script>
+	
+	<!-- Notifications JS Plugin -->
+	<script
+		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
+	<script
+		src="<c:url value="/assets/js/plugins/jquery-validation/jquery.validate.min.js"/>"></script>
+
+	<!-- Page JS Code -->
+	<script src="<c:url value="/assets/js/pages/cadastrar_marca.js"/>"></script>
+
+	<c:forEach var="error" items="${ errors }">
+		<script>
+			$.notify({
+				title : `<b><c:url value="${ error.category }"/></b>`,
+				icon : `fa fa-times mr-1`,
+				message : `<br><c:out value="${ error.message }"/>`
+			}, {
+				type : 'danger'
+			});
+		</script>
+	</c:forEach>
+
+	<c:forEach var="notificacao" items="${ notificacoes }">
+		<script>
+			$
+					.notify(
+							{
+								title : `<b><c:out value="${ notificacao.mensagem.category }"/></b>`,
+								icon : `<c:out value="${ notificacao.tipo.iconeCSS }"/>`,
+								message : `<br><c:out value="${ notificacao.mensagem.message }"/>`
+							},
+							{
+								type : `<c:out value="${ notificacao.tipo.classeCSS }"/>`
+							});
+		</script>
+	</c:forEach>
 
 </body>
 
