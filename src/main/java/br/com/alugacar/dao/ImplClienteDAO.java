@@ -395,7 +395,6 @@ public class ImplClienteDAO implements ClienteDAO {
 		Boolean excluido = rs.getBoolean("cli_excluido");
 
 		String tipo = rs.getString("cli_tipo");
-		System.out.println(tipo);
 		if (tipo.equalsIgnoreCase("F")) {
 			ClientePessoaFisica clipf = new ClientePessoaFisica();
 			clipf.setRegistroGeral(rs.getString("clipf_reg_geral"));

@@ -48,9 +48,10 @@ public class ClienteController {
 	private Validator validator;
 
 	public List<Cliente> listar() {
-		validator.onErrorRedirectTo(DashboardController.class).dashboard();
-
 		result.include("tipoClienteList", TipoCliente.values());
+		result.include("cliExcluidoList", service.getExcluidos());
+
+		validator.onErrorRedirectTo(DashboardController.class).dashboard();
 		return service.getAtivos();
 	}
 
@@ -215,7 +216,6 @@ public class ClienteController {
 	@AutenticacaoNecessaria
 	@Post("{cliente.id}/cadastrar/telefone")
 	public void cadastrarTelefone(Cliente cliente, TelefoneCliente telefone) {
-		validator.onErrorRedirectTo(this).formulario(cliente);
 		try {
 			service.cadastrarTelefone(cliente, telefone);
 
@@ -228,6 +228,25 @@ public class ClienteController {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao adicionar telefone", e.getMessage());
 			validator.add(mensagemErro);
 		}
+		validator.onErrorRedirectTo(this).formulario(cliente);
+	}
+
+	@AutenticacaoNecessaria
+	@Post("{cliente.id}/atualizar")
+	public void atualizar(Cliente cliente) {
+		try {
+			service.atualizar(cliente);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Cliente atualizado",
+					"O cliente foi atualizado com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar cliente", e.getMessage());
+			validator.add(mensagemErro);
+		}
+		validator.onErrorRedirectTo(this).formulario(cliente);
 	}
 
 	@AutenticacaoNecessaria
@@ -283,7 +302,7 @@ public class ClienteController {
 		}
 		validator.onErrorRedirectTo(this).formulario(cliente);
 	}
-	
+
 	@AutenticacaoNecessaria
 	@Post("{cliente.id}/excluir")
 	public void excluir(Cliente cliente) {
@@ -351,6 +370,24 @@ public class ClienteController {
 			result.redirectTo(this).formulario(cliente);
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir email", e.getMessage());
+			validator.add(mensagemErro);
+		}
+		validator.onErrorRedirectTo(this).formulario(cliente);
+	}
+
+	@AutenticacaoNecessaria
+	@Post("recuperar")
+	public void recuperar(Cliente cliente) {
+		try {
+			cliente = service.recuperar(cliente.getId());
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Cliente recuperado",
+					"O cliente " + cliente.getNome() + " foi recuperado com sucesso!", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao recuperar cliente", e.getMessage());
 			validator.add(mensagemErro);
 		}
 		validator.onErrorRedirectTo(this).formulario(cliente);

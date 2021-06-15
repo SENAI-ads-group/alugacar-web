@@ -6,6 +6,8 @@ import javax.inject.Inject;
 
 import br.com.alugacar.dao.ClienteDAO;
 import br.com.alugacar.entidades.Cliente;
+import br.com.alugacar.entidades.ClientePessoaFisica;
+import br.com.alugacar.entidades.ClientePessoaJuridica;
 import br.com.alugacar.entidades.Email;
 import br.com.alugacar.entidades.EmailCliente;
 import br.com.alugacar.entidades.Endereco;
@@ -57,6 +59,18 @@ public class ClienteService {
 		dao.telefoneDAO().adicionarTelefone(cliente, telefone);
 	}
 
+	public Cliente atualizar(Cliente cliente) {
+		Cliente obj = dao.buscarId(cliente.getId());
+		if (obj == null)
+			throw new ServiceException("Não foi possível encontrar cliente com o ID " + cliente.getId());
+		atualizarDados(cliente, obj);
+		obj = dao.atualizar(obj.getId(), obj);
+		if (obj == null)
+			throw new ServiceException("Não foi possível atualizar o cliente");
+
+		return obj;
+	}
+
 	public EnderecoCliente atualizarEndereco(Cliente cliente, Endereco endereco) {
 		EnderecoCliente e = (EnderecoCliente) dao.enderecoDAO().atualizarEndereco(cliente.getId(), endereco.getId(),
 				endereco);
@@ -103,6 +117,27 @@ public class ClienteService {
 
 	public void excluirTelefone(Cliente cliente, TelefoneCliente telefone) {
 		dao.telefoneDAO().removerTelefone(cliente.getId(), telefone.getNumero());
+	}
+
+	private void atualizarDados(Cliente origem, Cliente destino) {
+		destino.setCpfCnpj(origem.getCpfCnpj());
+		destino.setNome(origem.getNome());
+
+		if (origem instanceof ClientePessoaFisica && destino instanceof ClientePessoaFisica)
+			((ClientePessoaFisica) destino).setRegistroGeral(((ClientePessoaFisica) origem).getRegistroGeral());
+		else if (origem instanceof ClientePessoaFisica && destino instanceof ClientePessoaJuridica)
+			((ClientePessoaJuridica) destino).setRazaoSocial(((ClientePessoaJuridica) origem).getRazaoSocial());
+	}
+
+	public Cliente recuperar(Integer id) {
+		Cliente c = dao.buscarId(id);
+		if (c == null)
+			throw new ServiceException("Não existe cliente com o ID " + id);
+		c.setExcluido(false);
+		c = dao.atualizar(id, c);
+		if (c == null)
+			throw new ServiceException("Não foi possível recuperar o cliente");
+		return c;
 	}
 
 }
