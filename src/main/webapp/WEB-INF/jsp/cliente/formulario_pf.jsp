@@ -196,7 +196,7 @@
 														<i class="fa fa-fw fa-pencil-alt"></i>
 													</a>
 													<form id="form-excluir" method="POST"
-														action="<c:url value="/clientes/${ cliente.id }/excluir/endereco/${ end }"/>">
+														action="<c:url value="/clientes/${ cliente.id }/excluir/endereco/${ end.id }"/>">
 														<button type="submit" class="btn btn-sm btn-alt-primary"
 															data-toggle="tooltip" title="Excluir">
 															<i class="fa fa-fw fa-times"></i>

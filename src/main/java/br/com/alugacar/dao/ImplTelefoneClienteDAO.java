@@ -47,17 +47,17 @@ public class ImplTelefoneClienteDAO implements TelefoneDAO<Cliente> {
 	}
 
 	@Override
-	public void removerTelefone(Integer idObj, Integer idTelefone) {
+	public void removerTelefone(Integer idObj, String numeroTelefone) {
 		// @formatter:off
 		final String SQL= "DELETE FROM telefone_cliente "
-				+ "WHERE telcli_cli_id = ?, "
+				+ "WHERE telcli_cli_id = ? "
 				+ "AND telcli_numero = ?";
 		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
 			ps.setInt(1, idObj);
-			ps.setInt(1, idTelefone);
+			ps.setString(2, numeroTelefone);
 
 			ps.executeUpdate();
 

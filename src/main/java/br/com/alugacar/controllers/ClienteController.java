@@ -51,7 +51,7 @@ public class ClienteController {
 		validator.onErrorRedirectTo(DashboardController.class).dashboard();
 
 		result.include("tipoClienteList", TipoCliente.values());
-		return service.getTodos();
+		return service.getAtivos();
 	}
 
 	@AutenticacaoNecessaria
@@ -117,7 +117,7 @@ public class ClienteController {
 		result.include("estadoList", Estado.values());
 
 		for (Endereco end : cliente.getEnderecos()) {
-			if (end.getId() == end.getId())
+			if (end.getId() == endereco.getId())
 				return end;
 		}
 		return null;
@@ -162,7 +162,6 @@ public class ClienteController {
 		service.inserir(cliente);
 		result.redirectTo(this).listar();
 	}
-	
 
 	@AutenticacaoNecessaria
 	@Post("cadastrar/pj")
@@ -178,59 +177,23 @@ public class ClienteController {
 	}
 
 	@AutenticacaoNecessaria
-	@Post("{cliente.id}/atualizar/endereco/{endereco.id}")
-	public void atualizarEndereco(Cliente cliente, EnderecoCliente endereco) {
-		validator.onErrorRedirectTo(this).formulario(cliente);
-		try {
-			endereco = service.atualizarEndereco(cliente, endereco);
-
-			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Endereço atualizado",
-					"O endereço " + endereco.getDescricao() + "foi atualizado com sucesso.", TipoNotificacao.SUCESSO);
-			NotificacaoUtil.adicionarNotificacao(result, notificacao);
-
-			validator.onErrorRedirectTo(this).formulario(cliente);
-		} catch (ServiceException e) {
-			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar endereço", e.getMessage());
-			validator.add(mensagemErro);
-		}
-	}
-
-	@AutenticacaoNecessaria
-	@Post("{cliente.id}/atualizar/email/{antigoEmail.email}")
-	public void atualizarEndereco(Cliente cliente, EmailCliente antigoEmail, EmailCliente email) {
-		validator.onErrorRedirectTo(this).formulario(cliente);
-		try {
-			email = service.atualizarEmail(cliente, antigoEmail.getEmail(), email);
-
-			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Email atualizado",
-					"O email " + email.getEmail() + "foi atualizado com sucesso.", TipoNotificacao.SUCESSO);
-			NotificacaoUtil.adicionarNotificacao(result, notificacao);
-
-			result.redirectTo(this).formulario(cliente);
-		} catch (ServiceException e) {
-			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar endereço", e.getMessage());
-			validator.add(mensagemErro);
-		}
-	}
-
-	@AutenticacaoNecessaria
 	@Post("{cliente.id}/cadastrar/endereco")
 	public void cadastrarEndereco(Cliente cliente, EnderecoCliente endereco) {
 		validator.onErrorRedirectTo(this).formulario(cliente);
 		try {
-			endereco = service.atualizarEndereco(cliente, endereco);
+			service.cadastrarEndereco(cliente, endereco);
 
-			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Endereço atualizado",
-					"O endereço " + endereco.getDescricao() + "foi atualizado com sucesso.", TipoNotificacao.SUCESSO);
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Endereço cadastrado",
+					"O endereço " + endereco.getDescricao() + " foi cadastrado com sucesso.", TipoNotificacao.SUCESSO);
 			NotificacaoUtil.adicionarNotificacao(result, notificacao);
 
 			result.redirectTo(this).formulario(cliente);
 		} catch (ServiceException e) {
-			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar endereço", e.getMessage());
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao cadastrar endereço", e.getMessage());
 			validator.add(mensagemErro);
 		}
 	}
-	
+
 	@AutenticacaoNecessaria
 	@Post("{cliente.id}/cadastrar/email")
 	public void cadastrarEmail(Cliente cliente, EmailCliente email) {
@@ -250,6 +213,96 @@ public class ClienteController {
 	}
 
 	@AutenticacaoNecessaria
+	@Post("{cliente.id}/cadastrar/telefone")
+	public void cadastrarTelefone(Cliente cliente, TelefoneCliente telefone) {
+		validator.onErrorRedirectTo(this).formulario(cliente);
+		try {
+			service.cadastrarTelefone(cliente, telefone);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Telefone adicionado",
+					"Novo telefone adicionado com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).formulario(cliente);
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao adicionar telefone", e.getMessage());
+			validator.add(mensagemErro);
+		}
+	}
+
+	@AutenticacaoNecessaria
+	@Post("{cliente.id}/atualizar/endereco/{endereco.id}")
+	public void atualizarEndereco(Cliente cliente, EnderecoCliente endereco) {
+		try {
+			endereco = service.atualizarEndereco(cliente, endereco);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Endereço atualizado",
+					"O endereço " + endereco.getDescricao() + "foi atualizado com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).formulario(cliente);
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar endereço", e.getMessage());
+			validator.add(mensagemErro);
+		}
+		validator.onErrorRedirectTo(this).formulario(cliente);
+	}
+
+	@AutenticacaoNecessaria
+	@Post("{cliente.id}/atualizar/telefone/{antigoNumero}")
+	public void atualizarTelefone(Cliente cliente, String antigoNumero, TelefoneCliente telefone) {
+		try {
+			telefone = service.atualizarTelefone(cliente, antigoNumero, telefone);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Telefone atualizado",
+					"O telefone foi atualizado com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).formulario(cliente);
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar telefone", e.getMessage());
+			validator.add(mensagemErro);
+		}
+	}
+
+	@AutenticacaoNecessaria
+	@Post("{cliente.id}/atualizar/email/{antigoEmail}")
+	public void atualizarEmail(Cliente cliente, String antigoEmail, EmailCliente email) {
+		validator.onErrorRedirectTo(this).formulario(cliente);
+		try {
+			email = service.atualizarEmail(cliente, antigoEmail, email);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Email atualizado",
+					"O email " + email.getEmail() + "foi atualizado com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).formulario(cliente);
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar endereço", e.getMessage());
+			validator.add(mensagemErro);
+		}
+		validator.onErrorRedirectTo(this).formulario(cliente);
+	}
+	
+	@AutenticacaoNecessaria
+	@Post("{cliente.id}/excluir")
+	public void excluir(Cliente cliente) {
+		try {
+			service.excluir(cliente);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Cliente excluído",
+					"O cliente foi excluído com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir cliente", e.getMessage());
+			validator.add(mensagemErro);
+		}
+		validator.onErrorRedirectTo(this).listar();
+	}
+
+	@AutenticacaoNecessaria
 	@Post("{cliente.id}/excluir/endereco/{endereco.id}")
 	public void excluirEndereco(Cliente cliente, EnderecoCliente endereco) {
 		validator.onErrorRedirectTo(this).formulario(cliente);
@@ -265,6 +318,42 @@ public class ClienteController {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir endereço", e.getMessage());
 			validator.add(mensagemErro);
 		}
+	}
+
+	@AutenticacaoNecessaria
+	@Post("{cliente.id}/excluir/telefone/{telefone.numero}")
+	public void excluirTelefone(Cliente cliente, TelefoneCliente telefone) {
+		try {
+			service.excluirTelefone(cliente, telefone);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Telefone excluído",
+					"O telefone  foi excluído com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).formulario(cliente);
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir telefone", e.getMessage());
+			validator.add(mensagemErro);
+		}
+		validator.onErrorRedirectTo(this).formulario(cliente);
+	}
+
+	@AutenticacaoNecessaria
+	@Post("{cliente.id}/excluir/email/{email.email}")
+	public void excluirEmail(Cliente cliente, EmailCliente email) {
+		try {
+			service.excluirEmail(cliente, email);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Email excluído",
+					"O email foi excluído com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).formulario(cliente);
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir email", e.getMessage());
+			validator.add(mensagemErro);
+		}
+		validator.onErrorRedirectTo(this).formulario(cliente);
 	}
 
 }

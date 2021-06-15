@@ -104,13 +104,11 @@
 						<form
 							action="
 							<c:if test="${ telefone.numero == null }">
-								<c:url value="/clientes/${ cliente.id }/adicionar/telefone"/>
+								<c:url value="/clientes/${ cliente.id }/cadastrar/telefone"/>
 							</c:if>
 							<c:if test="${ telefone.numero != null }">
 								<c:url value="/clientes/${ cliente.id }/atualizar/telefone/${ telefone.numero }"/>
-							</c:if>
-							"
-							method="POST">
+							</c:if>" method="POST">
 							<div class="form-group">
 								<label for="cliente.nome">Cliente</label> <input type="text"
 									class="form-control" id="cliente.nome" name="cliente.nome"

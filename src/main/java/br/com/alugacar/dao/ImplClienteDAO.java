@@ -138,8 +138,86 @@ public class ImplClienteDAO implements ClienteDAO {
 
 	@Override
 	public Cliente atualizar(Integer id, Cliente cliente) {
-		// TODO Auto-generated method stub
-		return null;
+		// @formatter:off
+		final String SQL = "UPDATE cliente SET "
+				+ "cli_nome = ?, "
+				+ "cli_tipo = ?, "
+				+ "cli_cpf_cnpj = ?, "
+				+ "cli_excluido = ? "
+				+ "WHERE cli_id = ?";
+		// @formatter:on
+
+		try (Connection connection = ConnectionFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(SQL)) {
+			connection.setAutoCommit(false);
+
+			String tipo = null;
+			if (cliente instanceof ClientePessoaFisica)
+				tipo = "F";
+			else if (cliente instanceof ClientePessoaJuridica)
+				tipo = "J";
+
+			ps.setString(1, cliente.getNome());
+			ps.setString(2, tipo);
+			ps.setString(3, cliente.getCpfCnpj());
+			ps.setBoolean(4, cliente.getExcluido());
+			ps.setInt(5, id);
+
+			Cliente clienteAtualizado = null;
+
+			int linhasAfetadas = ps.executeUpdate();
+			ResultSet rs = null;
+			if (linhasAfetadas > 0) {
+				clienteAtualizado = cliente;
+				clienteAtualizado.setId(id);
+
+				if (tipo == "F")
+					atualizarPessoaFisica(id, cliente, connection);
+				else if (tipo == "J")
+					atualizarPessoaJuridica(id, cliente, connection);
+			}
+			connection.commit();
+			ConnectionFactory.closeConnection(connection, ps, rs);
+			return clienteAtualizado;
+		} catch (SQLException e) {
+			throw new DAOException(e.getMessage());
+		}
+	}
+
+	private void atualizarPessoaFisica(Integer id, Cliente cliente, Connection connection) throws SQLException {
+		// @formatter:off
+		final String SQL = "UPDATE cliente_pf SET "
+				+ "clipf_reg_geral = ? "
+				+ "WHERE clipf_cli_id = ?";
+		// @formatter:on
+
+		try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+			ps.setString(1, ((ClientePessoaFisica) cliente).getRegistroGeral());
+			ps.setInt(2, cliente.getId());
+
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			throw e;
+		}
+	}
+
+	private void atualizarPessoaJuridica(Integer id, Cliente cliente, Connection connection) throws SQLException {
+		// @formatter:off
+		final String SQL = "UPDATE cliente_pj SET "
+				+ "clipj_raz_social = ? "
+				+ "WHERE clipj_cli_id = ?";
+		// @formatter:on
+
+		try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+			ps.setString(1, ((ClientePessoaJuridica) cliente).getRazaoSocial());
+			ps.setInt(2, cliente.getId());
+
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			throw e;
+		}
 	}
 
 	@Override

@@ -175,7 +175,7 @@
 												<!-- Populating custom file input label with the selected filename (data-toggle="custom-file-input" is initialized in Helpers.coreBootstrapCustomFileInput()) -->
 												<input type="file" accept="image/*"
 													class="custom-file-input" data-toggle="custom-file-input"
-													id="foto" name="foto"> <label
+													id="foto" name="foto" multiple> <label
 													class="custom-file-label" for="foto">Escolha a nova
 													foto</label>
 											</div>

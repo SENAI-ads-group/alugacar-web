@@ -48,7 +48,7 @@ public class ImplEmailClienteDAO implements EmailDAO<Cliente> {
 	public void removerEmail(Integer idObj, String email) {
 		// @formatter:off
 		final String SQL= "DELETE FROM email_cliente "
-				+ "WHERE emailcli_cli_id = ?, "
+				+ "WHERE emailcli_cli_id = ? "
 				+ "AND emailcli_email = ?";
 		// @formatter:on
 

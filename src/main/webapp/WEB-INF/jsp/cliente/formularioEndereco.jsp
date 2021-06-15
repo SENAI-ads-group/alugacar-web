@@ -102,7 +102,7 @@
 						<form
 							action="
 							<c:if test="${ endereco.id == null}">
-								<c:url value="/clientes/${ cliente.id }/adicionar/endereco"/>
+								<c:url value="/clientes/${ cliente.id }/cadastrar/endereco"/>
 							</c:if>
 							<c:if test="${ endereco.id != null}">
 								<c:url value="/clientes/${ cliente.id }/atualizar/endereco/${ endereco.id }"/>

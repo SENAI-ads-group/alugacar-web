@@ -31,6 +31,14 @@ public class ClienteService {
 		return dao.buscarTodos();
 	}
 
+	public List<Cliente> getAtivos() {
+		return dao.buscarExclusao(false);
+	}
+
+	public List<Cliente> getExcluidos() {
+		return dao.buscarExclusao(true);
+	}
+
 	public Cliente getId(Integer id) {
 		return dao.buscarId(id);
 	}
@@ -40,7 +48,13 @@ public class ClienteService {
 	}
 
 	public void cadastrarEmail(Cliente cliente, EmailCliente email) {
+		email.setEmail(email.getEmail().trim().toLowerCase());
 		dao.emailDAO().adicionarEmail(cliente, email);
+	}
+
+	public void cadastrarTelefone(Cliente cliente, TelefoneCliente telefone) {
+		telefone.setNumero(telefone.getNumero().trim());
+		dao.telefoneDAO().adicionarTelefone(cliente, telefone);
 	}
 
 	public EnderecoCliente atualizarEndereco(Cliente cliente, Endereco endereco) {
@@ -52,6 +66,8 @@ public class ClienteService {
 	}
 
 	public EmailCliente atualizarEmail(Cliente cliente, String strEmail, Email email) {
+		strEmail = strEmail.trim().toLowerCase();
+		email.setEmail(email.getEmail().trim().toLowerCase());
 		EmailCliente e = (EmailCliente) dao.emailDAO().atualizarEmail(cliente.getId(), strEmail, email);
 		if (e == null)
 			throw new ServiceException("Não foi possível atualizar o endereco");
@@ -59,11 +75,22 @@ public class ClienteService {
 	}
 
 	public TelefoneCliente atualizarTelefone(Cliente cliente, String strTelefone, Telefone telefone) {
+		telefone.setNumero(telefone.getNumero().trim());
 		TelefoneCliente t = (TelefoneCliente) dao.telefoneDAO().atualizarTelefone(cliente.getId(), strTelefone,
 				telefone);
 		if (t == null)
 			throw new ServiceException("Não foi possível atualizar o telefone");
 		return t;
+	}
+
+	public void excluir(Cliente cliente) {
+		Cliente c = dao.buscarId(cliente.getId());
+		if (c == null)
+			throw new ServiceException("Não existe cliente com o ID " + cliente.getId());
+		c.setExcluido(true);
+		c = dao.atualizar(cliente.getId(), c);
+		if (c == null)
+			throw new ServiceException("Não foi possível excluir o cliente");
 	}
 
 	public void excluirEndereco(Cliente cliente, Endereco endereco) {
@@ -74,8 +101,8 @@ public class ClienteService {
 		dao.emailDAO().removerEmail(cliente.getId(), email.getEmail());
 	}
 
-	public void excluirTelefone(Cliente cliente, EnderecoCliente endereco) {
-		dao.enderecoDAO().removerEndereco(cliente.getId(), endereco.getId());
+	public void excluirTelefone(Cliente cliente, TelefoneCliente telefone) {
+		dao.telefoneDAO().removerTelefone(cliente.getId(), telefone.getNumero());
 	}
 
 }

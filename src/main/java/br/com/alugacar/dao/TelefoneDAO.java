@@ -12,7 +12,7 @@ public interface TelefoneDAO<T> {
 
 	void adicionarTelefone(T obj, Telefone telefone, Connection connection) throws SQLException;
 
-	void removerTelefone(Integer idObj, Integer idTelefone);
+	void removerTelefone(Integer idObj, String numeroTelefone);
 
 	TelefoneCliente atualizarTelefone(Integer idobj, String numeroTelefone, Telefone telefone);
 }

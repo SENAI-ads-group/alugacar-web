@@ -2,7 +2,6 @@ package br.com.alugacar.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -68,14 +67,14 @@ public class ImplEnderecoClienteDAO implements EnderecoDAO<Cliente> {
 	public void removerEndereco(Integer idObj, Integer idEndereco) {
 		// @formatter:off
 		final String SQL= "DELETE FROM endereco_cliente "
-				+ "WHERE endcli_cli_id = ?, "
+				+ "WHERE endcli_cli_id = ? "
 				+ "AND endcli_id = ?";
 		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
 			ps.setInt(1, idObj);
-			ps.setInt(1, idEndereco);
+			ps.setInt(2, idEndereco);
 
 			ps.executeUpdate();
 
@@ -115,21 +114,15 @@ public class ImplEnderecoClienteDAO implements EnderecoDAO<Cliente> {
 			ps.setString(8, endereco.getEstado().name());
 			ps.setString(9, endereco.getPais());
 			ps.setString(10, endereco.getTipo().name());
-			ps.setInt(11, idObj);
-			ps.setInt(12, idEndereco);
-			ps.executeUpdate();
+			ps.setInt(11, idEndereco);
+			ps.setInt(12, idObj);
 
 			EnderecoCliente enderecoAtualizado = null;
 
 			int linhasAfetadas = ps.executeUpdate();
-			ResultSet rs = null;
-			if (linhasAfetadas > 0) {
-				rs = ps.getGeneratedKeys();
-				if (rs.next()) {
-					enderecoAtualizado = (EnderecoCliente) endereco;
-					enderecoAtualizado.setId(rs.getInt(1));
-				}
-			}
+			if (linhasAfetadas > 0)
+				enderecoAtualizado = (EnderecoCliente) endereco;
+
 			ConnectionFactory.closeConnection(connection, ps);
 			return enderecoAtualizado;
 		} catch (SQLException e) {
