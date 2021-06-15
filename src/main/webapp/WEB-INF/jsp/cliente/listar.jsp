@@ -118,19 +118,6 @@
 										<td class="text-center">
 											<div class="btn-group">
 												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
-													title="Emails"
-													href="<c:url value="/clientes/${ cli.id }/emails"/>"> <i
-													class="fa fa-fw fa-at"></i>
-												</a> <a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
-													title="Telefones"
-													href="<c:url value="/clientes/${ cli.id }/telefones"/>">
-													<i class="fa fa-fw fa-phone-alt"></i>
-												</a> <a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
-													title="Endereços"
-													href="<c:url value="/clientes/${ cli.id }/enderecos"/>">
-													<i class="fa fa-fw fa-map-marker-alt"></i>
-												</a> 
-												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
 													title="Editar"
 													href="<c:url value="/clientes/${ cli.id }"/>"> <i
 													class="fa fa-fw fa-pencil-alt"></i>

@@ -59,16 +59,12 @@ public class MarcaService {
 	}
 
 	public Marca getId(Integer id) {
-		try {
-			Marca marcaEncontrado = dao.buscarId(id);
+		Marca marcaEncontrado = dao.buscarId(id);
 
-			if (marcaEncontrado == null)
-				throw new ServiceException("Marca com ID " + id + " não encontrado");
+		if (marcaEncontrado == null)
+			throw new ServiceException("Marca com ID " + id + " não encontrado");
 
-			return dao.buscarId(id);
-		} catch (DAOException e) {
-			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
-		}
+		return dao.buscarId(id);
 	}
 
 	public Marca atualizar(Integer id, Marca marca) {
@@ -97,7 +93,7 @@ public class MarcaService {
 					.filter(m -> m.getMarca().getId() == id).collect(Collectors.toList());
 			if (!modelosRelacionados.isEmpty())
 				throw new ServiceException("Não é possível excluir esta marca, pois o modelo "
-						+ mc.getModelos().get(0).getDescricao() + " está associado à ela.");
+						+ modelosRelacionados.get(0).getDescricao() + " está associado à ela.");
 
 			mc.setExcluida(true);
 			mc = dao.atualizar(id, mc);

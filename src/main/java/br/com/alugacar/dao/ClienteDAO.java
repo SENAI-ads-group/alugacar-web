@@ -3,13 +3,9 @@ package br.com.alugacar.dao;
 import java.util.List;
 
 import br.com.alugacar.entidades.Cliente;
-import br.com.alugacar.entidades.EmailCliente;
-import br.com.alugacar.entidades.Endereco;
-import br.com.alugacar.entidades.EnderecoCliente;
-import br.com.alugacar.entidades.TelefoneCliente;
 
 public interface ClienteDAO {
-
+	
 	Cliente inserir(Cliente cliente);
 
 	Cliente atualizar(Integer id, Cliente cliente);
@@ -26,18 +22,9 @@ public interface ClienteDAO {
 
 	boolean existeCpfCnpj(String cpfCnpj);
 
-	Cliente adicionarEmail(Cliente cliente, EmailCliente email);
+	EnderecoDAO<Cliente> enderecoDAO();
 
-	Cliente removerEmail(Cliente cliente, EmailCliente email);
+	EmailDAO<Cliente> emailDAO();
 
-	Cliente adicionarEndereco(Cliente cliente, EnderecoCliente endereco);
-
-	void removerEndereco(Integer idCliente, Integer idEndereco);
-
-	Endereco atualizarEndereco(Integer idCliente, Integer idEndereco, Endereco endereco);
-
-	Cliente adicionarTelefone(Cliente cliente, TelefoneCliente telefone);
-
-	Cliente removerTelefone(Cliente cliente, TelefoneCliente telefone);
-
+	TelefoneDAO<Cliente> telefoneDAO();
 }

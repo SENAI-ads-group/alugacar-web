@@ -168,80 +168,19 @@
 
 							<!-- Step 2 -->
 							<div class="tab-pane" id="wizard-passo2" role="tabpanel">
-								<div class="form-group">
-									<label for="endereco.descricao">Descrição</label> <input
-										type="text" class="form-control" id="endereco.descricao"
-										name="endereco.descricao">
-								</div>
-								<div class="form-group">
-									<label for="endereco.cep">CEP</label> <input type="text"
-										class="form-control" id="endereco.cep" name="endereco.cep">
-								</div>
-								<div class="form-group">
-									<label for="endereco.logradouro">Logradouro</label> <input
-										type="text" class="form-control" id="endereco.logradouro"
-										name="endereco.logradouro">
-								</div>
-								<div class="form-group">
-									<label for="endereco.numero">Número</label> <input type="text"
-										class="form-control" id="endereco.numero"
-										name="endereco.numero">
-								</div>
-								<div class="form-group">
-									<label for="endereco.complemento">Complemento</label> <input
-										type="text" class="form-control" id="endereco.complemento"
-										name="endereco.complemento">
-								</div>
-								<div class="form-group">
-									<label for="endereco.bairro">Bairro</label> <input type="text"
-										class="form-control" id="endereco.bairro"
-										name="endereco.bairro">
-								</div>
-								<div class="form-group">
-									<label for="endereco.cidade">Cidade</label> <input type="text"
-										class="form-control" id="endereco.cidade"
-										name="endereco.cidade">
-								</div>
-								<div class="form-group">
-									<label for="endereco.pais">País</label> <input type="text"
-										class="form-control" id="endereco.pais" name="endereco.pais">
-								</div>
-								<div class="form-group">
-									<label for="">Tipo</label> <select class="custom-select"
-										id="endereco.tipo" name="endereco.tipo" style="width: 100%;">
-										<c:forEach var="tipoEnd" items="${ tipoEndList }">
-											<option value="${ tipoEnd }">Endereço de ${ tipoEnd.nomeFormatado }</option>
-										</c:forEach>
-									</select>
-								</div>
+								<%@ include file="../form-groups/endereco.jsp"%>
 							</div>
 							<!-- END Step 2 -->
 
 							<!-- Step 3 -->
 							<div class="tab-pane" id="wizard-passo3" role="tabpanel">
-								<div class="form-group">
-									<label for="telefone.numero">Telefone</label> <input
-										type="text" class="form-control" id="telefone.numero"
-										name="telefone.numero">
-								</div>
-								<div class="form-group">
-									<label for="">Tipo</label> <select class="custom-select"
-										id="telefone.tipo" name="telefone.tipo" style="width: 100%;">
-										<c:forEach var="tipoTel" items="${ tipoTelList }">
-											<option value="${ tipoTel }">Telefone ${ tipoTel.nomeFormatado }</option>
-										</c:forEach>
-									</select>
-								</div>
+								<%@ include file="../form-groups/telefone.jsp"%>
 							</div>
 							<!-- END Step 3 -->
 
 							<!-- Step 4 -->
 							<div class="tab-pane" id="wizard-passo4" role="tabpanel">
-								<div class="form-group">
-									<label for="emailCliente.email">Email</label> <input
-										type="text" class="form-control" id="emailCliente.email"
-										name="emailCliente.email">
-								</div>
+								<%@ include file="../form-groups/email.jsp"%>
 							</div>
 							<!-- END Step 4 -->
 						</div>

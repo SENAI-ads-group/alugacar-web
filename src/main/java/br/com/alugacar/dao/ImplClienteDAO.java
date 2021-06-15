@@ -6,9 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import javax.inject.Inject;
 
 import br.com.alugacar.dao.exceptions.DAOException;
 import br.com.alugacar.entidades.Cliente;
@@ -23,6 +27,15 @@ import br.com.alugacar.entidades.enums.TipoEndereco;
 import br.com.alugacar.entidades.enums.TipoTelefone;
 
 public class ImplClienteDAO implements ClienteDAO {
+
+	@Inject
+	private EnderecoDAO<Cliente> enderecoDAO;
+
+	@Inject
+	private EmailDAO<Cliente> emailDAO;
+
+	@Inject
+	private TelefoneDAO<Cliente> telefoneDAO;
 
 	@Override
 	public Cliente inserir(Cliente cliente) {
@@ -60,11 +73,11 @@ public class ImplClienteDAO implements ClienteDAO {
 					clienteInserido.setId(rs.getInt(1));
 
 					for (Endereco end : clienteInserido.getEnderecos())
-						inserirEndereco(clienteInserido, end, connection);
+						enderecoDAO.adicionarEndereco(clienteInserido, end, connection);
 					for (TelefoneCliente tel : clienteInserido.getTelefones())
-						inserirTelefone(clienteInserido, tel, connection);
+						telefoneDAO.adicionarTelefone(clienteInserido, tel, connection);
 					for (EmailCliente email : clienteInserido.getEmails())
-						inserirEmail(clienteInserido, email, connection);
+						emailDAO.adicionarEmail(clienteInserido, email, connection);
 
 					if (tipo == "F")
 						inserirPessoaFisica(cliente, connection);
@@ -150,18 +163,10 @@ public class ImplClienteDAO implements ClienteDAO {
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
-
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
+			Cliente clienteEncontrado = instanciarClienteCompleto(rs);
 
-			Cliente clienteEncontrado = null;
-			while (rs.next()) {
-				Cliente cliente = instanciarCliente(rs);
-				EnderecoCliente end = instanciarEndereco(rs, cliente);
-				cliente.getEnderecos().add(end);
-				if (clienteEncontrado == null)
-					clienteEncontrado = cliente;
-			}
 			ConnectionFactory.closeConnection(connection, ps, rs);
 			return clienteEncontrado;
 		} catch (SQLException e) {
@@ -190,24 +195,10 @@ public class ImplClienteDAO implements ClienteDAO {
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
-
 			ps.setString(1, cpfCnpj);
 			ResultSet rs = ps.executeQuery();
+			Cliente clienteEncontrado = instanciarClienteCompleto(rs);
 
-			Cliente clienteEncontrado = null;
-			while (rs.next()) {
-				Cliente cliente = instanciarCliente(rs);
-				EnderecoCliente end = instanciarEndereco(rs, cliente);
-				TelefoneCliente tel = instanciarTelefone(rs, cliente);
-				EmailCliente email = instanciarEmail(rs, cliente);
-
-				cliente.getEnderecos().add(end);
-				cliente.getTelefones().add(tel);
-				cliente.getEmails().add(email);
-
-				if (clienteEncontrado == null)
-					clienteEncontrado = cliente;
-			}
 			ConnectionFactory.closeConnection(connection, ps, rs);
 			return clienteEncontrado;
 		} catch (SQLException e) {
@@ -235,26 +226,9 @@ public class ImplClienteDAO implements ClienteDAO {
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
-
 			ResultSet rs = ps.executeQuery();
+			List<Cliente> clientesEncontrados = instanciarListaCliente(rs);
 
-			Set<Integer> idSet = new HashSet<>();
-			List<Cliente> clientesEncontrados = new ArrayList<>();
-			while (rs.next()) {
-				Cliente cliente = instanciarCliente(rs);
-				EnderecoCliente end = instanciarEndereco(rs, cliente);
-				TelefoneCliente tel = instanciarTelefone(rs, cliente);
-				EmailCliente email = instanciarEmail(rs, cliente);
-
-				cliente.getEnderecos().add(end);
-				cliente.getTelefones().add(tel);
-				cliente.getEmails().add(email);
-
-				if (!idSet.contains(cliente.getId())) {
-					idSet.add(cliente.getId());
-					clientesEncontrados.add(cliente);
-				}
-			}
 			ConnectionFactory.closeConnection(connection, ps, rs);
 			return clientesEncontrados;
 		} catch (SQLException e) {
@@ -264,8 +238,34 @@ public class ImplClienteDAO implements ClienteDAO {
 
 	@Override
 	public List<Cliente> buscarExclusao(boolean excluido) {
-		// TODO Auto-generated method stub
-		return null;
+		// @formatter:off
+		final String SQL = "SELECT "
+				+ "cliente.*, "
+				+ "cliente_pj.*, "
+				+ "cliente_pf.*, "
+				+ "endereco_cliente.*, "
+				+ "telefone_cliente.*, "
+				+ "email_cliente.* "
+				+ "FROM cliente "
+				+ "LEFT JOIN cliente_pf ON(clipf_cli_id = cli_id) "
+				+ "LEFT JOIN cliente_pj ON(clipj_cli_id = cli_id)"
+				+ "LEFT JOIN endereco_cliente ON(endcli_cli_id = cli_id) "
+				+ "LEFT JOIN telefone_cliente ON(telcli_cli_id = cli_id) "
+				+ "LEFT JOIN email_cliente ON(emailcli_cli_id = cli_id) "
+				+ "WHERE cli_excluido = ?";
+		// @formatter:on
+
+		try (Connection connection = ConnectionFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(SQL)) {
+			ps.setBoolean(1, excluido);
+			ResultSet rs = ps.executeQuery();
+			List<Cliente> clientesEncontrados = instanciarListaCliente(rs);
+
+			ConnectionFactory.closeConnection(connection, ps, rs);
+			return clientesEncontrados;
+		} catch (SQLException e) {
+			throw new DAOException(e.getMessage());
+		}
 	}
 
 	@Override
@@ -280,221 +280,32 @@ public class ImplClienteDAO implements ClienteDAO {
 		return false;
 	}
 
-	@Override
-	public Cliente adicionarEmail(Cliente cliente, EmailCliente email) {
-		try (Connection connection = ConnectionFactory.getConnection()) {
-			inserirEmail(cliente, email, connection);
-			email.setCliente(cliente);
+	private Cliente instanciarClienteCompleto(ResultSet rs) throws SQLException {
+		Map<Integer, EnderecoCliente> endMap = new HashMap<>();
+		Map<String, TelefoneCliente> telMap = new HashMap<>();
+		Map<String, EmailCliente> emailMap = new HashMap<>();
 
-			ConnectionFactory.closeConnection(connection);
-			return cliente;
-		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
+		Cliente clienteEncontrado = null;
+		while (rs.next()) {
+			Cliente cliente = instanciarCliente(rs);
+			EnderecoCliente end = instanciarEndereco(rs, cliente);
+			TelefoneCliente tel = instanciarTelefone(rs, cliente);
+			EmailCliente email = instanciarEmail(rs, cliente);
+
+			if (!endMap.containsKey(end.getId()))
+				endMap.put(end.getId(), end);
+			if (!telMap.containsKey(tel.getNumero()))
+				telMap.put(tel.getNumero(), tel);
+			if (!emailMap.containsKey(email.getEmail()))
+				emailMap.put(email.getEmail(), email);
+			if (clienteEncontrado == null)
+				clienteEncontrado = cliente;
 		}
-	}
+		clienteEncontrado.getEnderecos().addAll(endMap.values());
+		clienteEncontrado.getEmails().addAll(emailMap.values());
+		clienteEncontrado.getTelefones().addAll(telMap.values());
 
-	@Override
-	public Cliente removerEmail(Cliente cliente, EmailCliente email) {
-		// @formatter:off
-		final String SQL= "DELETE FROM email_cliente "
-				+ "WHERE emailcli_cli_id = ?, "
-				+ "AND emailcli_email = ?";
-		// @formatter:on
-
-		try (Connection connection = ConnectionFactory.getConnection();
-				PreparedStatement ps = connection.prepareStatement(SQL)) {
-			ps.setInt(1, cliente.getId());
-			ps.setString(2, email.getEmail());
-
-			ps.executeUpdate();
-			ConnectionFactory.closeConnection(connection, ps);
-			return cliente;
-		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
-		}
-	}
-
-	@Override
-	public Cliente adicionarEndereco(Cliente cliente, EnderecoCliente endereco) {
-		try (Connection connection = ConnectionFactory.getConnection()) {
-			inserirEndereco(cliente, endereco, connection);
-			endereco.setCliente(cliente);
-
-			ConnectionFactory.closeConnection(connection);
-			return cliente;
-		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
-		}
-	}
-
-	@Override
-	public void removerEndereco(Integer idCliente, Integer idEndereco) {
-		// @formatter:off
-		final String SQL= "DELETE FROM endereco_cliente "
-				+ "WHERE endcli_cli_id = ?, "
-				+ "AND endcli_id = ?";
-		// @formatter:on
-
-		try (Connection connection = ConnectionFactory.getConnection();
-				PreparedStatement ps = connection.prepareStatement(SQL)) {
-			ps.setInt(1, idCliente);
-			ps.setInt(1, idEndereco);
-
-			ps.executeUpdate();
-
-			ConnectionFactory.closeConnection(connection, ps);
-		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
-		}
-	}
-
-	@Override
-	public Endereco atualizarEndereco(Integer idCliente, Integer idEndereco, Endereco endereco) {
-		// @formatter:off
-		final String SQL= "UPDATE endereco_cliente SET "
-				+ "endcli_descricao = ?, "
-				+ "endcli_cep = ?, "
-				+ "endcli_logradouro = ?, "
-				+ "endcli_numero = ?, "
-				+ "endcli_complemento = ?, "
-				+ "endcli_bairro = ?, "
-				+ "endcli_cidade = ?, "
-				+ "endcli_estado = ?, "
-				+ "endcli_pais = ?, "
-				+ "endcli_tipo = ? "
-				+ "WHERE endcli_id = ? "
-				+ "AND endcli_cli_id = ?";
-		// @formatter:on
-
-		try (Connection connection = ConnectionFactory.getConnection();
-				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
-			ps.setString(1, endereco.getDescricao());
-			ps.setString(2, endereco.getCep());
-			ps.setString(3, endereco.getLogradouro());
-			ps.setInt(4, endereco.getNumero());
-			ps.setString(5, endereco.getComplemento());
-			ps.setString(6, endereco.getBairro());
-			ps.setString(7, endereco.getCidade());
-			ps.setString(8, endereco.getEstado().name());
-			ps.setString(9, endereco.getPais());
-			ps.setString(10, endereco.getTipo().name());
-			ps.setInt(11, idCliente);
-			ps.setInt(12, idEndereco);
-			ps.executeUpdate();
-
-			Endereco enderecoAtualizado = null;
-
-			int linhasAfetadas = ps.executeUpdate();
-			ResultSet rs = null;
-			if (linhasAfetadas > 0) {
-				rs = ps.getGeneratedKeys();
-				if (rs.next()) {
-					enderecoAtualizado = endereco;
-					enderecoAtualizado.setId(rs.getInt(1));
-				}
-			}
-			ConnectionFactory.closeConnection(connection, ps);
-			return enderecoAtualizado;
-		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
-		}
-	}
-
-	@Override
-	public Cliente adicionarTelefone(Cliente cliente, TelefoneCliente telefone) {
-		try (Connection connection = ConnectionFactory.getConnection()) {
-			inserirTelefone(cliente, telefone, connection);
-			telefone.setCliente(cliente);
-
-			ConnectionFactory.closeConnection(connection);
-			return cliente;
-		} catch (SQLException e) {
-			throw new DAOException(e.getMessage());
-		}
-	}
-
-	@Override
-	public Cliente removerTelefone(Cliente cliente, TelefoneCliente telefone) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private void inserirEndereco(Cliente cliente, Endereco endereco, Connection connection) throws SQLException {
-		// @formatter:off
-		final String SQL = "INSERT INTO endereco_cliente("
-				+ "endcli_cli_id, "
-				+ "endcli_descricao, "
-				+ "endcli_cep, "
-				+ "endcli_logradouro, "
-				+ "endcli_numero, "
-				+ "endcli_complemento, "
-				+ "endcli_bairro, "
-				+ "endcli_cidade, "
-				+ "endcli_estado, "
-				+ "endcli_pais, "
-				+ "endcli_tipo "
-				+ ") VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-		// @formatter:on
-
-		try (PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
-			ps.setInt(1, cliente.getId());
-			ps.setString(2, endereco.getDescricao());
-			ps.setString(3, endereco.getCep());
-			ps.setString(4, endereco.getLogradouro());
-			ps.setInt(5, endereco.getNumero());
-			ps.setString(6, endereco.getComplemento());
-			ps.setString(7, endereco.getBairro());
-			ps.setString(8, endereco.getCidade());
-			ps.setString(9, endereco.getEstado().name());
-			ps.setString(10, endereco.getPais());
-			ps.setString(11, endereco.getTipo().name());
-
-			ps.executeUpdate();
-
-			ps.close();
-		} catch (SQLException e) {
-			throw e;
-		}
-	}
-
-	private void inserirTelefone(Cliente cliente, TelefoneCliente telefone, Connection connection) throws SQLException {
-		// @formatter:off
-		final String SQL = "INSERT INTO telefone_cliente("
-				+ "telcli_cli_id, "
-				+ "telcli_numero, "
-				+ "telcli_tipo "
-				+ ") VALUES(?,?,?)";
-		// @formatter:on
-
-		try (PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
-			ps.setInt(1, cliente.getId());
-			ps.setString(2, telefone.getNumero());
-			ps.setString(3, telefone.getTipo().name());
-
-			ps.executeUpdate();
-			ps.close();
-		} catch (SQLException e) {
-			throw e;
-		}
-	}
-
-	private void inserirEmail(Cliente cliente, EmailCliente email, Connection connection) throws SQLException {
-		// @formatter:off
-		final String SQL = "INSERT INTO email_cliente("
-				+ "emailcli_cli_id, "
-				+ "emailcli_email "
-				+ ") VALUES(?,?)";
-		// @formatter:on
-
-		try (PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
-			ps.setInt(1, cliente.getId());
-			ps.setString(2, email.getEmail());
-
-			ps.executeUpdate();
-			ps.close();
-		} catch (SQLException e) {
-			throw e;
-		}
+		return clienteEncontrado;
 	}
 
 	private Cliente instanciarCliente(ResultSet rs) throws SQLException {
@@ -560,6 +371,62 @@ public class ImplClienteDAO implements ClienteDAO {
 		email.setCliente(cliente);
 
 		return email;
+	}
+
+	private List<Cliente> instanciarListaCliente(ResultSet rs) throws SQLException {
+		Map<Integer, Map<Integer, EnderecoCliente>> endMap = new HashMap<>();
+		Map<Integer, Map<String, TelefoneCliente>> telMap = new HashMap<>();
+		Map<Integer, Map<String, EmailCliente>> emailMap = new HashMap<>();
+
+		Set<Integer> idSet = new HashSet<>();
+		List<Cliente> clientesEncontrados = new ArrayList<>();
+		while (rs.next()) {
+			Cliente cliente = instanciarCliente(rs);
+			EnderecoCliente end = instanciarEndereco(rs, cliente);
+			TelefoneCliente tel = instanciarTelefone(rs, cliente);
+			EmailCliente email = instanciarEmail(rs, cliente);
+
+			Integer idCliente = cliente.getId();
+
+			if (!endMap.containsKey(idCliente))
+				endMap.put(idCliente, new HashMap<>());
+			if (!telMap.containsKey(idCliente))
+				telMap.put(idCliente, new HashMap<>());
+			if (!emailMap.containsKey(idCliente))
+				emailMap.put(idCliente, new HashMap<>());
+
+			if (!(endMap.get(cliente.getId()).containsKey(end.getId())))
+				endMap.get(idCliente).put(end.getId(), end);
+			if (!(telMap.get(cliente.getId()).containsKey(tel.getNumero())))
+				telMap.get(idCliente).put(tel.getNumero(), tel);
+			if (!(emailMap.get(cliente.getId()).containsKey(email.getEmail())))
+				emailMap.get(idCliente).put(email.getEmail(), email);
+
+			if (!idSet.contains(cliente.getId())) {
+				idSet.add(cliente.getId());
+				cliente.getEnderecos().addAll(endMap.get(cliente.getId()).values());
+				cliente.getTelefones().addAll(telMap.get(cliente.getId()).values());
+				cliente.getEmails().addAll(emailMap.get(cliente.getId()).values());
+
+				clientesEncontrados.add(cliente);
+			}
+		}
+		return clientesEncontrados;
+	}
+
+	@Override
+	public EnderecoDAO<Cliente> enderecoDAO() {
+		return enderecoDAO;
+	}
+
+	@Override
+	public EmailDAO<Cliente> emailDAO() {
+		return emailDAO;
+	}
+
+	@Override
+	public TelefoneDAO<Cliente> telefoneDAO() {
+		return telefoneDAO;
 	}
 
 }

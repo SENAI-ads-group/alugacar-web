@@ -1,34 +1,11 @@
 package br.com.alugacar.entidades;
 
-import java.io.Serializable;
-
-import br.com.alugacar.entidades.enums.TipoTelefone;
-
-public class TelefoneCliente implements Serializable {
+public class TelefoneCliente extends Telefone {
 	private static final long serialVersionUID = 1L;
-
-	private String numero;
-	private TipoTelefone tipo;
-
+	
 	private Cliente cliente;
 
 	public TelefoneCliente() {
-	}
-
-	public String getNumero() {
-		return numero;
-	}
-
-	public void setNumero(String numero) {
-		this.numero = numero;
-	}
-
-	public TipoTelefone getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(TipoTelefone tipo) {
-		this.tipo = tipo;
 	}
 
 	public Cliente getCliente() {
@@ -42,10 +19,8 @@ public class TelefoneCliente implements Serializable {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
-		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
-		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
 		return result;
 	}
 
@@ -53,7 +28,7 @@ public class TelefoneCliente implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -62,13 +37,6 @@ public class TelefoneCliente implements Serializable {
 			if (other.cliente != null)
 				return false;
 		} else if (!cliente.equals(other.cliente))
-			return false;
-		if (numero == null) {
-			if (other.numero != null)
-				return false;
-		} else if (!numero.equals(other.numero))
-			return false;
-		if (tipo != other.tipo)
 			return false;
 		return true;
 	}

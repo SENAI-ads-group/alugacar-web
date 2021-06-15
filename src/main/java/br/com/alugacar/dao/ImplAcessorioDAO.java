@@ -53,7 +53,7 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 
 	@Override
 	public Acessorio atualizar(Integer id, Acessorio acessorio) {
-		final String SQL = "UPDATE acessorio SET aces_valor  = ?,  aces_tpaces_id=? WHERE aces_acessorio  = ?";
+		final String SQL = "UPDATE acessorio SET aces_valor  = ?,  aces_tpaces_id=? WHERE aces_id  = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -83,7 +83,7 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 	@Override
 	public Acessorio buscarId(Integer id) {
 		final String SQL = "SELECT acessorio.*, tipo_acessorio.tpaces_descricao, tipo_acessorio.tpaces_id FROM acessorio JOIN tipo_acessorio ON "
-				+"(acessorio.aces_tpaces_id = tipo_acessorio.tpaces_id) WHERE acessorio.aces_acessorio = ?";
+				+"(acessorio.aces_tpaces_id = tipo_acessorio.tpaces_id) WHERE acessorio.aces_id = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -106,7 +106,7 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 
 	@Override
 	public List<Acessorio> buscarTodas() {
-		final String SQL = "SELECT acessorio.*, tipo_acessorio.* FROM acessorio JOIN tipo_acessorio ON (tpaces_id = aces_tpaces_id) ORDER BY aces_acessorio";
+		final String SQL = "SELECT acessorio.*, tipo_acessorio.* FROM acessorio JOIN tipo_acessorio ON (tpaces_id = aces_tpaces_id) ORDER BY aces_id";
 
 		try (Connection connection = ConnectionFactory.getConnection(); Statement st = connection.createStatement()) {
 
@@ -169,7 +169,7 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 
 	@Override
 	public boolean existeId(Integer id) {
-		final String SQL = "SELECT * FROM acessorio WHERE aces_acessorio = ?";
+		final String SQL = "SELECT * FROM acessorio WHERE aces_id = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -188,7 +188,7 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 	private Acessorio instanciarAcessorio(ResultSet rs) throws SQLException {
 		Acessorio acessorio = new Acessorio();
 
-		acessorio.setId(rs.getInt("aces_acessorio"));
+		acessorio.setId(rs.getInt("aces_id"));
 		acessorio.setValor (rs.getDouble("aces_valor"));
 		acessorio.setStatus(StatusAcessorio.valueOf(rs.getString("aces_status")));
 

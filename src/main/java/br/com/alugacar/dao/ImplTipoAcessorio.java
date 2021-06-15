@@ -9,9 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.alugacar.dao.exceptions.DAOException;
-import br.com.alugacar.entidades.Acessorio;
 import br.com.alugacar.entidades.TipoAcessorio;
-import br.com.alugacar.entidades.enums.StatusAcessorio;
 
 public class ImplTipoAcessorio implements TipoAcessorioDAO {
 

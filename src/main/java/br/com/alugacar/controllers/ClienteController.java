@@ -8,9 +8,11 @@ import br.com.alugacar.annotations.AutenticacaoNecessaria;
 import br.com.alugacar.entidades.Cliente;
 import br.com.alugacar.entidades.ClientePessoaFisica;
 import br.com.alugacar.entidades.ClientePessoaJuridica;
+import br.com.alugacar.entidades.Email;
 import br.com.alugacar.entidades.EmailCliente;
 import br.com.alugacar.entidades.Endereco;
 import br.com.alugacar.entidades.EnderecoCliente;
+import br.com.alugacar.entidades.Telefone;
 import br.com.alugacar.entidades.TelefoneCliente;
 import br.com.alugacar.entidades.enums.Estado;
 import br.com.alugacar.entidades.enums.TipoCliente;
@@ -19,8 +21,8 @@ import br.com.alugacar.entidades.enums.TipoTelefone;
 import br.com.alugacar.services.ClienteService;
 import br.com.alugacar.services.exceptions.ServiceException;
 import br.com.alugacar.util.Notificacao;
-import br.com.alugacar.util.NotificacaoUtil;
 import br.com.alugacar.util.Notificacao.TipoNotificacao;
+import br.com.alugacar.util.NotificacaoUtil;
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
@@ -46,6 +48,8 @@ public class ClienteController {
 	private Validator validator;
 
 	public List<Cliente> listar() {
+		validator.onErrorRedirectTo(DashboardController.class).dashboard();
+
 		result.include("tipoClienteList", TipoCliente.values());
 		return service.getTodos();
 	}
@@ -64,11 +68,44 @@ public class ClienteController {
 	}
 
 	@AutenticacaoNecessaria
-	@Get("{cliente.id}/enderecos")
-	public List<EnderecoCliente> listarEnderecos(Cliente cliente) {
+	@Get("{cliente.id}/adicionar/endereco")
+	public void adicionarEndereco(Cliente cliente) {
 		cliente = service.getId(cliente.getId());
 		result.include("cliente", cliente);
-		return cliente.getEnderecos();
+		result.include("tipoEndList", TipoEndereco.values());
+		result.include("estadoList", Estado.values());
+		result.forwardTo("/WEB-INF/jsp/cliente/formularioEndereco.jsp");
+	}
+
+	@AutenticacaoNecessaria
+	@Get("{cliente.id}/adicionar/email")
+	public void adicionarTelefone(Cliente cliente) {
+		cliente = service.getId(cliente.getId());
+		result.include("cliente", cliente);
+		result.forwardTo("/WEB-INF/jsp/cliente/formularioEmail.jsp");
+	}
+
+	@AutenticacaoNecessaria
+	@Get("{cliente.id}/adicionar/telefone")
+	public void adicionarEmail(Cliente cliente) {
+		cliente = service.getId(cliente.getId());
+		result.include("cliente", cliente);
+		result.include("tipoTelList", TipoTelefone.values());
+		result.forwardTo("/WEB-INF/jsp/cliente/formularioTelefone.jsp");
+	}
+
+	@AutenticacaoNecessaria
+	@Get("{cliente.id}")
+	public Cliente formulario(Cliente cliente) {
+		validator.onErrorRedirectTo(this).listar();
+
+		cliente = service.getId(cliente.getId());
+		result.include("cliente", cliente);
+		if (cliente instanceof ClientePessoaFisica)
+			result.forwardTo("/WEB-INF/jsp/cliente/formulario_pf.jsp");
+		else if (cliente instanceof ClientePessoaJuridica)
+			result.forwardTo("/WEB-INF/jsp/cliente/formulario_pj.jsp");
+		return cliente;
 	}
 
 	@AutenticacaoNecessaria
@@ -77,7 +114,6 @@ public class ClienteController {
 		cliente = service.getId(cliente.getId());
 		result.include("cliente", cliente);
 		result.include("tipoEndList", TipoEndereco.values());
-		result.include("tipoTelList", TipoTelefone.values());
 		result.include("estadoList", Estado.values());
 
 		for (Endereco end : cliente.getEnderecos()) {
@@ -88,8 +124,29 @@ public class ClienteController {
 	}
 
 	@AutenticacaoNecessaria
-	@Get("{cliente.id}")
-	public Cliente formulario(Cliente cliente) {
+	@Get("{cliente.id}/emails/{email.email}")
+	public Email formularioEmail(Cliente cliente, Email email) {
+		cliente = service.getId(cliente.getId());
+		result.include("cliente", cliente);
+
+		for (Email em : cliente.getEmails()) {
+			if (em.getEmail().equalsIgnoreCase(email.getEmail()))
+				return em;
+		}
+		return null;
+	}
+
+	@AutenticacaoNecessaria
+	@Get("{cliente.id}/telefones/{telefone.numero}")
+	public Telefone formularioTelefone(Cliente cliente, Telefone telefone) {
+		cliente = service.getId(cliente.getId());
+		result.include("cliente", cliente);
+		result.include("tipoTelList", TipoTelefone.values());
+
+		for (Telefone tel : cliente.getTelefones()) {
+			if (tel.getNumero().equalsIgnoreCase(telefone.getNumero()))
+				return tel;
+		}
 		return null;
 	}
 
@@ -105,6 +162,7 @@ public class ClienteController {
 		service.inserir(cliente);
 		result.redirectTo(this).listar();
 	}
+	
 
 	@AutenticacaoNecessaria
 	@Post("cadastrar/pj")
@@ -121,16 +179,16 @@ public class ClienteController {
 
 	@AutenticacaoNecessaria
 	@Post("{cliente.id}/atualizar/endereco/{endereco.id}")
-	public void atualizarEndereco(Cliente cliente, Endereco endereco) {
-		validator.onErrorRedirectTo(this).listarEnderecos(cliente);
+	public void atualizarEndereco(Cliente cliente, EnderecoCliente endereco) {
+		validator.onErrorRedirectTo(this).formulario(cliente);
 		try {
 			endereco = service.atualizarEndereco(cliente, endereco);
 
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Endereço atualizado",
 					"O endereço " + endereco.getDescricao() + "foi atualizado com sucesso.", TipoNotificacao.SUCESSO);
 			NotificacaoUtil.adicionarNotificacao(result, notificacao);
-			
-			result.redirectTo(this).listarEnderecos(cliente);
+
+			validator.onErrorRedirectTo(this).formulario(cliente);
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar endereço", e.getMessage());
 			validator.add(mensagemErro);
@@ -138,17 +196,71 @@ public class ClienteController {
 	}
 
 	@AutenticacaoNecessaria
+	@Post("{cliente.id}/atualizar/email/{antigoEmail.email}")
+	public void atualizarEndereco(Cliente cliente, EmailCliente antigoEmail, EmailCliente email) {
+		validator.onErrorRedirectTo(this).formulario(cliente);
+		try {
+			email = service.atualizarEmail(cliente, antigoEmail.getEmail(), email);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Email atualizado",
+					"O email " + email.getEmail() + "foi atualizado com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).formulario(cliente);
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar endereço", e.getMessage());
+			validator.add(mensagemErro);
+		}
+	}
+
+	@AutenticacaoNecessaria
+	@Post("{cliente.id}/cadastrar/endereco")
+	public void cadastrarEndereco(Cliente cliente, EnderecoCliente endereco) {
+		validator.onErrorRedirectTo(this).formulario(cliente);
+		try {
+			endereco = service.atualizarEndereco(cliente, endereco);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Endereço atualizado",
+					"O endereço " + endereco.getDescricao() + "foi atualizado com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).formulario(cliente);
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar endereço", e.getMessage());
+			validator.add(mensagemErro);
+		}
+	}
+	
+	@AutenticacaoNecessaria
+	@Post("{cliente.id}/cadastrar/email")
+	public void cadastrarEmail(Cliente cliente, EmailCliente email) {
+		validator.onErrorRedirectTo(this).formulario(cliente);
+		try {
+			service.cadastrarEmail(cliente, email);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Email adicionado",
+					"O email " + email.getEmail() + " foi adicionado com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).formulario(cliente);
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar email", e.getMessage());
+			validator.add(mensagemErro);
+		}
+	}
+
+	@AutenticacaoNecessaria
 	@Post("{cliente.id}/excluir/endereco/{endereco.id}")
 	public void excluirEndereco(Cliente cliente, EnderecoCliente endereco) {
-		validator.onErrorRedirectTo(this).listarEnderecos(cliente);
+		validator.onErrorRedirectTo(this).formulario(cliente);
 		try {
 			service.excluirEndereco(cliente, endereco);
 
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Endereço excluído",
 					"O endereço  foi excluído com sucesso.", TipoNotificacao.SUCESSO);
 			NotificacaoUtil.adicionarNotificacao(result, notificacao);
-			
-			result.redirectTo(this).listarEnderecos(cliente);
+
+			result.redirectTo(this).formulario(cliente);
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao excluir endereço", e.getMessage());
 			validator.add(mensagemErro);
