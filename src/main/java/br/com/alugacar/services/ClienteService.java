@@ -45,6 +45,14 @@ public class ClienteService {
 		return dao.buscarId(id);
 	}
 
+	public TelefoneCliente getTelefone(Cliente cliente, String numero) {
+		TelefoneCliente tel = dao.telefoneDAO().buscarNumero(cliente, numero);
+		if (tel == null)
+			throw new ServiceException(
+					"Telefone com o número " + numero + " não foi encontado para o cliente " + cliente.getNome());
+		return tel;
+	}
+
 	public void cadastrarEndereco(Cliente cliente, Endereco endereco) {
 		dao.enderecoDAO().adicionarEndereco(cliente, endereco);
 	}

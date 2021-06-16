@@ -140,14 +140,17 @@ public class ClienteController {
 	@AutenticacaoNecessaria
 	@Get("{cliente.id}/telefones/{telefone.numero}")
 	public Telefone formularioTelefone(Cliente cliente, Telefone telefone) {
-		cliente = service.getId(cliente.getId());
-		result.include("cliente", cliente);
-		result.include("tipoTelList", TipoTelefone.values());
+		try {
+			cliente = service.getId(cliente.getId());
+			result.include("cliente", cliente);
+			result.include("tipoTelList", TipoTelefone.values());
 
-		for (Telefone tel : cliente.getTelefones()) {
-			if (tel.getNumero().equalsIgnoreCase(telefone.getNumero()))
-				return tel;
+			return service.getTelefone(cliente, telefone.getNumero());
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar o formulário de telefone", e.getMessage());
+			validator.add(mensagemErro);
 		}
+		validator.onErrorRedirectTo(this).formulario(cliente);
 		return null;
 	}
 
@@ -180,7 +183,6 @@ public class ClienteController {
 	@AutenticacaoNecessaria
 	@Post("{cliente.id}/cadastrar/endereco")
 	public void cadastrarEndereco(Cliente cliente, EnderecoCliente endereco) {
-		validator.onErrorRedirectTo(this).formulario(cliente);
 		try {
 			service.cadastrarEndereco(cliente, endereco);
 
@@ -193,6 +195,7 @@ public class ClienteController {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao cadastrar endereço", e.getMessage());
 			validator.add(mensagemErro);
 		}
+		validator.onErrorRedirectTo(this).formulario(cliente);
 	}
 
 	@AutenticacaoNecessaria

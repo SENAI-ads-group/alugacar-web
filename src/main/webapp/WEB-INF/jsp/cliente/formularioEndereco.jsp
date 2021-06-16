@@ -99,7 +99,7 @@
 						<h3 class="block-title">Informações</h3>
 					</div>
 					<div class="block-content">
-						<form
+						<form class="js-validation-form"
 							action="
 							<c:if test="${ endereco.id == null}">
 								<c:url value="/clientes/${ cliente.id }/cadastrar/endereco"/>
@@ -134,6 +134,13 @@
 	<!-- Notifications JS Plugin -->
 	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
+
+	<script
+		src="<c:url value="/assets/js/plugins/jquery-validation/jquery.validate.min.js"/>"></script>
+	<script
+		src="<c:url value="/assets/js/plugins/jquery-validation/additional-methods.js"/>"></script>
+
+	<script src="<c:url value="/assets/js/pages/endereco_form.js"/>"></script>
 
 	<c:forEach var="error" items="${ errors }">
 		<script>
