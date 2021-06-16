@@ -1,10 +1,9 @@
-/*!
- * OneUI - v4.7.0
- * @author pixelcave - https://pixelcave.com
- * Copyright (c) 2020
- */
-
 ! function (e) {
+
+    jQuery.validator.addMethod("valueNotEquals", function (value, element, arg) {
+        return arg != element.value;
+    }, "Value must not equal arg.");
+
     var r = {};
 
     function n(t) { if (r[t]) return r[t].exports; var i = r[t] = { i: t, l: !1, exports: {} }; return e[t].call(i.exports, i, i.exports, n), i.l = !0, i.exports }
@@ -69,14 +68,16 @@
                                     maxlength: 50
                                 },
                                 "endereco.estado": {
-                                    required: !0
+                                    required: !0,
+                                    valueNotEquals: "0"
                                 },
                                 "endereco.pais": {
                                     required: !0,
                                     maxlength: 50
                                 },
                                 "endereco.tipo": {
-                                    required: !0
+                                    required: !0,
+                                    valueNotEquals: "0"
                                 }
                             },
                             messages: {
@@ -113,12 +114,18 @@
                                     minlength: "Tamanho mínimo de 3 caractéres para a cidade.",
                                     maxlength: "Tamanho máximo de 50 caractéres para a cidade."
                                 },
-                                "endereco.estado": "Informe o estado.",
+                                "endereco.estado": {
+                                    required: "Informe o estado",
+                                    valueNotEquals: "Informe o estado"
+                                },
                                 "endereco.pais": {
                                     required: "Informe o país",
                                     maxlength: "Tamanho máximo de 50 caractéres para o país."
                                 },
-                                "endereco.tipo": "Informe o tipo de endereço"
+                                "endereco.tipo": {
+                                    required: "Informe o tipo de endereço",
+                                    valueNotEquals: "Informe o tipo de endereço"
+                                }
                             }
                         })
                 }

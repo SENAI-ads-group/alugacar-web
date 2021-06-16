@@ -43,6 +43,7 @@
 	<label for="endereco.estado">Estado</label> <select
 		class="custom-select" id="endereco.estado" name="endereco.estado"
 		style="width: 100%;">
+		<option value="0">Selecione...</option>
 		<c:forEach var="est" items="${ estadoList }">
 			<option value="${ est }" ${ endereco.estado eq est ? 'selected': '' }>${ est.nome }</option>
 		</c:forEach>
@@ -56,6 +57,7 @@
 <div class="form-group">
 	<label for="">Tipo</label> <select class="custom-select"
 		id="endereco.tipo" name="endereco.tipo" style="width: 100%;">
+		<option value="0">Selecione...</option>
 		<c:forEach var="tipoEnd" items="${ tipoEndList }">
 			<option value="${ tipoEnd }"
 				${ endereco.tipo eq tipoEnd ? 'selected' : '' }>Endereço de

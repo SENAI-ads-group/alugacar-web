@@ -63,7 +63,7 @@
 				<div class="row">
 					<div class="col-6">
 						<a class="block block-rounded block-link-shadow text-center"
-							href="<c:url value="/clientes/${ cliente.id }/emails"/>">
+							href="<c:url value="/clientes/${ cliente.id }"/>">
 							<div class="block-content block-content-full">
 								<div class="font-size-h2 text-dark">
 									<i class="fa fa-arrow-left"></i>
