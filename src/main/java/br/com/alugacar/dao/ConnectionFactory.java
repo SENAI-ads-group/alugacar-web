@@ -14,7 +14,12 @@ import br.com.alugacar.dao.exceptions.DAOException;
 
 public class ConnectionFactory {
 
+	private static Connection conn = null;
+
 	public static Connection getConnection() {
+		if (conn != null)
+			return conn;
+
 		try {
 			Properties properties = loadConfiguracoes();
 
@@ -23,8 +28,8 @@ public class ConnectionFactory {
 			String user = properties.getProperty("user");
 			String password = properties.getProperty("password");
 
-			Connection connection = DriverManager.getConnection(url, user, password);
-			return connection;
+			conn = DriverManager.getConnection(url, user, password);
+			return conn;
 		} catch (SQLException | ClassNotFoundException e) {
 			throw new DAOException(e.getMessage());
 		}
@@ -34,6 +39,7 @@ public class ConnectionFactory {
 		if (connection != null) {
 			try {
 				connection.close();
+				connection = null;
 			} catch (SQLException ex) {
 				throw new DAOException(ex.getMessage());
 			}
