@@ -1,12 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>VISTORIA</title>
-</head>
-<body>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div class="js-validation-form">
 	<label for="vistoria.dataRet">Data de Retirada</label> <input type="number"
@@ -15,7 +9,7 @@
 </div>
 
 <div class="js-validation-form">
-	<label for="vistoria.combustivelRet">Quantidade de Combustível</label> <input type="number"
+	<label for="vistoria.combustivelRet">Quantidade de CombustÃ­vel</label> <input type="number"
 		class="form-control" id="vistoria.combustivelRet" name="vistoria.combustivelRet"
 		value="${ vistoria.combustivelRet}">
 </div>
@@ -33,13 +27,13 @@
 </div>
 
 <div class="js-validation-form">
-	<label for="vistoria.dataDev">Data de Devolução</label> <input type="number"
+	<label for="vistoria.dataDev">Data de DevoluÃ§Ã£o</label> <input type="number"
 		class="form-control" id="vistoria.dataDev" name="vistoria.dataDev"
 		value="${ vistoria.dataDev}">
 </div>
 
 <div class="js-validation-form">
-	<label for="vistoria.combustivelDev">Quantidade de Combustível</label> <input type="number"
+	<label for="vistoria.combustivelDev">Quantidade de CombustÃ­vel</label> <input type="number"
 		class="form-control" id="vistoria.combustivelDev" name="vistoria.combustivelDev"
 		value="${ vistoria.combustivelDev}">
 </div>
@@ -55,6 +49,3 @@
 		class="form-control" id="vistoria.observacaoDev" name="vistoria.observacaoDev"
 		value="${ vistoria.observacaoDev}">
 </div>
-
-</body>
-</html>
