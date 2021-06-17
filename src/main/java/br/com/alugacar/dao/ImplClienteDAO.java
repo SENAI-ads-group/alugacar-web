@@ -243,6 +243,7 @@ public class ImplClienteDAO implements ClienteDAO {
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
+
 			Cliente clienteEncontrado = instanciarClienteCompleto(rs);
 
 			ConnectionFactory.closeConnection(connection, ps, rs);
@@ -370,11 +371,11 @@ public class ImplClienteDAO implements ClienteDAO {
 			TelefoneCliente tel = instanciarTelefone(rs, cliente);
 			EmailCliente email = instanciarEmail(rs, cliente);
 
-			if (!endMap.containsKey(end.getId()))
+			if (!endMap.containsKey(end.getId()) && end.getId() != null)
 				endMap.put(end.getId(), end);
-			if (!telMap.containsKey(tel.getNumero()))
+			if (!telMap.containsKey(tel.getNumero()) && tel.getNumero() != null)
 				telMap.put(tel.getNumero(), tel);
-			if (!emailMap.containsKey(email.getEmail()))
+			if (!emailMap.containsKey(email.getEmail()) && email.getEmail() != null)
 				emailMap.put(email.getEmail(), email);
 			if (clienteEncontrado == null)
 				clienteEncontrado = cliente;
@@ -415,7 +416,11 @@ public class ImplClienteDAO implements ClienteDAO {
 	private EnderecoCliente instanciarEndereco(ResultSet rs, Cliente cliente) throws SQLException {
 		EnderecoCliente end = new EnderecoCliente();
 
-		end.setId(rs.getInt("endcli_id"));
+		Integer id = rs.getInt("endcli_id");
+		if (id == 0)
+			return end;
+
+		end.setId(id);
 		end.setDescricao(rs.getString("endcli_descricao"));
 		end.setCep(rs.getString("endcli_cep"));
 		end.setLogradouro(rs.getString("endcli_logradouro"));
@@ -433,8 +438,11 @@ public class ImplClienteDAO implements ClienteDAO {
 
 	private TelefoneCliente instanciarTelefone(ResultSet rs, Cliente cliente) throws SQLException {
 		TelefoneCliente tel = new TelefoneCliente();
-
-		tel.setNumero(rs.getString("telcli_numero"));
+		String numero = rs.getString("telcli_numero");
+		if (numero == null)
+			return tel;
+		
+		tel.setNumero(numero);
 		tel.setTipo(TipoTelefone.valueOf(rs.getString("telcli_tipo")));
 		tel.setCliente(cliente);
 
@@ -443,8 +451,11 @@ public class ImplClienteDAO implements ClienteDAO {
 
 	private EmailCliente instanciarEmail(ResultSet rs, Cliente cliente) throws SQLException {
 		EmailCliente email = new EmailCliente();
-
-		email.setEmail(rs.getString("emailcli_email"));
+		String strEmail = rs.getString("emailcli_email");
+		if (strEmail == null)
+			return email;
+		
+		email.setEmail(strEmail);
 		email.setCliente(cliente);
 
 		return email;

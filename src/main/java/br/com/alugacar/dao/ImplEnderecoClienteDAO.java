@@ -101,13 +101,15 @@ public class ImplEnderecoClienteDAO implements EnderecoDAO<Cliente> {
 				+ "WHERE endcli_id = ? "
 				+ "AND endcli_cli_id = ?";
 		// @formatter:on
-
+		
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
+			int numero = endereco.getNumero() == null ? 0 : endereco.getNumero();
+			
 			ps.setString(1, endereco.getDescricao());
 			ps.setString(2, endereco.getCep());
 			ps.setString(3, endereco.getLogradouro());
-			ps.setInt(4, endereco.getNumero());
+			ps.setInt(4, numero);
 			ps.setString(5, endereco.getComplemento());
 			ps.setString(6, endereco.getBairro());
 			ps.setString(7, endereco.getCidade());

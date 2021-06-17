@@ -17,4 +17,6 @@ public interface LocacaoDAO {
 
 	Locacao buscarId(Integer id);
 
+	AcessorioLocacaoDAO acessorioLocacaoDAO();
+
 }

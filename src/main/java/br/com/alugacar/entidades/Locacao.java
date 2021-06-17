@@ -5,15 +5,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Locacao implements Serializable{
+import br.com.alugacar.entidades.enums.StatusLocacao;
+
+public class Locacao implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private Date dataRetirada;
 	private Date dataDevolucao;
 	private Double valorSeguro;
 	private Double valorCalcao;
 	private Double valorFinal;
+	private StatusLocacao status;
 
 	private Cliente cliente;
 	private Motorista motorista;
@@ -28,14 +31,16 @@ public class Locacao implements Serializable{
 	}
 
 	public Locacao(Integer id, Date dataRetirada, Date dataDevolucao, Double valorSeguro, Double valorCalcao,
-			Double valorFinal, Cliente cliente, Motorista motorista, Veiculo veiculo, Vistoria vistoriaEntrega,
-			Vistoria vistoriaDevolucao, Apolice apolice, List<Acessorio> acessorios, List<Multa> multas) {
+			Double valorFinal, StatusLocacao status, Cliente cliente, Motorista motorista, Veiculo veiculo,
+			Vistoria vistoriaEntrega, Vistoria vistoriaDevolucao, Apolice apolice, List<Acessorio> acessorios,
+			List<Multa> multas) {
 		this.id = id;
 		this.dataRetirada = dataRetirada;
 		this.dataDevolucao = dataDevolucao;
 		this.valorSeguro = valorSeguro;
 		this.valorCalcao = valorCalcao;
 		this.valorFinal = valorFinal;
+		this.status = status;
 		this.cliente = cliente;
 		this.motorista = motorista;
 		this.veiculo = veiculo;
@@ -92,6 +97,14 @@ public class Locacao implements Serializable{
 
 	public void setValorFinal(Double valorFinal) {
 		this.valorFinal = valorFinal;
+	}
+
+	public StatusLocacao getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusLocacao status) {
+		this.status = status;
 	}
 
 	public Cliente getCliente() {
