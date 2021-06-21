@@ -118,7 +118,11 @@
 						<li class="nav-item"><a class="nav-link"
 							href="#wizard-passo2" data-toggle="tab">2. Motorista</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="#wizard-passo3" data-toggle="tab">3. Extras</a></li>
+							href="#wizard-passo3" data-toggle="tab">3. Veículo</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="#wizard-passo4" data-toggle="tab">4. Apólice de Seguro</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="#wizard-passo5" data-toggle="tab">5. Valores</a></li>
 					</ul>
 					<!-- END Step Tabs -->
 
@@ -168,21 +172,88 @@
 										name="locacao.motorista.dataNascimento">
 								</div>
 								<div class="form-group">
-									<label for="locacao.motorista.registroCNH">Registro da CNH</label> <input
-										class="form-control" type="text" id="locacao.motorista.registroCNH"
+									<label for="locacao.motorista.registroCNH">Registro da
+										CNH</label> <input class="form-control" type="text"
+										id="locacao.motorista.registroCNH"
 										name="locacao.motorista.registroCNH">
-								</div>								
+								</div>
 								<div class="form-group">
-									<label for="locacao.motorista.validadeCNH">Validade da CNH</label> <input
-										class="form-control" type="date" id="locacao.motorista.validadeCNH"
+									<label for="locacao.motorista.validadeCNH">Validade da
+										CNH</label> <input class="form-control" type="date"
+										id="locacao.motorista.validadeCNH"
 										name="locacao.motorista.validadeCNH">
 								</div>
 							</div>
 							<!-- END Step 2 -->
 
 							<!-- Step 3 -->
-							<div class="tab-pane" id="wizard-passo3" role="tabpanel"></div>
+							<div class="tab-pane" id="wizard-passo3" role="tabpanel">
+								<div class="form-group">
+									<label for="locacao.veiculo.id">Veículo</label> <select
+										class="custom-select" id="locacao.veiculo.id"
+										name="locacao.veiculo.id" style="width: 100%;">
+										<option value="0">Selecione...</option>
+										<c:forEach var="veic" items="${ veiculoList }">
+											<option value="${ veic.id }">${ veic.modelo.marca.descricao }
+												${ veic.modelo.descricao } ${ veic.cor } ${ veic.placa }</option>
+										</c:forEach>
+									</select>
+								</div>
+							</div>
 							<!-- END Step 3 -->
+
+							<!-- Step 4 -->
+							<div class="tab-pane" id="wizard-passo4" role="tabpanel">
+								<div class="form-group">
+									<input class="form-control" type="date"
+										id="locacao.apolice.dataInicio"
+										name="locacao.apolice.dataInicio" hidden="true">
+								</div>
+								<div class="form-group">
+									<label for="locacao.apolice.dataFim">Data Final</label> <input
+										class="form-control" type="date" id="locacao.apolice.dataFim"
+										name="locacao.apolice.dataFim">
+								</div>
+								<div class="form-group">
+									<label for="locacao.apolice.valor">Valor</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text"> R$ </span>
+										</div>
+										<input type="text" class="form-control text-center"
+											id="locacao.apolice.valor" name="locacao.apolice.valor"
+											placeholder="0,00">
+									</div>
+								</div>
+							</div>
+							<!-- END Step 4 -->
+
+							<!-- Step 5 -->
+							<div class="tab-pane" id="wizard-passo5" role="tabpanel">
+								<div class="form-group">
+									<label for="locacao.valorSeguro">Valor do Seguro</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text"> R$ </span>
+										</div>
+										<input type="text" class="form-control text-center"
+											id="locacao.valorSeguro" name="locacao.valorSeguro"
+											placeholder="0,00">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="locacao.valorCalcao">Valor Calção</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text"> R$ </span>
+										</div>
+										<input type="text" class="form-control text-center"
+											id="locacao.valorCalcao" name="locacao.valorCalcao"
+											placeholder="0,00">
+									</div>
+								</div>
+							</div>
+							<!-- END Step 5 -->
 						</div>
 						<!-- END Steps Content -->
 
@@ -267,6 +338,7 @@
 							});
 		</script>
 	</c:forEach>
+
 </body>
 
 </html>

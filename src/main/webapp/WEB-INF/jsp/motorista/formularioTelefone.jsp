@@ -63,7 +63,7 @@
 				<div class="row">
 					<div class="col-6">
 						<a class="block block-rounded block-link-shadow text-center"
-							href="<c:url value="/motoristas/${ motorista.locacao.id }"/>">
+							href="<c:url value="/clientes/${ cliente.id }"/>">
 							<div class="block-content block-content-full">
 								<div class="font-size-h2 text-dark">
 									<i class="fa fa-arrow-left"></i>
@@ -76,7 +76,7 @@
 					</div>
 					<div class="col-6">
 						<form id="form-excluir"
-							action="<c:url value="/motoristas/${ motorista.locacao.id }/excluir/telefone/${ telefone.numero }"/>"
+							action="<c:url value="/clientes/${ cliente.id }/excluir/telefone/${ telefone.numero }"/>"
 							method="POST">
 							<a class="block block-rounded block-link-shadow text-center"
 								onclick="document.getElementById('form-excluir').submit()">
@@ -104,16 +104,16 @@
 						<form class="js-validation-form"
 							action="
 							<c:if test="${ telefone.numero == null }">
-								<c:url value="/motoristas/${ motorista.locacao.id }/cadastrar/telefone"/>
+								<c:url value="/clientes/${ cliente.id }/cadastrar/telefone"/>
 							</c:if>
 							<c:if test="${ telefone.numero != null }">
-								<c:url value="/motoristas/${ motorista.locacao.id }/atualizar/telefone/${ telefone.numero }"/>
+								<c:url value="/clientes/${ cliente.id }/atualizar/telefone/${ telefone.numero }"/>
 							</c:if>"
 							method="POST">
 							<div class="form-group">
-								<label for="motorista.nome">Cliente</label> <input type="text"
-									class="form-control" id="motorista.nome" name="motorista.nome"
-									value="${ motorista.nome }" readonly>
+								<label for="cliente.nome">Cliente</label> <input type="text"
+									class="form-control" id="cliente.nome" name="cliente.nome"
+									value="${ cliente.nome }" readonly>
 							</div>
 							<%@ include file="../form-groups/telefone.jsp"%>
 							<div class="form-group">

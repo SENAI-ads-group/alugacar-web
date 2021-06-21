@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.alugacar.dao.exceptions.DAOException;
 import br.com.alugacar.entidades.Veiculo;
+import br.com.alugacar.entidades.enums.StatusVeiculo;
 
 /**
  * @author <a href="https://github.com/Patrick-Ribeiro">Patrick Ribeiro</a>
@@ -88,6 +89,8 @@ public interface VeiculoDAO {
 	 *                         dados.
 	 */
 	List<Veiculo> buscarExclusao(boolean excluido);
+
+	List<Veiculo> buscarStatus(StatusVeiculo status);
 
 	/**
 	 * Verifica se existe um veículo com um determinado ID

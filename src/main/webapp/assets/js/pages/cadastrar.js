@@ -36,15 +36,18 @@
                             rules: {
                                 'usuario.nome': {
                                     required: true,
-                                    minlength: 3
+                                    minlength: 3,
+                                    maxlength: 50
                                 },
                                 'usuario.email': {
                                     required: true,
-                                    email: true
+                                    email: true,
+                                    maxlength: 50
                                 },
                                 'usuario.senha': {
                                     required: true,
-                                    minlength: 5
+                                    minlength: 5,
+                                    maxlength: 10
                                 },
                                 'usuario.senha-confirmacao': {
                                     required: true,
