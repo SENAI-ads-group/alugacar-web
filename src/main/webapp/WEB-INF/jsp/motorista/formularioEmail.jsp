@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+<%@ page import="br.com.alugacar.entidades.enums.TipoEndereco"%>
+<%@ page import="br.com.alugacar.entidades.enums.Estado"%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -10,7 +12,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Motorista</title>
+<title>Alugacar | Email de Motorista</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -29,8 +31,7 @@
 
 <!-- Icons -->
 <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-<link rel="shortcut icon"
-	href="<c:url value="/assets/media/favicons/favicon.png"/>">
+<link rel="shortcut icon" href="assets/media/favicons/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192"
 	href="<c:url value="/assets/media/favicons/favicon-192x192.png"/>">
 <link rel="apple-touch-icon" sizes="180x180"
@@ -62,7 +63,7 @@
 				<div class="row">
 					<div class="col-6">
 						<a class="block block-rounded block-link-shadow text-center"
-							href="<c:url value="listar"/>">
+							href="<c:url value="/motoristas/${ motorista.locacao.id }"/>">
 							<div class="block-content block-content-full">
 								<div class="font-size-h2 text-dark">
 									<i class="fa fa-arrow-left"></i>
@@ -73,38 +74,57 @@
 							</div>
 						</a>
 					</div>
+					<div class="col-6">
+						<form id="form-excluir"
+							action="<c:url value="/motoristas/${ motorista.locacao.id }/excluir/email/${ email.email }"/>"
+							method="POST">
+							<a class="block block-rounded block-link-shadow text-center"
+								onclick="document.getElementById('form-excluir').submit()">
+								<div class="block-content block-content-full">
+									<div class="font-size-h2 text-danger">
+										<i class="fa fa-times"></i>
+									</div>
+								</div>
+								<div class="block-content py-2 bg-body-light">
+									<p class="font-w600 font-size-sm text-danger mb-0">Excluir
+										Email</p>
+								</div>
+							</a>
+						</form>
+					</div>
 				</div>
 				<!-- END Quick Actions -->
 
-				<!-- Endereços -->
+				<!-- Info -->
 				<div class="block block-rounded">
-					<div class="block-header">
-						<h3 class="block-title">Endereços</h3>
+					<div class="block-header block-header-default">
+						<h3 class="block-title">Informações</h3>
 					</div>
 					<div class="block-content">
-						<div class="js-slider text-center" data-autoplay="true"
-							data-dots="true" data-arrows="true" data-slides-to-show="3">
-							<c:forEach var="end" items="${ motorista.enderecos }">
-								<div class="block block-rounded block-bordered py-3"
-									style="margin: 5px;">
-									<div class="block-header border-bottom">
-										<h3 class="block-title">${ end.tipo }</h3>
-									</div>
-									<div class="block-content">
-										<div class="font-size-h4 mb-1">${ end.descricao }</div>
-										<address class="font-size-sm">
-											${ end.logradouro }<br>${ end.complemento } ${ end.numero }<br>${ end.bairro },
-											${ end.cidade } ${ end.cep }<br>${ end.pais }<br>
-										</address>
-									</div>
-								</div>
-							</c:forEach>
-						</div>
+						<form
+							action="<c:if test="${ email.email == null }"><c:url value="/motoristas/${ motorista.locacao.id }/cadastrar/email"/></c:if><c:if test="${ email.email != null }"><c:url value="/motoristas/${ motorista.locacao.id }/atualizar/email/${ email.email }"/></c:if>"
+							method="POST">
+							<div class="form-group">
+								<label for="motorista.nome">Motorista</label> <input type="text"
+									class="form-control" id="motorista.nome" name="motorista.nome"
+									value="${ motorista.nome }" readonly>
+							</div>
+							<div class="form-group">
+								<label for="email.email">Email</label> <input type="text"
+									class="form-control" id="email.email" name="email.email"
+									value="${ email.email }">
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-alt-success">${ email.email == null ? 'Adicionar' : 'Atualizar' }</button>
+							</div>
+						</form>
 					</div>
+					<!-- END Info -->
 				</div>
-				<!-- END Endereços -->
+
 			</div>
 			<!-- END Page Content -->
+
 		</main>
 		<!-- END Main Container -->
 
@@ -146,16 +166,6 @@
 							});
 		</script>
 	</c:forEach>
-
-	<!-- Page JS Plugins -->
-	<script src="assets/js/plugins/slick-carousel/slick.min.js"></script>
-
-	<!-- Page JS Helpers (Slick Slider Plugin) -->
-	<script>
-		jQuery(function() {
-			One.helpers('slick');
-		});
-	</script>
 
 </body>
 

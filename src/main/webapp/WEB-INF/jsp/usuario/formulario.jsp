@@ -10,7 +10,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Usuários</title>
+<title>Alugacar | Usuário</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -205,12 +205,12 @@
 												name="senhaAtual">
 										</div>
 										<div class="form-group">
-											<label for="senhaAtual">Nova senha</label> <input
+											<label for="novaSenha">Nova senha</label> <input
 												type="password" class="form-control" id="novaSenha"
 												name="novaSenha">
 										</div>
 										<div class="form-group">
-											<label for="senhaAtual">Confirmação de senha</label> <input
+											<label for="confirmacaoSenha">Confirmação de senha</label> <input
 												type="password" class="form-control" id="confirmacaoSenha"
 												name="confirmacaoSenha">
 										</div>

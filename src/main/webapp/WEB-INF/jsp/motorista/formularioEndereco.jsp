@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-<%@ page import="br.com.alugacar.entidades.enums.TipoEndereco"%>
-<%@ page import="br.com.alugacar.entidades.enums.Estado"%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -12,7 +10,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Telefone de Cliente</title>
+<title>Alugacar | Endereço de Motorista</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -76,7 +74,7 @@
 					</div>
 					<div class="col-6">
 						<form id="form-excluir"
-							action="<c:url value="/motoristas/${ motorista.locacao.id }/excluir/telefone/${ telefone.numero }"/>"
+							action="<c:url value="/motoristas/${ motorista.locacao.id }/excluir/endereco/${ endereco.id }"/>"
 							method="POST">
 							<a class="block block-rounded block-link-shadow text-center"
 								onclick="document.getElementById('form-excluir').submit()">
@@ -87,7 +85,7 @@
 								</div>
 								<div class="block-content py-2 bg-body-light">
 									<p class="font-w600 font-size-sm text-danger mb-0">Excluir
-										Telefone</p>
+										Endereço</p>
 								</div>
 							</a>
 						</form>
@@ -103,21 +101,16 @@
 					<div class="block-content">
 						<form class="js-validation-form"
 							action="
-							<c:if test="${ telefone.numero == null }">
-								<c:url value="/motoristas/${ motorista.locacao.id }/cadastrar/telefone"/>
+							<c:if test="${ endereco.id == null}">
+								<c:url value="/motoristas/${ motorista.locacao.id }/cadastrar/endereco"/>
 							</c:if>
-							<c:if test="${ telefone.numero != null }">
-								<c:url value="/motoristas/${ motorista.locacao.id }/atualizar/telefone/${ telefone.numero }"/>
+							<c:if test="${ endereco.id != null}">
+								<c:url value="/motoristas/${ motorista.locacao.id }/atualizar/endereco/${ endereco.id }"/>
 							</c:if>"
 							method="POST">
+							<%@ include file="../form-groups/endereco.jsp"%>
 							<div class="form-group">
-								<label for="motorista.nome">Cliente</label> <input type="text"
-									class="form-control" id="motorista.nome" name="motorista.nome"
-									value="${ motorista.nome }" readonly>
-							</div>
-							<%@ include file="../form-groups/telefone.jsp"%>
-							<div class="form-group">
-								<button type="submit" class="btn btn-alt-success">${ telefone.numero == null ? 'Adicionar' : 'Atualizar' }</button>
+								<button type="submit" class="btn btn-alt-success">${ endereco.id == null ? 'Adicionar' : 'Atualizar' }</button>
 							</div>
 						</form>
 					</div>
@@ -144,11 +137,10 @@
 
 	<script
 		src="<c:url value="/assets/js/plugins/jquery-validation/jquery.validate.min.js"/>"></script>
-
 	<script
 		src="<c:url value="/assets/js/plugins/jquery-validation/additional-methods.js"/>"></script>
 
-	<script src="<c:url value="/assets/js/pages/telefone_form.js"/>"></script>
+	<script src="<c:url value="/assets/js/pages/endereco_form.js"/>"></script>
 
 	<c:forEach var="error" items="${ errors }">
 		<script>

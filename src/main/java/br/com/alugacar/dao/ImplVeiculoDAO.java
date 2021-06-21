@@ -348,6 +348,53 @@ public class ImplVeiculoDAO implements VeiculoDAO {
 	}
 
 	@Override
+	public List<Veiculo> buscarStatus(StatusVeiculo status) {
+		// @formatter:off
+		final String SQL = "SELECT "
+				+ "veiculo.*, "
+				+ "categoria.*, "
+				+ "modelo.*, "
+				+ "marca.* "
+				+ "FROM veiculo "
+				+ "JOIN categoria ON(cat_id = veic_cat_id) "
+				+ "JOIN modelo ON(mod_id = veic_mod_id) "
+				+ "JOIN marca ON(mod_marc_id = marc_id) "
+				+ "WHERE veic_status = ?";
+		// @formatter:on
+
+		try (Connection connection = ConnectionFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(SQL)) {
+
+			ps.setString(1, status.name());
+			ResultSet rs = ps.executeQuery();
+
+			List<Veiculo> veiculosEncontrados = new ArrayList<>();
+
+			Map<Integer, Marca> marcaMap = new HashMap<>();
+			Map<Integer, Modelo> modeloMap = new HashMap<>();
+			Map<Integer, Categoria> categoriaMap = new HashMap<>();
+			while (rs.next()) {
+				Integer idMarca = rs.getInt("marc_id");
+				Integer idModelo = rs.getInt("mod_id");
+				Integer idCategoria = rs.getInt("cat_id");
+
+				Marca marca = marcaMap.containsKey(idMarca) ? marcaMap.get(idMarca) : instanciarMarca(rs);
+				Modelo modelo = modeloMap.containsKey(idModelo) ? modeloMap.get(idModelo) : instanciarModelo(rs, marca);
+				Categoria categoria = categoriaMap.containsKey(idCategoria) ? categoriaMap.get(idCategoria)
+						: instanciarCategoria(rs);
+
+				Veiculo veiculoEncontrado = instanciarVeiculo(rs, categoria, modelo);
+				veiculosEncontrados.add(veiculoEncontrado);
+			}
+
+			ConnectionFactory.closeConnection(connection, ps, rs);
+			return veiculosEncontrados;
+		} catch (SQLException e) {
+			throw new DAOException(e.getMessage());
+		}
+	}
+
+	@Override
 	public boolean existeId(Integer id) {
 		final String SQL = "SELECT veic_id FROM veiculo WHERE veic_id = ?";
 

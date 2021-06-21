@@ -26,6 +26,10 @@ public class VeiculoService {
 		return dao.buscarExclusao(true);
 	}
 
+	public List<Veiculo> getStatus(StatusVeiculo status) {
+		return dao.buscarStatus(status);
+	}
+
 	public Veiculo inserir(Veiculo veiculo) {
 		veiculo.setStatus(StatusVeiculo.DISPONIVEL_PARA_ALUGAR);
 		veiculo.setExcluido(false);

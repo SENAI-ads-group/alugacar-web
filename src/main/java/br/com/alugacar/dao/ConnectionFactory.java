@@ -17,10 +17,10 @@ public class ConnectionFactory {
 	private static Connection conn = null;
 
 	public static Connection getConnection() {
-		if (conn != null)
-			return conn;
-
 		try {
+			if (conn != null && !conn.isClosed())
+				return conn;
+
 			Properties properties = loadConfiguracoes();
 
 			Class.forName(properties.getProperty("driver"));
@@ -39,9 +39,10 @@ public class ConnectionFactory {
 		if (connection != null) {
 			try {
 				connection.close();
-				connection = null;
 			} catch (SQLException ex) {
 				throw new DAOException(ex.getMessage());
+			} finally {
+				connection = null;
 			}
 		}
 	}
