@@ -16,19 +16,28 @@ import javax.inject.Inject;
 
 import br.com.alugacar.dao.exceptions.DAOException;
 import br.com.alugacar.entidades.Acessorio;
+import br.com.alugacar.entidades.Apolice;
+import br.com.alugacar.entidades.Categoria;
 import br.com.alugacar.entidades.Cliente;
 import br.com.alugacar.entidades.ClientePessoaFisica;
 import br.com.alugacar.entidades.ClientePessoaJuridica;
 import br.com.alugacar.entidades.EmailCliente;
 import br.com.alugacar.entidades.EnderecoCliente;
 import br.com.alugacar.entidades.Locacao;
+import br.com.alugacar.entidades.Marca;
+import br.com.alugacar.entidades.Modelo;
 import br.com.alugacar.entidades.Motorista;
 import br.com.alugacar.entidades.TelefoneCliente;
+import br.com.alugacar.entidades.Veiculo;
+import br.com.alugacar.entidades.Vistoria;
 import br.com.alugacar.entidades.enums.CategoriaCNH;
+import br.com.alugacar.entidades.enums.Combustivel;
 import br.com.alugacar.entidades.enums.Estado;
 import br.com.alugacar.entidades.enums.StatusLocacao;
+import br.com.alugacar.entidades.enums.StatusVeiculo;
 import br.com.alugacar.entidades.enums.TipoEndereco;
 import br.com.alugacar.entidades.enums.TipoTelefone;
+import br.com.alugacar.entidades.enums.TipoVeiculo;
 
 public class ImplLocacaoDAO implements LocacaoDAO {
 
@@ -211,13 +220,12 @@ public class ImplLocacaoDAO implements LocacaoDAO {
 	@Override
 	public List<Locacao> buscarTodas() {
 		// @formatter:off
-		final String SQL = "SELECT FROM locacao "
-	            +"LEFT JOIN cliente ON (cli_id = loc_cli_id) "
-				+"LEFT JOIN veiculo ON (veic_id = loc_veic_id) "
-				+"LEFT JOIN endereco_cliente ON (endcli_cli_id = loc_cli_id) "
-				+ "LEFT JOIN telefone_cliente ON (telcli_cli_id = loc_cli_id) "
-				+"LEFT JOIN email_cliente ON (emailcli_cli_id = loc_cli_id) "
-				+"LEFT JOIN acessorio_locacao ON (acesloc_loc_id = loc_id)";
+		final String SQL = "SELECT locacao.*, cliente.*, veiculo.* FROM locacao "
+		        +" LEFT JOIN cliente ON (cli_id = loc_cli_id) "
+				+ "LEFT JOIN veiculo ON (veic_id = loc_veic_id) "
+				+ "LEFT JOIN endereco_cliente ON (endcli_cli_id = loc_cli_id) "
+				+ "LEFT JOIN email_cliente ON (emailcli_cli_id = loc_cli_id) "
+				+ "LEFT JOIN acessorio_locacao ON (acesloc_loc_id = loc_id)";
 		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
@@ -234,19 +242,19 @@ public class ImplLocacaoDAO implements LocacaoDAO {
 
 	@Override
 	public List<Locacao> buscarStatus(StatusLocacao status) {
-		final String SQL = "SELECT FROM locacao "
-	            +"LEFT JOIN cliente ON (cli_id = loc_cli_id) "
-				+"LEFT JOIN veiculo ON (veic_id = loc_veic_id) "
-				+"LEFT JOIN endereco_cliente ON (endcli_cli_id = loc_cli_id) "
-				+ "LEFT JOIN telefone_cliente ON (telcli_cli_id = loc_cli_id) "
-				+"LEFT JOIN email_cliente ON (emailcli_cli_id = loc_cli_id) "
-				+"LEFT JOIN acessorio_locacao ON (acesloc_loc_id = loc_id) "
-				+"WHERE loc_status = ?";
-		// @formatter:on
+		// @formatter:off
+				final String SQL = "SELECT locacao.*, cliente.*, veiculo.* FROM locacao "
+				        +" LEFT JOIN cliente ON (cli_id = loc_cli_id) "
+						+ "LEFT JOIN veiculo ON (veic_id = loc_veic_id) "
+						+ "LEFT JOIN endereco_cliente ON (endcli_cli_id = loc_cli_id) "
+						+ "LEFT JOIN email_cliente ON (emailcli_cli_id = loc_cli_id) "
+						+ "LEFT JOIN acessorio_locacao ON (acesloc_loc_id = loc_id) "
+						+ "WHERE loc_status = ?";
+				// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
-			ps.setNString(1, status);;
+			ps.setString(1, status.name());;
 			ResultSet rs = ps.executeQuery();
 			List<Locacao> locacoesEncontradas = instanciarListaLocacao(rs);
 
@@ -259,14 +267,13 @@ public class ImplLocacaoDAO implements LocacaoDAO {
 
 	@Override
 	public Locacao buscarId(Integer id) {
-		final String SQL = "SELECT FROM locacao "
-	            +"LEFT JOIN cliente ON (cli_id = loc_cli_id) "
-				+"LEFT JOIN veiculo ON (veic_id = loc_veic_id) "
-				+"LEFT JOIN endereco_cliente ON (endcli_cli_id = loc_cli_id) "
-				+ "LEFT JOIN telefone_cliente ON (telcli_cli_id = loc_cli_id) "
-				+"LEFT JOIN email_cliente ON (emailcli_cli_id = loc_cli_id) "
-				+"LEFT JOIN acessorio_locacao ON (acesloc_loc_id = loc_id) "
-				+"WHERE loc_id = ?";
+		final String SQL = "SELECT locacao.*, cliente.*, veiculo.* FROM locacao "
+		        +" LEFT JOIN cliente ON (cli_id = loc_cli_id) "
+				+ "LEFT JOIN veiculo ON (veic_id = loc_veic_id) "
+				+ "LEFT JOIN endereco_cliente ON (endcli_cli_id = loc_cli_id) "
+				+ "LEFT JOIN email_cliente ON (emailcli_cli_id = loc_cli_id) "
+				+ "LEFT JOIN acessorio_locacao ON (acesloc_loc_id = loc_id) "
+				+ "WHERE loc_id = ?";
 		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
@@ -283,19 +290,28 @@ public class ImplLocacaoDAO implements LocacaoDAO {
 	}
 
 	private Locacao instanciarLocacao(ResultSet rs) throws SQLException {
-		Locacao m = new Locacao();
+		Locacao locacao = new Locacao();
+		
+		locacao.setDataRetirada(rs.getDate("loc_data_retirada"));
+		locacao.setDataDevolucao(rs.getDate("loc_data_devolucao "));		
+		locacao.setValorSeguro(rs.getDouble("loc_valor_seguro"));
+		locacao.setValorCalcao(rs.getDouble("loc_valor_calcao"));
+		locacao.setValorFinal(rs.getDouble("loc_valor_final "));
+		locacao.setStatus(StatusLocacao.valueOf(rs.getString("loc_status")));
+		locacao.getVistoriaEntrega().setData(rs.getDate("loc_visret_data"));
+		locacao.getVistoriaEntrega().setQtdCombustivel(rs.getInt("loc_visret_quilometragem"));
+		locacao.getVistoriaEntrega().setQuilometragem(rs.getInt("loc_visret_quilometragem"));
+		locacao.getVistoriaEntrega().setObservacoes(rs.getString("loc_vistret_obs"));	
+		locacao.getVistoriaDevolucao().setData(rs.getDate("loc_visdev_data"));
+		locacao.getVistoriaDevolucao().setQtdCombustivel(rs.getInt("loc_visdev_qtd_comb"));
+		locacao.getVistoriaDevolucao().setQuilometragem(rs.getInt("loc_visdev_quilometragem"));
+		locacao.getVistoriaDevolucao().setObservacoes(rs.getString("loc_vistdev_obs"));
+		locacao.setApolice(instanciarApolice(rs));
+		locacao.setMotorista(instanciarMotorista(rs));
+		locacao.setCliente(instanciarClienteCompleto(rs));
+		locacao.setVeiculo(instanciarVeiculo(rs, instanciarCategoria(rs), instanciarModelo(rs, instanciarMarca(rs))));
 
-		m.setMotorista(instanciarMotorista(rs));
-		;
-		m.setCliente(instanciarClienteCompleto(rs));
-		m.setDataDevolucao(rs.getDate("loc_data_devolucao "));
-		m.setDataRetirada(rs.getDate("loc_data_retirada"));
-		m.setStatus(StatusLocacao.valueOf(rs.getString("loc_status")));
-		m.setValorCalcao(rs.getDouble("loc_valor_calcao"));
-		m.setValorFinal(rs.getDouble("loc_valor_final "));
-		m.setValorSeguro(rs.getDouble(""));
-
-		return m;
+		return locacao;
 	}
 
 	private List<Locacao> instanciarListaLocacao(ResultSet rs) throws SQLException {
@@ -303,19 +319,86 @@ public class ImplLocacaoDAO implements LocacaoDAO {
 		return null;
 
 	}
+	
+	private Apolice instanciarApolice(ResultSet rs) throws SQLException {
+		Apolice apolice = new Apolice();
 
+		apolice.setDataFim(rs.getDate("loc_apol_data_fim"));
+		apolice.setDataInicio(rs.getDate("loc_apol_data_inic"));
+		apolice.setValor(rs.getDouble("loc_apol_valor"));
+		
+		
+		return apolice;
+	}
+	
+	private Modelo instanciarModelo(ResultSet rs, Marca marca) throws SQLException {
+		Modelo modelo = new Modelo();
+
+		modelo.setId(rs.getInt("mod_id"));
+		modelo.setDescricao(rs.getString("mod_descricao"));
+		modelo.setExcluido(rs.getBoolean("mod_excluido"));
+		modelo.setMarca(marca);
+
+		return modelo;
+	}
+
+	private Marca instanciarMarca(ResultSet rs) throws SQLException {
+		Marca marca = new Marca();
+
+		marca.setId(rs.getInt("marc_id"));
+		marca.setDescricao(rs.getString("marc_descricao"));
+		marca.setExcluida(rs.getBoolean("marc_excluida"));
+
+		return marca;
+	}
+
+	private Veiculo instanciarVeiculo(ResultSet rs, Categoria categoria, Modelo modelo) throws SQLException {
+		Veiculo veiculo = new Veiculo();
+
+		veiculo.setId(rs.getInt("veic_id"));
+		veiculo.setPlaca(rs.getString("veic_placa"));
+		veiculo.setRenavam(rs.getString("veic_renavam"));
+		veiculo.setTipo(TipoVeiculo.valueOf(rs.getString("veic_tipo")));
+		veiculo.setStatus(StatusVeiculo.valueOf(rs.getString("veic_status")));
+		veiculo.setPrecoCompra(rs.getDouble("veic_preco_compra"));
+		veiculo.setPrecoVenda(rs.getDouble("veic_preco_venda"));
+		veiculo.setCor(rs.getString("veic_cor"));
+		veiculo.setQtdPassageiros(rs.getInt("veic_qtd_passageiros"));
+		veiculo.setCapacidadeTanque(rs.getInt("veic_capac_tanque"));
+		veiculo.setAnoFabricacao(rs.getInt("veic_ano_fab"));
+		veiculo.setAnoModelo(rs.getInt("veic_ano_mod"));
+		veiculo.setCombustivel(Combustivel.valueOf(rs.getString("veic_combustivel")));
+		veiculo.setQuilometragem(rs.getInt("veic_quilometragem"));
+		veiculo.setExcluido(rs.getBoolean("veic_excluido"));
+
+		veiculo.setCategoria(categoria);
+		veiculo.setModelo(modelo);
+
+		return veiculo;
+	}
+	
+	private Categoria instanciarCategoria(ResultSet rs) throws SQLException {
+		Categoria categoria = new Categoria();
+
+		categoria.setId(rs.getInt("cat_id"));
+		categoria.setDescricao(rs.getString("cat_descricao"));
+		categoria.setExcluida(rs.getBoolean("cat_excluida"));
+
+		return categoria;
+	}
+	
 	private Motorista instanciarMotorista(ResultSet rs) throws SQLException {
-		Motorista m = new Motorista();
+		Motorista motorista = new Motorista();
 
-		m.setNome(rs.getString("loc_mot_nome"));
-		m.setCpf(rs.getString("loc_mot_cpf"));
-		m.setRegistroGeral(rs.getString("loc_mot_reg_geral"));
-		m.setDataNascimento(rs.getDate("loc_mot_data_nasc"));
-		m.setRegistroCNH(rs.getString("loc_mot_reg_cnh"));
-		m.setCategoriaCNH(CategoriaCNH.valueOf(rs.getString("loc_mot_cat_cnh")));
-		m.setValidadeCNH(rs.getDate("loc_mot_data_validade"));
+		motorista.setNome(rs.getString("loc_mot_nome"));
+		motorista.setCpf(rs.getString("loc_mot_cpf"));
+		motorista.setRegistroGeral(rs.getString("loc_mot_reg_geral"));
+		motorista.setDataNascimento(rs.getDate("loc_mot_data_nasc"));
+		motorista.setRegistroCNH(rs.getString("loc_mot_reg_cnh"));
+		motorista.setCategoriaCNH(CategoriaCNH.valueOf(rs.getString("loc_mot_cat_cnh")));
+		motorista.setValidadeCNH(rs.getDate("loc_mot_data_validade"));
 
-		return m;
+		return motorista;
 	}
 
 	private Cliente instanciarClienteCompleto(ResultSet rs) throws SQLException {
