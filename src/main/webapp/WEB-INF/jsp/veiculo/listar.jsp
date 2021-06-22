@@ -111,6 +111,7 @@
 									<th>Categoria</th>
 									<th>Tipo</th>
 									<th>Status</th>
+									<th>Diária</th>
 									<th class="text-center" style="width: 100px;">Ações</th>
 								</tr>
 							</thead>
@@ -121,6 +122,7 @@
 										<td class="font-w600 font-size-sm"><a
 											href="<c:url value="/modelos/${ v.modelo.id }"/>">${ v.modelo.descricao }</a></td>
 										<td class="font-size-sm">${ v.anoFabricacao }/${ v.anoModelo }</td>
+										<td class="font-size-sm">${ v.precoDiaria }</td>
 										<td class="font-size-sm">${ v.cor }</td>
 										<td class="font-size-sm">${ v.combustivel.nomeFormatado }</td>
 										<td class="font-size-sm">${ v.quilometragem } KM</td>

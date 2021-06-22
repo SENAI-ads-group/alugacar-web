@@ -310,7 +310,9 @@
 		src="<c:url value="/assets/js/plugins/jquery-validation/additional-methods.js"/>"></script>
 
 	<!-- Page JS Code -->
-	<script src="<c:url value="/assets/js/pages/veiculo_adicionar.js"/>"></script>
+	<script src="<c:url value="/assets/js/pages/locacao_adicionar.js"/>"></script>
+
+
 
 	<c:forEach var="error" items="${ errors }">
 		<script>

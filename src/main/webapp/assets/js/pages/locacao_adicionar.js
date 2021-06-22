@@ -49,74 +49,127 @@
                     }));
                     var i = a.validate({
                         rules: {
-                            'motorista.nome': {
+                            'locacao.dataRetirada': {
+                                required: true,                                
+                                pattern: Date
+                            },
+                            'locacao.dataDevolucao': {
+                                required: true,
+                                pattern: Date
+                            },
+                            'locacao.motorista.nome': {
                                 required: true,
                                 minlength: 3,
                                 pattern: "[A-Z a-z]+"
                             },
-                            'motorista.nascimento': {
+                            'locacao.motorista.dataNascimento': {
                                 required: true,
-                                pattern: date
+                                pattern: Date
                             },
-                            'motorista.registroGeral': {
+                            'locacao.motorista.registroGeral': {
                                 required: true,
                                 minlength: 5,
                                 pattern: "[0-9]{7}"
                             },
-                            'motorista.registroCNH': {
+                            'locacao.motorista.registroCNH': {
                                 required: true,
                                 minlength: 5,
-                                pattern: "[0-9]{11}"
+                                pattern: "[0-9]{10}"
                             },
-                            'motorista.categoriaCNH': {
+                            'locacao.motorista.categoriaCNH': {
                                 required: true,
                                 minlength: 1,
                                 pattern: "[A-Z]+"
                             },
-                            'usuario.senha-confirmacao': {
+                            'locacao.motorista.validadeCNH': {
                                 required: true,
-                                equalTo: '#usuario-senha'
+                                pattern: Date
                             },
-                            'motorista.validade': {
+                            'locacao.motorista.cpf': {
                                 required: true,
-                                pattern: date
-                            }
+                                minlength: 11,
+                                pattern: "[0-9]{11}"
+                            },
+                            'locacao.veiculo.id': {
+                                required: !0,
+                            },
+                            'locacao.apolice.dataInicio': {
+                                required: true,                                
+                                pattern: Date
+                            },
+                            'locacao.apolice.dataFim': {
+                                required: true,                                
+                                pattern: Date
+                            },
+                            'locacao.apolice.valor': {
+                                required: !0,
+                                money: true
+                            },
+                            'locacao.valorSeguro': {
+                                required: !0,
+                                money: true
+                            },
+                            'locacao.valorCalcao': {
+                                required: !0,
+                                money: true
+                            },
                         },
                         messages: {
-                            'motorista.nome': {
+                            'locacao.dataRetirada': {
+                                required: 'Preencha a data de retirada.'
+                            },
+                            'locacao.dataDevolucao': {
+                                required: 'Preencha a data de devolução.',
+                            },
+                            'locacao.motorista.nome': {
                                 required: 'Preencha o nome do motorista.',
                                 minlength: 'O nome do motorista deve conter no mínimo 3 caractéres'
                             },
-                            'motorista.nascimento': {
+                            'locacao.motorista.nascimento': {
                                 required: 'Preencha o ano de nascimento do motorista.',
-                                minlength: 'Informe uma data correta.',
                                 
                             },
-                            'motorista.registroGeral': {
+                            'locacao.motorista.registroGeral': {
                                 required: 'Informe o RG do motorista.',
                                 minlength: 'O RG deve conter 7 dígitos',
                                 pattern : 'Informe apenas números.'
                             },
-                            'motorista.registroCNH': {
-                                required: 'Informe o registro da CNH do motorista.',
-                                minlength: 'O registro deve conter 11 dígitos',
+                            'locacao.motorista.cpf': {
+                                required: 'Informe o CPF do motorista.',
+                                minlength: 'O CPF deve conter 11 dígitos',
                                 pattern : 'Informe apenas números.'
                             },
-                            'motorista.categoriaCNH': {
+                            'locacao.motorista.registroCNH': {
+                                required: 'Informe o registro da CNH do motorista.',
+                                minlength: 'O registro deve conter 10 dígitos',
+                                pattern : 'Informe apenas números.'
+                            },
+                            'locacao.motorista.categoriaCNH': {
                                 required: 'Informe a categoria da CNH do motorista.',
                                 minlength: 'O registro deve conter no mínimo 1 dígito',
                                 pattern : 'Informe apenas números.'
                             },
-                            'usuario.senha-confirmacao': {
-                                required: 'Confirme a senha',
-                                minlength: 'Sua senha deve conter no mínimo 5 caractéres',
-                                equalTo: 'A confirmação de senha deve ser igual a senha'
-                            },
-                            'motorista.validade': {
-                                required: 'Preencha o ano de validade da CNH do motorista.',
-                                minlength: 'Informe uma data correta.',
+                            "locacao.veiculo.id": "Selecione um veículo para ser locado.",
+                            'locacao.apolice.dataInicio': {
+                                required: 'Preencha a data de início da apólice.',
                                 
                             },
+                            'locacao.apolice.dataFim': {
+                                required: 'Preencha a data do fim da apólice.',
+                                
+                            },
+                            "locacao.apolice.valor": {
+                                required: "Informe o valor da apólice.",
+                                money: "Formato inválido"
+                            },
+                            "locacao.valorSeguro": {
+                                required: "Informe o valor do seguro.",
+                                money: "Formato inválido"
+                            },
+                            "locacao.valorCalcao": {
+                                required: "Informe o valor do calção.",
+                                money: "Formato inválido"
+                            }
                         }
                     });
                     jQuery(".js-wizard-validation").bootstrapWizard({
@@ -136,7 +189,7 @@
     }
 })
 
-$.validator.addMethod( "motorista.registroCNH", function( value ) {
+$.validator.addMethod( "locacao.motorista.registroCNH", function( value ) {
 
     // Removing special characters from value
     value = value.replace( /([~!@#$%^&*()_+=`{}\[\]\-|\\:;'<>,.\/? ])+/g, "" );
@@ -181,8 +234,6 @@ $.validator.addMethod( "motorista.registroCNH", function( value ) {
     return ( String( firstCN ).concat( secondCN ) === value.substr( -2 ) );
   
   }, "Por favor, informe um número de CNH válido!" );
-
-
 
 function validadataNascimento(){
     var data = document.getElementById("motorista.nascimento").value; // pega o valor do input
