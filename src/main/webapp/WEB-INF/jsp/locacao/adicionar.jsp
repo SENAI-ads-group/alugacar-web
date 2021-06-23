@@ -120,9 +120,11 @@
 						<li class="nav-item"><a class="nav-link"
 							href="#wizard-passo3" data-toggle="tab">3. Veículo</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="#wizard-passo4" data-toggle="tab">4. Apólice de Seguro</a></li>
+							href="#wizard-passo4" data-toggle="tab">4. Cliente</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="#wizard-passo5" data-toggle="tab">5. Valores</a></li>
+							href="#wizard-passo5" data-toggle="tab">5. Apólice de Seguro</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="#wizard-passo6" data-toggle="tab">6. Valores</a></li>
 					</ul>
 					<!-- END Step Tabs -->
 
@@ -135,54 +137,21 @@
 							<!-- Step 1 -->
 							<div class="tab-pane active" id="wizard-passo1" role="tabpanel">
 								<div class="form-group">
-									<label for="locacao.dataRetirada">Data de Retirada</label> <input
-										class="form-control" type="date" id="locacao.dataRetirada"
-										name="locacao.dataRetirada">
+									<label for="dataRetirada">Data de Retirada</label> <input
+										class="form-control" type="date" id="dataRetirada"
+										name="dataRetirada">
 								</div>
 								<div class="form-group">
-									<label for="locacao.dataDevolucao">Data de Devolução</label> <input
-										class="form-control" type="date" id="locacao.dataDevolucao"
-										name="locacao.dataDevolucao">
+									<label for="dataDevolucao">Data de Devolução</label> <input
+										class="form-control" type="date" id="dataDevolucao"
+										name="dataDevolucao">
 								</div>
 							</div>
 							<!-- END Step 1 -->
 
 							<!-- Step 2 -->
 							<div class="tab-pane" id="wizard-passo2" role="tabpanel">
-								<div class="form-group">
-									<label for="locacao.motorista.nome">Nome</label> <input
-										class="form-control" type="text" id="locacao.motorista.nome"
-										name="locacao.motorista.nome">
-								</div>
-								<div class="form-group">
-									<label for="locacao.motorista.cpf">CPF</label> <input
-										class="form-control" type="text" id="locacao.motorista.cpf"
-										name="locacao.motorista.cpf">
-								</div>
-								<div class="form-group">
-									<label for="locacao.motorista.registroGeral">Registro
-										Geral</label> <input class="form-control" type="text"
-										id="locacao.motorista.registroGeral"
-										name="locacao.motorista.registroGeral">
-								</div>
-								<div class="form-group">
-									<label for="locacao.motorista.dataNascimento">Data de
-										Nascimento</label> <input class="form-control" type="date"
-										id="locacao.motorista.dataNascimento"
-										name="locacao.motorista.dataNascimento">
-								</div>
-								<div class="form-group">
-									<label for="locacao.motorista.registroCNH">Registro da
-										CNH</label> <input class="form-control" type="text"
-										id="locacao.motorista.registroCNH"
-										name="locacao.motorista.registroCNH">
-								</div>
-								<div class="form-group">
-									<label for="locacao.motorista.validadeCNH">Validade da
-										CNH</label> <input class="form-control" type="date"
-										id="locacao.motorista.validadeCNH"
-										name="locacao.motorista.validadeCNH">
-								</div>
+								<%@ include file="../form-groups/motorista.jsp"%>
 							</div>
 							<!-- END Step 2 -->
 
@@ -205,14 +174,29 @@
 							<!-- Step 4 -->
 							<div class="tab-pane" id="wizard-passo4" role="tabpanel">
 								<div class="form-group">
+									<label for="locacao.cliente.id">Cliente</label> <select
+										class="custom-select" id="locacao.cliente.id"
+										name="locacao.cliente.id" style="width: 100%;">
+										<option value="0">Selecione...</option>
+										<c:forEach var="cli" items="${ clienteList }">
+											<option value="${ cli.id }">${ cli.nome }</option>
+										</c:forEach>
+									</select>
+								</div>
+							</div>
+							<!-- END Step 4 -->
+
+							<!-- Step 5 -->
+							<div class="tab-pane" id="wizard-passo5" role="tabpanel">
+								<div class="form-group">
 									<input class="form-control" type="date"
 										id="locacao.apolice.dataInicio"
 										name="locacao.apolice.dataInicio" hidden="true">
 								</div>
 								<div class="form-group">
-									<label for="locacao.apolice.dataFim">Data Final</label> <input
-										class="form-control" type="date" id="locacao.apolice.dataFim"
-										name="locacao.apolice.dataFim">
+									<label for="dataFimApolice">Data Final</label> <input
+										class="form-control" type="date" id="dataFimApolice"
+										name="dataFimApolice">
 								</div>
 								<div class="form-group">
 									<label for="locacao.apolice.valor">Valor</label>
@@ -226,10 +210,10 @@
 									</div>
 								</div>
 							</div>
-							<!-- END Step 4 -->
+							<!-- END Step 5 -->
 
-							<!-- Step 5 -->
-							<div class="tab-pane" id="wizard-passo5" role="tabpanel">
+							<!-- Step 6 -->
+							<div class="tab-pane" id="wizard-passo6" role="tabpanel">
 								<div class="form-group">
 									<label for="locacao.valorSeguro">Valor do Seguro</label>
 									<div class="input-group">
@@ -253,7 +237,7 @@
 									</div>
 								</div>
 							</div>
-							<!-- END Step 5 -->
+							<!-- END Step 6 -->
 						</div>
 						<!-- END Steps Content -->
 

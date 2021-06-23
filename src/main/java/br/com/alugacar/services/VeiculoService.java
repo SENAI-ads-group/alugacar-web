@@ -93,6 +93,14 @@ public class VeiculoService {
 		return obj;
 	}
 
+	public Veiculo atualizarStatus(Veiculo veiculo, StatusVeiculo status) {
+		Veiculo obj = getId(veiculo.getId());
+		obj.setStatus(status);
+
+		obj = atualizar(obj.getId(), obj);
+		return obj;
+	}
+
 	public void excluir(Integer id) {
 		Veiculo obj = getId(id);
 		obj.setExcluido(true);

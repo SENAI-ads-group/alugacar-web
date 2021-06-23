@@ -131,7 +131,7 @@
 												test="${ v.status eq StatusVeiculo.DISPONIVEL_PARA_ALUGAR }">
 												<span class="font-size-sm font-w600 px-2 py-1 rounded  bg-success-light text-success">${ v.status.nomeFormatado }</span>
 											</c:if> <c:if
-												test="${ v.status eq StatusVeiculo.PENDENTE_DE_DEVOLUCAO }">
+												test="${ v.status eq StatusVeiculo.EM_LOCACAO }">
 												<span class="font-size-sm font-w600 px-2 py-1 rounded  bg-warning-light text-warning">${ v.status.nomeFormatado }</span>
 											</c:if> <c:if test="${ v.status eq StatusVeiculo.EM_MANUTENCAO }">
 												<span class="font-size-sm font-w600 px-2 py-1 rounded  bg-danger-light text-danger">${ v.status.nomeFormatado }</span>

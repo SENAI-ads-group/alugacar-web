@@ -1,7 +1,7 @@
 package br.com.alugacar.entidades.enums;
 
 public enum StatusVeiculo {
-	DISPONIVEL_PARA_ALUGAR("Disponível"), PENDENTE_DE_DEVOLUCAO("Pendente de Devolução"), EM_MANUTENCAO("Em Manutenção"),
+	DISPONIVEL_PARA_ALUGAR("Disponível"), EM_LOCACAO("Em Locação"), EM_MANUTENCAO("Em Manutenção"),
 	VENDIDO("Vendido");
 	
 	private String nomeFormatado;

@@ -2,45 +2,42 @@
 	pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<div class="js-validation-form">
-	<label for="motorista.cpf">CPF</label> <input type="number"
-		class="form-control" id="motorista.cpf" name="motorista.cpf"
-		value="${ motorista.cpf}">
+<div class="form-group">
+	<label for="locacao.motorista.nome">Nome</label> <input
+		class="form-control" type="text" id="locacao.motorista.nome"
+		name="locacao.motorista.nome">
 </div>
-
-
-<div class="js-validation-form">
-	<label for="motorista.nome">Nome</label> <input type="text"
-		class="form-control" id="motorista.nome" name="motorista.nome"
-		value="${ motorista.nome }">
+<div class="form-group">
+	<label for="locacao.motorista.cpf">CPF</label> <input
+		class="form-control" type="text" id="locacao.motorista.cpf"
+		name="locacao.motorista.cpf">
 </div>
-
-<div class="js-validation-form">
-	<label for="motorista.nascimento">Data de Nascimento</label> <input type="number"
-		class="form-control" id="motorista.nascimento" name="motorista.nascimento"
-		value="${ motorista.nascimento }">
+<div class="form-group">
+	<label for="locacao.motorista.registroGeral">Registro Geral</label> <input
+		class="form-control" type="text" id="locacao.motorista.registroGeral"
+		name="locacao.motorista.registroGeral">
 </div>
-
-<div class="js-validation-form">
-	<label for="motorista.registroGeral">RG</label> <input type="number"
-		class="form-control" id="motorista.registroGeral" name="motorista.registroGeral"
-		value="${ motorista.registroGeral }">
+<div class="form-group">
+	<label for="dataNascimento">Data de Nascimento</label> <input
+		class="form-control" type="date" id="dataNascimento"
+		name="dataNascimento">
 </div>
-
-<div class="js-validation-form">
-	<label for="motorista.registroCNH">Registro CNH</label> <input type="number"
-		class="form-control" id="motorista.registroCNH" name="motorista.registroCNH"
-		value="${ motorista.registroCNH }">
+<div class="form-group">
+	<label for="locacao.motorista.registroCNH">Registro da CNH</label> <input
+		class="form-control" type="text" id="locacao.motorista.registroCNH"
+		name="locacao.motorista.registroCNH">
 </div>
-
-<div class="js-validation-form">
-	<label for="motorista.categoriaCNH">Categoria CNH</label> <input type="text"
-		class="form-control" id="motorista.categoriaCNH" name="motorista.categoriaCNH"
-		value="${ motorista.registroCNH }">
+<div class="form-group">
+	<label for="locacao.motorista.categoriaCNH">Categoria da CNH</label> <select
+		class="custom-select" id="locacao.motorista.categoriaCNH"
+		name="locacao.motorista.categoriaCNH" style="width: 100%;">
+		<option value="0">Selecione...</option>
+		<c:forEach var="cat" items="${ catCNHList }">
+			<option value="${ cat }">Categoria ${ cat }</option>
+		</c:forEach>
+	</select>
 </div>
-
-<div class="js-validation-form">
-	<label for="motorista.validade">Data de Validade</label> <input type="number"
-		class="form-control" id="motorista.validade" name="motorista.validade"
-		value="${ motorista.validade }">
+<div class="form-group">
+	<label for="validadeCNH">Validade da CNH</label> <input
+		class="form-control" type="date" id="validadeCNH" name="validadeCNH">
 </div>

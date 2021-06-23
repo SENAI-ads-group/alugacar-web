@@ -166,7 +166,7 @@
 						<div class="block-options">
 							<a type="button" class="btn-block-option" data-toggle="tooltip"
 								title="Novo Endereço"
-								href="<c:url value="/locacoes/${ locacao.id }/motorista/adicionar/endereco"/>">
+								href="<c:url value="/motoristas/${ locacao.id }/adicionar/endereco"/>">
 								<i class="fa fa-fw fa-plus"></i>
 							</a>
 						</div>
@@ -294,7 +294,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="em" items="${ cliente.emails }">
+									<c:forEach var="em" items="${ motorista.emails }">
 										<tr>
 											<td>${ em.email }</td>
 											<td class="text-center">

@@ -12,7 +12,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Telefone de Cliente</title>
+<title>Alugacar | Telefone de Motorista</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -104,16 +104,16 @@
 						<form class="js-validation-form"
 							action="
 							<c:if test="${ telefone.numero == null }">
-								<c:url value="/clientes/${ cliente.id }/cadastrar/telefone"/>
+								<c:url value="/motoristas/${ motorista.locacao.id }/cadastrar/telefone"/>
 							</c:if>
 							<c:if test="${ telefone.numero != null }">
-								<c:url value="/clientes/${ cliente.id }/atualizar/telefone/${ telefone.numero }"/>
+								<c:url value="/motoristas/${ motorista.locacao.id }/atualizar/telefone/${ telefone.numero }"/>
 							</c:if>"
 							method="POST">
 							<div class="form-group">
-								<label for="cliente.nome">Cliente</label> <input type="text"
-									class="form-control" id="cliente.nome" name="cliente.nome"
-									value="${ cliente.nome }" readonly>
+								<label for="motorista.nome">Motorista</label> <input type="text"
+									class="form-control" id="motorista.nome" name="motorista.nome"
+									value="${ motorista.nome }" readonly>
 							</div>
 							<%@ include file="../form-groups/telefone.jsp"%>
 							<div class="form-group">

@@ -111,6 +111,7 @@
 							<tbody>
 								<c:forEach var="loc" items="${ locacaoList }">
 									<tr>
+										<th class="text-center" style="width: 50px;">${ loc.id }</th>
 										<td class="font-w600 font-size-sm">${ loc.dataRetirada }</td>
 										<td class="font-w600 font-size-sm">${ loc.dataDevolucao }</td>
 										<td class="font-w600 font-size-sm"><a
@@ -121,31 +122,25 @@
 											href="<c:url value="/veiculos/${ loc.id }"/>">${ loc.veiculo.modelo.marca.descricao }
 												${ loc.veiculo.modelo.descricao } ${ loc.veiculo.cor } ${ loc.veiculo.placa }</a></td>
 										<td class="font-size-md"><c:if
-												test="${ loc.status eq StatusLocaca.VEICULO_RESERVADO }">
-												<span
-													class="font-size-sm font-w600 px-2 py-1 rounded  bg-success-light text-success">${ loc.status.nomeFormatado }</span>
-											</c:if> <c:if
-												test="${ loc.statusstatus eq StatusVeiculo.FINALIZADA }">
+												test="${ loc.status eq StatusLocacao.VEICULO_RESERVADO }">
 												<span
 													class="font-size-sm font-w600 px-2 py-1 rounded  bg-info-light text-info">${ loc.status.nomeFormatado }</span>
-											</c:if> <c:if
-												test="${ loc.statusstatus eq StatusVeiculo.PENDENTE_DE_DEVOLUCAO }">
+											</c:if> <c:if test="${ loc.status eq StatusLocacao.FINALIZADA }">
+												<span
+													class="font-size-sm font-w600 px-2 py-1 rounded  bg-success-light text-success">${ loc.status.nomeFormatado }</span>
+											</c:if> <c:if test="${ loc.status eq StatusLocacao.EM_ANDAMENTO }">
 												<span
 													class="font-size-sm font-w600 px-2 py-1 rounded  bg-warning-light text-warning">${ loc.status.nomeFormatado }</span>
 											</c:if> <c:if
-												test="${ loc.statusstatus eq StatusVeiculo.EM_ANDAMENTO }">
+												test="${ loc.status eq StatusLocacao.DATA_DEVOLUCAO_EXPIRADA }">
 												<span
 													class="font-size-sm font-w600 px-2 py-1 rounded  bg-danger-light text-danger">${ loc.status.nomeFormatado }</span>
-											</c:if> <c:if
-												test="${ loc.statusstatus eq StatusVeiculo.DATA_DEVOLUCAO_EXPIRADA }">
-												<span
-													class="font-size-sm font-w600 px-2 py-1 rounded  bg-info-light text-info">${ loc.status.nomeFormatado }</span>
 											</c:if></td>
 										<td class="text-center">
 											<div class="btn-group">
 												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
 													title="Editar"
-													href="<c:url value="/locacoes/${ locacao.id }"/>"> <i
+													href="<c:url value="/locacoes/${ loc.id }"/>"> <i
 													class="fa fa-fw fa-pencil-alt"></i>
 												</a>
 											</div>
