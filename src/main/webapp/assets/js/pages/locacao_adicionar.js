@@ -6,6 +6,9 @@
 ! function(a) {
     var e = {};
 
+
+
+    
     function i(t) { if (e[t]) return e[t].exports; var r = e[t] = { i: t, l: !1, exports: {} }; return a[t].call(r.exports, r, r.exports, i), r.l = !0, r.exports }
     i.m = a, i.c = e, i.d = function(a, e, t) { i.o(a, e) || Object.defineProperty(a, e, { enumerable: !0, get: t }) }, i.r = function(a) { "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(a, Symbol.toStringTag, { value: "Module" }), Object.defineProperty(a, "__esModule", { value: !0 }) }, i.t = function(a, e) {
         if (1 & e && (a = i(a)), 8 & e) return a;
@@ -51,7 +54,7 @@
                         rules: {
                             'locacao.dataRetirada': {
                                 required: true,                                
-                                pattern: Date
+                                pattern: Date 
                             },
                             'locacao.dataDevolucao': {
                                 required: true,
@@ -236,7 +239,7 @@ $.validator.addMethod( "locacao.motorista.registroCNH", function( value ) {
   }, "Por favor, informe um número de CNH válido!" );
 
 function validadataNascimento(){
-    var data = document.getElementById("motorista.nascimento").value; // pega o valor do input
+    var data = document.getElementById("locacao.motorista.nascimento").value; // pega o valor do input
     data = data.replace(/\//g, "-"); // substitui eventuais barras (ex. IE) "/" por hífen "-"
     var data_array = data.split("-"); // quebra a data em array
     
@@ -267,7 +270,7 @@ function validadataNascimento(){
  }
 
  function validadataValidade(){
-    var data = document.getElementById("motorista.validade").value; // pega o valor do input
+    var data = document.getElementById("locacao.motorista.validade").value; // pega o valor do input
     data = data.replace(/\//g, "-"); // substitui eventuais barras (ex. IE) "/" por hífen "-"
     var data_array = data.split("-"); // quebra a data em array
     
@@ -295,4 +298,52 @@ function validadataNascimento(){
     
     // se for maior que 60 não vai acontecer nada!
     return false;
- };
+ }
+ jQuery.validator.addMethod("registroCNH", function( value ) {
+
+    // Removing special characters from value
+    value = value.replace( /([~!@#$%^&*()_+=`{}\[\]\-|\\:;'<>,.\/? ])+/g, "" );
+  
+    // Checking value to have 11 digits only
+    if ( value.length !== 11 ) {
+      return false;
+    }
+  
+    var sum = 0, dsc = 0, firstChar,
+          firstCN, secondCN, i, j, v;
+  
+    firstChar = value.charAt( 0 );
+  
+    if ( new Array( 12 ).join( firstChar ) === value ) {
+      return false;
+    }
+  
+    // Step 1 - using first Check Number:
+    for ( i = 0, j = 9, v = 0; i < 9; ++i, --j ) {
+      sum += +( value.charAt( i ) * j );
+    }
+  
+    firstCN = sum % 11;
+    if ( firstCN >= 10 ) {
+      firstCN = 0;
+      dsc = 2;
+    }
+  
+    sum = 0;
+    for ( i = 0, j = 1, v = 0; i < 9; ++i, ++j ) {
+      sum += +( value.charAt( i ) * j );
+    }
+  
+    secondCN = sum % 11;
+    if ( secondCN >= 10 ) {
+      secondCN = 0;
+    } else {
+      secondCN = secondCN - dsc;
+    }
+  
+    return ( String( firstCN ).concat( secondCN ) === value.substr( -2 ) );
+  
+  }, "Por favor, informe um número de CNH válido!" );
+ 
+ 
+ ;
