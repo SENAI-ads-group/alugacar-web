@@ -112,6 +112,10 @@
                                 required: !0,
                                 money: true
                             },
+                            "veiculo.precoDiaria": {
+                                required: !0,
+                                money: true
+                            },
                         },
                         messages: {
                             "veiculo.placa": {
@@ -159,6 +163,10 @@
                                 pattern: "Formato inválido. Digite apenas números"
                             },
                             "veiculo.precoCompra": {
+                                required: "Informe o preço de compra do veículo.",
+                                money: "Formato inválido"
+                            },
+                            "veiculo.precoDiaria": {
                                 required: "Informe o preço de compra do veículo.",
                                 money: "Formato inválido"
                             }

@@ -317,6 +317,19 @@
 												${ !usuarioLogado.usuario.tipo.administrador ? 'readonly' : '' }>
 										</div>
 									</div>
+									<div class="form-group">
+										<label for="veiculo.precoDiaria">Preço de Venda</label>
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text"> R$ </span>
+											</div>
+											<input type="text" class="form-control text-center"
+												id="veiculo.precoDiaria" name="veiculo.precoDiaria"
+												placeholder="0,00" value="${ veiculo.precoDiaria }"
+												${ !usuarioLogado.usuario.tipo.administrador ? 'readonly' : '' }>
+										</div>
+									</div>
+
 									<c:if test="${ usuarioLogado.usuario.tipo.administrador }">
 										<div class="form-group">
 											<button type="submit" class="btn btn-alt-success">Atualizar</button>

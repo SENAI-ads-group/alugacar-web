@@ -35,6 +35,10 @@ public class Veiculo implements Serializable {
 	@Min(value = 0, message = "{veiculo.precoVenda.min}")
 	private Double precoVenda;
 
+	@NotNull
+	@Min(value = 0, message = "{veiculo.precoDiaria.min}")
+	private Double precoDiaria;
+
 	@Size(min = 1, max = 20, message = "{veiculo.cor.size}")
 	private String cor;
 
@@ -69,9 +73,10 @@ public class Veiculo implements Serializable {
 	}
 
 	public Veiculo(Integer id, String placa, String renavam, TipoVeiculo tipo, StatusVeiculo status, Double precoCompra,
-			Double precoVenda, String cor, Integer qtdPassageiros, Integer capacidadeTanque, Integer anoFabricacao,
-			Integer anoModelo, Combustivel combustivel, Integer quilometragem, Boolean excluido, Categoria categoria,
-			Modelo modelo) {
+			Double precoVenda, Double precoDiaria, String cor, Integer qtdPassageiros, Integer capacidadeTanque,
+			Integer anoFabricacao, Integer anoModelo, Combustivel combustivel, Integer quilometragem, Boolean excluido,
+			Categoria categoria, Modelo modelo) {
+		super();
 		this.id = id;
 		this.placa = placa;
 		this.renavam = renavam;
@@ -79,6 +84,7 @@ public class Veiculo implements Serializable {
 		this.status = status;
 		this.precoCompra = precoCompra;
 		this.precoVenda = precoVenda;
+		this.precoDiaria = precoDiaria;
 		this.cor = cor;
 		this.qtdPassageiros = qtdPassageiros;
 		this.capacidadeTanque = capacidadeTanque;
@@ -146,6 +152,15 @@ public class Veiculo implements Serializable {
 	public void setPrecoVenda(Double precoVenda) {
 		this.precoVenda = precoVenda;
 	}
+	
+	public Double getPrecoDiaria() {
+		return precoDiaria;
+	}
+
+	public void setPrecoDiaria(Double precoDiaria) {
+		this.precoDiaria = precoDiaria;
+	}
+	
 
 	public String getCor() {
 		return cor;

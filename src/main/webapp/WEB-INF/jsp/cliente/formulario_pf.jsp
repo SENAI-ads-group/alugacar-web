@@ -126,7 +126,7 @@
 						<h3 class="block-title">Informações</h3>
 					</div>
 					<div class="block-content">
-						<form
+						<form class="js-validation-form"
 							action="<c:url value="/clientes/${ cliente.id }/atualizar"/>"
 							method="POST">
 							<div class="form-group">
@@ -331,6 +331,19 @@
 	<!-- Notifications JS Plugin -->
 	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>
+
+	<!-- Page JS Plugins -->
+	<script
+		src="<c:url value="/assets/js/plugins/jquery-bootstrap-wizard/bs4/jquery.bootstrap.wizard.min.js"/>"></script>
+	<script
+		src="<c:url value="/assets/js/plugins/jquery-validation/jquery.validate.min.js"/>"></script>
+	<script
+		src="<c:url value="/assets/js/plugins/jquery-validation/additional-methods.js"/>"></script>
+
+	<!-- Page JS Code -->
+	<script src="<c:url value="/assets/js/pages/cliente_adicionar_fisica.js"/>"></script>
+
+
 
 	<c:forEach var="error" items="${ errors }">
 		<script>

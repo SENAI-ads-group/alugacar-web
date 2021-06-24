@@ -6,6 +6,13 @@
 
     var r = {};
 
+
+
+    jQuery.validator.addMethod( "validaCEP", function( cep_value, element ) {
+        return this.optional( element ) || /^\d{2}.\d{3}-\d{3}?$|^\d{5}-?\d{3}?$/.test( cep_value );
+    }, "Informe um CEP válido." );
+
+
     function n(t) { if (r[t]) return r[t].exports; var i = r[t] = { i: t, l: !1, exports: {} }; return e[t].call(i.exports, i, i.exports, n), i.l = !0, i.exports }
     n.m = e, n.c = r, n.d = function (e, r, t) { n.o(e, r) || Object.defineProperty(e, r, { enumerable: !0, get: t }) }, n.r = function (e) { "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(e, Symbol.toStringTag, { value: "Module" }), Object.defineProperty(e, "__esModule", { value: !0 }) }, n.t = function (e, r) {
         if (1 & r && (e = n(e)), 8 & r) return e;
@@ -41,7 +48,9 @@
                                     required: !0,
                                     minlength: 8,
                                     maxlength: 8,
+                                    validaCPF : true,
                                     pattern: "[0-9]{8}"
+
                                 },
                                 "endereco.logradouro": {
                                     required: true,

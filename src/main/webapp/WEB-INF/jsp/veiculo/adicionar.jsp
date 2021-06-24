@@ -253,6 +253,17 @@
 											placeholder="0,00">
 									</div>
 								</div>
+								<div class="form-group">
+									<label for="veiculo.precoDiaria">Preço da Diária</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text"> R$ </span>
+										</div>
+										<input type="text" class="form-control text-center"
+											id="veiculo.precoDiaria" name="veiculo.precoDiaria"
+											placeholder="0,00">
+									</div>
+								</div>
 							</div>
 							<!-- END Step 3 -->
 						</div>

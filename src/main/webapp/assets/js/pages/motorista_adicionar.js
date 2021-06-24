@@ -66,7 +66,7 @@
                             'motorista.registroCNH': {
                                 required: true,
                                 minlength: 5,
-                                pattern: "[0-9]{10}"
+                                pattern: "[0-9]{11}"
                             },
                             'motorista.categoriaCNH': {
                                 required: true,
@@ -99,7 +99,7 @@
                             },
                             'motorista.registroCNH': {
                                 required: 'Informe o registro da CNH do motorista.',
-                                minlength: 'O registro deve conter 10 dígitos',
+                                minlength: 'O registro deve conter 11 dígitos',
                                 pattern : 'Informe apenas números.'
                             },
                             'motorista.categoriaCNH': {
@@ -135,6 +135,54 @@
         jQuery((function() { t.init() }))
     }
 })
+
+$.validator.addMethod( "motorista.registroCNH", function( value ) {
+
+    // Removing special characters from value
+    value = value.replace( /([~!@#$%^&*()_+=`{}\[\]\-|\\:;'<>,.\/? ])+/g, "" );
+  
+    // Checking value to have 11 digits only
+    if ( value.length !== 11 ) {
+      return false;
+    }
+  
+    var sum = 0, dsc = 0, firstChar,
+          firstCN, secondCN, i, j, v;
+  
+    firstChar = value.charAt( 0 );
+  
+    if ( new Array( 12 ).join( firstChar ) === value ) {
+      return false;
+    }
+  
+    // Step 1 - using first Check Number:
+    for ( i = 0, j = 9, v = 0; i < 9; ++i, --j ) {
+      sum += +( value.charAt( i ) * j );
+    }
+  
+    firstCN = sum % 11;
+    if ( firstCN >= 10 ) {
+      firstCN = 0;
+      dsc = 2;
+    }
+  
+    sum = 0;
+    for ( i = 0, j = 1, v = 0; i < 9; ++i, ++j ) {
+      sum += +( value.charAt( i ) * j );
+    }
+  
+    secondCN = sum % 11;
+    if ( secondCN >= 10 ) {
+      secondCN = 0;
+    } else {
+      secondCN = secondCN - dsc;
+    }
+  
+    return ( String( firstCN ).concat( secondCN ) === value.substr( -2 ) );
+  
+  }, "Por favor, informe um número de CNH válido!" );
+
+
 
 function validadataNascimento(){
     var data = document.getElementById("motorista.nascimento").value; // pega o valor do input
@@ -196,10 +244,4 @@ function validadataNascimento(){
     
     // se for maior que 60 não vai acontecer nada!
     return false;
- }
-
- $("#motorista.nascimento").mask("99/99/9999");
-
- $("#motorista.registroCNH").mask("999999999-9");
-
-;
+ };

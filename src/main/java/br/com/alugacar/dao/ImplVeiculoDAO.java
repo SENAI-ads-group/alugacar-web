@@ -34,6 +34,7 @@ public class ImplVeiculoDAO implements VeiculoDAO {
 				+ "veic_status, "
 				+ "veic_preco_compra, "
 				+ "veic_preco_venda, "
+				+ "veic_preco_diaria, "
 				+ "veic_cor, "
 				+ "veic_qtd_passageiros, "
 				+ "veic_capac_tanque, "
@@ -44,7 +45,7 @@ public class ImplVeiculoDAO implements VeiculoDAO {
 				+ "veic_cat_id, "
 				+ "veic_mod_id, "
 				+ "veic_excluido"
-				+ ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
@@ -56,16 +57,17 @@ public class ImplVeiculoDAO implements VeiculoDAO {
 			ps.setString(4, veiculo.getStatus().name());
 			ps.setDouble(5, veiculo.getPrecoCompra());
 			ps.setDouble(6, veiculo.getPrecoVenda());
-			ps.setString(7, veiculo.getCor());
-			ps.setInt(8, veiculo.getQtdPassageiros());
-			ps.setInt(9, veiculo.getCapacidadeTanque());
-			ps.setInt(10, veiculo.getAnoFabricacao());
-			ps.setInt(11, veiculo.getAnoModelo());
-			ps.setString(12, veiculo.getCombustivel().name());
-			ps.setInt(13, veiculo.getQuilometragem());
-			ps.setInt(14, veiculo.getCategoria().getId());
-			ps.setInt(15, veiculo.getModelo().getId());
-			ps.setBoolean(16, veiculo.getExcluido());
+			ps.setDouble(7, veiculo.getPrecoDiaria());
+			ps.setString(8, veiculo.getCor());
+			ps.setInt(9, veiculo.getQtdPassageiros());
+			ps.setInt(10, veiculo.getCapacidadeTanque());
+			ps.setInt(11, veiculo.getAnoFabricacao());
+			ps.setInt(12, veiculo.getAnoModelo());
+			ps.setString(13, veiculo.getCombustivel().name());
+			ps.setInt(14, veiculo.getQuilometragem());
+			ps.setInt(15, veiculo.getCategoria().getId());
+			ps.setInt(16, veiculo.getModelo().getId());
+			ps.setBoolean(17, veiculo.getExcluido());
 
 			Veiculo veiculoInserido = null;
 
@@ -96,6 +98,7 @@ public class ImplVeiculoDAO implements VeiculoDAO {
 				+ "veic_status = ?, "
 				+ "veic_preco_compra = ?, "
 				+ "veic_preco_venda = ?, "
+				+ "veic_preco_diaria = ?, "
 				+ "veic_cor = ?, "
 				+ "veic_qtd_passageiros = ?, "
 				+ "veic_capac_tanque = ?, "
@@ -119,17 +122,18 @@ public class ImplVeiculoDAO implements VeiculoDAO {
 			ps.setString(4, veiculo.getStatus().name());
 			ps.setDouble(5, veiculo.getPrecoCompra());
 			ps.setDouble(6, veiculo.getPrecoVenda());
-			ps.setString(7, veiculo.getCor());
-			ps.setInt(8, veiculo.getQtdPassageiros());
-			ps.setInt(9, veiculo.getCapacidadeTanque());
-			ps.setInt(10, veiculo.getAnoFabricacao());
-			ps.setInt(11, veiculo.getAnoModelo());
-			ps.setString(12, veiculo.getCombustivel().name());
-			ps.setInt(13, veiculo.getQuilometragem());
-			ps.setInt(14, veiculo.getCategoria().getId());
-			ps.setInt(15, veiculo.getModelo().getId());
-			ps.setBoolean(16, veiculo.getExcluido());
-			ps.setInt(17, id);
+			ps.setDouble(7, veiculo.getPrecoDiaria());
+			ps.setString(8, veiculo.getCor());
+			ps.setInt(9, veiculo.getQtdPassageiros());
+			ps.setInt(10, veiculo.getCapacidadeTanque());
+			ps.setInt(11, veiculo.getAnoFabricacao());
+			ps.setInt(12, veiculo.getAnoModelo());
+			ps.setString(13, veiculo.getCombustivel().name());
+			ps.setInt(14, veiculo.getQuilometragem());
+			ps.setInt(15, veiculo.getCategoria().getId());
+			ps.setInt(16, veiculo.getModelo().getId());
+			ps.setBoolean(17, veiculo.getExcluido());
+			ps.setInt(18, id);
 
 			Veiculo veiculoInserido = null;
 
@@ -422,6 +426,7 @@ public class ImplVeiculoDAO implements VeiculoDAO {
 		v.setStatus(StatusVeiculo.valueOf(rs.getString("veic_status")));
 		v.setPrecoCompra(rs.getDouble("veic_preco_compra"));
 		v.setPrecoVenda(rs.getDouble("veic_preco_venda"));
+		v.setPrecoDiaria(rs.getDouble("veic_preco_diaria"));
 		v.setCor(rs.getString("veic_cor"));
 		v.setQtdPassageiros(rs.getInt("veic_qtd_passageiros"));
 		v.setCapacidadeTanque(rs.getInt("veic_capac_tanque"));

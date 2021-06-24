@@ -239,7 +239,7 @@
 		src="<c:url value="/assets/js/plugins/jquery-validation/additional-methods.js"/>"></script>
 
 	<!-- Page JS Code -->
-	<script src="<c:url value="/assets/js/pages/cliente_adicionar_pj.js"/>"></script>
+	<script src="<c:url value="/assets/js/pages/cliente_adicionar_juridica.js"/>"></script>
 
 	<c:forEach var="error" items="${ errors }">
 		<script>
