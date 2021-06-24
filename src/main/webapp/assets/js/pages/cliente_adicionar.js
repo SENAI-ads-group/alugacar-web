@@ -63,6 +63,12 @@
       
       }, "Por favor, informe um número de CNH válido!" );
 
+     // ----------------------------- VALIDAR CEP ------------------------------------------------
+
+      jQuery.validator.addMethod( "CEP", function( cep_value, element ) {
+        return this.optional( element ) || /^\d{2}.\d{3}-\d{3}?$|^\d{5}-?\d{3}?$/.test( cep_value );
+    }, "Informe um CEP válido." );
+
      // ----------------------------- VALIDAR CPF ------------------------------------------------
 
     jQuery.validator.addMethod( "validaCPF", function( value, element ) {
@@ -160,6 +166,46 @@
         return false;
      },"Idade mínima não atingida");
 
+     // ----------------------------- VALIDAR VALIDADE DA CNH ------------------------------------------------
+
+     jQuery.validator.addMethod("dataValidade",function(date){
+        let parts = date.split('/') // separa a data pelo caracter '/'
+        let today = new Date()      // pega a data atual
+        
+        date = new Date(parts[2], parts[1] - 1, parts[0]) // formata 'date'
+        
+        // compara se a data informada é maior que a data atual
+        // e retorna true ou false
+        return date >= today ? true : false
+      }, "Não é possível cadastrar o motorista pois sua CNH está vencida");
+
+     // ----------------------------- VALIDAR DATA DE RETIRADA ------------------------------------------------
+
+      jQuery.validator.addMethod("dataRetirada",function(date){
+        let parts = date.split('/') // separa a data pelo caracter '/'
+        let today = new Date()      // pega a data atual
+        
+        data = new Date(parts[2], parts[1] - 1, parts[0]) // formata 'date'
+        
+        // compara se a data informada é maior que a data atual
+        // e retorna true ou false
+        
+        return data < today ? true : false
+      }, "A data de retirada não pode ser menor que a data atual.");
+
+   // ----------------------------- VALIDAR DATA DE DEVOLUÇÃO ------------------------------------------------
+
+      jQuery.validator.addMethod("dataDevolucao",function(date){
+        let parts = date.split('/') // separa a data pelo caracter '/'
+        let today = new Date()      // pega a data atual
+        
+        data = new Date(parts[2], parts[1] - 1, parts[0]) // formata 'date'
+        
+        // compara se a data informada é maior que a data atual
+        // e retorna true ou false
+        return date < today ? true : false
+      }, "A data de devolução não pode ser menor que a data atual.");
+
     function i(t) { if (e[t]) return e[t].exports; var r = e[t] = { i: t, l: !1, exports: {} }; return a[t].call(r.exports, r, r.exports, i), r.l = !0, r.exports }
     i.m = a, i.c = e, i.d = function(a, e, t) { i.o(a, e) || Object.defineProperty(a, e, { enumerable: !0, get: t }) }, i.r = function(a) { "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(a, Symbol.toStringTag, { value: "Module" }), Object.defineProperty(a, "__esModule", { value: !0 }) }, i.t = function(a, e) {
         if (1 & e && (a = i(a)), 8 & e) return a;
@@ -203,69 +249,89 @@
                     }));
                     var i = a.validate({
                         rules: {
-                        'locacao.dataRetirada': {
-                           required: true                                                            
-                        },
-                        'locacao.dataDevolucao': {
-                            required: true     
-                        },
-                        'locacao.motorista.nome': {
+                        'cliente.nome': {
                             required: true,
                             minlength: 3,
                             pattern: "[A-Z a-z]+"
                         },
-                        'locacao.motorista.dataNascimento': {
-                            required: true,
-                            dataNascimento : true
-                            
-                        },
-                        'locacao.motorista.registroGeral': {
+                        'cliente.registroGeral': {
                             required: true,
                             minlength: 5,
                             pattern: "[0-9]{7}"
                         },
-                        'locacao.motorista.registroCNH': {
+                        'cliente.razaoSocial': {
                             required: true,
-                            minlength: 5,
-                            registroCNH : true
+                            minlength: 3,
+                            pattern: "[A-Z a-z 0-9]+" 
                         },
-                        'locacao.motorista.categoriaCNH': {
-                            required: true,
-                            minlength: 1,
-                            pattern: "[A-Z]+"
-                        },
-                        'locacao.motorista.validadeCNH': {
-                            required: true,
-                            
-
-                        },
-                        'locacao.motorista.cpf': {
+                        'cliente.cpfCnpj': {
                             required: true,
                             minlength: 11,
                             validaCPF: true,
-                            pattern: "[0-9]{11}"
+                            pattern: "[0-9]{11-14}"
                         },
-                        'locacao.veiculo.id': {
-                            required: !0,
+                        'endereco.descricao': {
+                            required: true,
+                            minlength: 4,
+                            pattern: "[A-Z a-z 0-9]+" 
                         },
-                        'locacao.apolice.dataInicio': {
-                            required: true,                                
+                        'endereco.cep': {
+                            required: true,
+                            minlength: 8,
+                            CEP: true,
+                            pattern: "[0-9]+"
                         },
-                        'locacao.apolice.dataFim': {
-                            required: true,                                
+                        'endereco.logradouro': {
+                            required: true,
+                            minlength: 4,
+                            pattern: "[A-Z a-z 0-9]+" 
                         },
-                        'locacao.apolice.valor': {
-                            required: !0,
-                            money: true
+                        'endereco.numero': {
+                            required: true,
+                            minlength: 1,
+                            pattern: "[0-9]"                                
                         },
-                        'locacao.valorSeguro': {
-                            required: !0,
-                            money: true
+                        'endereco.complemento': {
+                            required: true,
+                            minlength: 4,
+                            pattern: "[A-Z a-z 0-9]+"                              
                         },
-                        'locacao.valorCalcao': {
-                            required: !0,
-                            money: true
+                        'endereco.bairro': {
+                            required: true,
+                            minlength: 3,
+                            pattern: "[A-Z a-z 0-9]+"  
                         },
+                        'endereco.cidade': {
+                            required: true,
+                            minlength: 3,
+                            pattern: "[A-Z a-z]+"  
+                        },
+                        'endereco.estado': {
+                            required: true,
+                            minlength: 3,
+                            pattern: "[A-Z a-z]+"  
+                        },
+                        'endereco.pais': {
+                            required: true,
+                            minlength: 3,
+                            pattern: "[A-Z a-z]+"  
+                        },
+                        'endereco.tipo': {
+                            required: !0, 
+                        },
+                        'email.email': {
+                            required: true,
+                            minlength: 3,
+                            email: true 
+                        },
+                        'telefone.numero': {
+                            required: true,
+                            minlength: 10,
+                            pattern: "[0-9]{10-11}"                        
+                         },
+                         'telefone.tipo': {
+                            required: !0,                      
+                         },
                     },
                     messages: {
                         'locacao.dataRetirada': {

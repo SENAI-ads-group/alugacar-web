@@ -64,10 +64,9 @@
       }, "Por favor, informe um número de CNH válido!" );
 
      // ----------------------------- VALIDAR CEP ------------------------------------------------
+;
 
-      jQuery.validator.addMethod( "CEP", function( cep_value, element ) {
-        return this.optional( element ) || /^\d{2}.\d{3}-\d{3}?$|^\d{5}-?\d{3}?$/.test( cep_value );
-    }, "Informe um CEP válido." );
+jQuery.mask("#locacao.motorista.cpf").mask("999.999.999-99");
 
      // ----------------------------- VALIDAR CPF ------------------------------------------------
 
@@ -165,45 +164,7 @@
         // se for maior que 60 não vai acontecer nada!
         return false;
      },"Idade mínima não atingida");
-
-     // ----------------------------- VALIDAR VALIDADE DA CNH ------------------------------------------------
-
-     jQuery.validator.addMethod("dataValidade",function(date){
-        let parts = date.split('/') // separa a data pelo caracter '/'
-        let today = new Date()      // pega a data atual
-        
-        date = new Date(parts[2], parts[1] - 1, parts[0]) // formata 'date'
-        
-        // compara se a data informada é maior que a data atual
-        // e retorna true ou false
-        return date >= today ? true : false
-      }, "Não é possível cadastrar o motorista pois sua CNH está vencida");
-
-     // ----------------------------- VALIDAR DATA DE RETIRADA ------------------------------------------------
-
-      jQuery.validator.addMethod("dataRetirada",function(date){
-        let parts = date.split('/') // separa a data pelo caracter '/'
-        let today = new Date()      // pega a data atual
-        
-        date = new Date(parts[2], parts[1] - 1, parts[0]) // formata 'date'
-        
-        // compara se a data informada é maior que a data atual
-        // e retorna true ou false
-        return date <= today ? true : false
-      }, "A data de retirada não pode ser menor que a data atual.");
-
-   // ----------------------------- VALIDAR DATA DE DEVOLUÇÃO ------------------------------------------------
-
-      jQuery.validator.addMethod("dataDevolucao",function(date){
-        let parts = date.split('/') // separa a data pelo caracter '/'
-        let today = new Date()      // pega a data atual
-        
-        date = new Date(parts[2], parts[1] - 1, parts[0]) // formata 'date'
-        
-        // compara se a data informada é maior que a data atual
-        // e retorna true ou false
-        return date <= today ? true : false
-      }, "A data de retirada não pode ser menor que a data atual.");
+     ;
 
     function i(t) { if (e[t]) return e[t].exports; var r = e[t] = { i: t, l: !1, exports: {} }; return a[t].call(r.exports, r, r.exports, i), r.l = !0, r.exports }
     i.m = a, i.c = e, i.d = function(a, e, t) { i.o(a, e) || Object.defineProperty(a, e, { enumerable: !0, get: t }) }, i.r = function(a) { "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(a, Symbol.toStringTag, { value: "Module" }), Object.defineProperty(a, "__esModule", { value: !0 }) }, i.t = function(a, e) {
@@ -249,13 +210,10 @@
                     var i = a.validate({
                         rules: {
                         'locacao.dataRetirada': {
-                            required: true,                                
-                            dataRetirada: true
+                           required: true,                                                            
                         },
                         'locacao.dataDevolucao': {
-                            required: true,
-                            dataDevolucao: true
-                            
+                            required: true     
                         },
                         'locacao.motorista.nome': {
                             required: true,
@@ -284,7 +242,7 @@
                         },
                         'locacao.motorista.validadeCNH': {
                             required: true,
-                            dataValidade: true
+                            
 
                         },
                         'locacao.motorista.cpf': {

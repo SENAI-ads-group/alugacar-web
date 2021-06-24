@@ -14,54 +14,11 @@
     );
 
     var e = {};
+     // ----------------------------- VALIDAR CEP ------------------------------------------------
 
-     // ----------------------------- VALIDAR REGISTRO DA CNH ------------------------------------------------
-
-    jQuery.validator.addMethod("registroCNH", function( value ) {
-
-        // Removing special characters from value
-        value = value.replace( /([~!@#$%^&*()_+=`{}\[\]\-|\\:;'<>,.\/? ])+/g, "" );
-      
-        // Checking value to have 11 digits only
-        if ( value.length !== 11 ) {
-          return false;
-        }
-      
-        var sum = 0, dsc = 0, firstChar,
-              firstCN, secondCN, i, j, v;
-      
-        firstChar = value.charAt( 0 );
-      
-        if ( new Array( 12 ).join( firstChar ) === value ) {
-          return false;
-        }
-      
-        // Step 1 - using first Check Number:
-        for ( i = 0, j = 9, v = 0; i < 9; ++i, --j ) {
-          sum += +( value.charAt( i ) * j );
-        }
-      
-        firstCN = sum % 11;
-        if ( firstCN >= 10 ) {
-          firstCN = 0;
-          dsc = 2;
-        }
-      
-        sum = 0;
-        for ( i = 0, j = 1, v = 0; i < 9; ++i, ++j ) {
-          sum += +( value.charAt( i ) * j );
-        }
-      
-        secondCN = sum % 11;
-        if ( secondCN >= 10 ) {
-          secondCN = 0;
-        } else {
-          secondCN = secondCN - dsc;
-        }
-      
-        return ( String( firstCN ).concat( secondCN ) === value.substr( -2 ) );
-      
-      }, "Por favor, informe um número de CNH válido!" );
+      jQuery.validator.addMethod( "validaCEP", function( cep_value, element ) {
+        return this.optional( element ) || /^\d{2}.\d{3}-\d{3}?$|^\d{5}-?\d{3}?$/.test( cep_value );
+    }, "Informe um CEP válido." );
 
      // ----------------------------- VALIDAR CPF ------------------------------------------------
 
@@ -160,6 +117,9 @@
         return false;
      },"Idade mínima não atingida");
 
+     // ----------------------------- VALIDAR VALIDADE DA CNH ------------------------------------------------
+
+
     function i(t) { if (e[t]) return e[t].exports; var r = e[t] = { i: t, l: !1, exports: {} }; return a[t].call(r.exports, r, r.exports, i), r.l = !0, r.exports }
     i.m = a, i.c = e, i.d = function(a, e, t) { i.o(a, e) || Object.defineProperty(a, e, { enumerable: !0, get: t }) }, i.r = function(a) { "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(a, Symbol.toStringTag, { value: "Module" }), Object.defineProperty(a, "__esModule", { value: !0 }) }, i.t = function(a, e) {
         if (1 & e && (a = i(a)), 8 & e) return a;
@@ -203,126 +163,150 @@
                     }));
                     var i = a.validate({
                         rules: {
-                        'locacao.dataRetirada': {
-                           required: true                                                            
-                        },
-                        'locacao.dataDevolucao': {
-                            required: true     
-                        },
-                        'locacao.motorista.nome': {
+                        'cliente.nome': {
                             required: true,
                             minlength: 3,
                             pattern: "[A-Z a-z]+"
                         },
-                        'locacao.motorista.dataNascimento': {
-                            required: true,
-                            dataNascimento : true
-                            
-                        },
-                        'locacao.motorista.registroGeral': {
+                        'cliente.registroGeral': {
                             required: true,
                             minlength: 5,
                             pattern: "[0-9]{7}"
                         },
-                        'locacao.motorista.registroCNH': {
+                        'cliente.razaoSocial': {
                             required: true,
-                            minlength: 5,
-                            registroCNH : true
+                            minlength: 3,
+                            pattern: "[A-Z a-z 0-9]+" 
                         },
-                        'locacao.motorista.categoriaCNH': {
+                        'cliente.cpfCnpj': {
+                            required: true,
+                            validaCPF: true
+                        },
+                        'endereco.descricao': {
+                            required: true,
+                            minlength: 3,
+                            pattern: "[A-Z a-z 0-9]+" 
+                        },
+                        'endereco.cep': {
+                            required: true,
+                            minlength: 8,
+                            validaCEP: true,
+                            pattern: "[0-9]+"
+                        },
+                        'endereco.logradouro': {
+                            required: true,
+                            minlength: 3,
+                            pattern: "[A-Z a-z 0-9]+" 
+                        },
+                        'endereco.numero': {
                             required: true,
                             minlength: 1,
-                            pattern: "[A-Z]+"
+                            pattern: "[0-9]"                                
                         },
-                        'locacao.motorista.validadeCNH': {
+                        'endereco.complemento': {
                             required: true,
-                            
-
+                            minlength: 3,
+                            pattern: "[A-Z a-z 0-9]+"                              
                         },
-                        'locacao.motorista.cpf': {
+                        'endereco.bairro': {
                             required: true,
-                            minlength: 11,
-                            validaCPF: true,
-                            pattern: "[0-9]{11}"
+                            minlength: 3,
+                            pattern: "[A-Z a-z 0-9]+"  
                         },
-                        'locacao.veiculo.id': {
-                            required: !0,
+                        'endereco.cidade': {
+                            required: true,
+                            minlength: 3,
+                            pattern: "[A-Z a-z 0-9]+"  
                         },
-                        'locacao.apolice.dataInicio': {
-                            required: true,                                
+                        'endereco.estado': {
+                            required: !0, 
                         },
-                        'locacao.apolice.dataFim': {
-                            required: true,                                
+                        'endereco.pais': {
+                            required: true,
+                            minlength: 3,
+                            pattern: "[A-Z a-z]+"  
                         },
-                        'locacao.apolice.valor': {
-                            required: !0,
-                            money: true
+                        'endereco.tipo': {
+                            required: !0, 
                         },
-                        'locacao.valorSeguro': {
-                            required: !0,
-                            money: true
+                        'email.email': {
+                            required: true,
+                            minlength: 3,
+                            email: true 
                         },
-                        'locacao.valorCalcao': {
-                            required: !0,
-                            money: true
-                        },
+                        'telefone.numero': {
+                            required: true,
+                            minlength: 8,
+                            pattern: "[0-9]+"                        
+                         },
+                         'telefone.tipo': {
+                            required: !0,                      
+                         },
                     },
                     messages: {
-                        'locacao.dataRetirada': {
-                            required: 'Preencha a data de retirada.'
+                        'cliente.nome': {
+                            required: 'Preencha o nome do cliente.',
+                            minlength: 'O nome do cliente deve conter no mínimo 3 caractéres.'
                         },
-                        'locacao.dataDevolucao': {
-                            required: 'Preencha a data de devolução.',
-                        },
-                        'locacao.motorista.nome': {
-                            required: 'Preencha o nome do motorista.',
-                            minlength: 'O nome do motorista deve conter no mínimo 3 caractéres'
-                        },
-                        'locacao.motorista.nascimento': {
-                            required: 'Preencha o ano de nascimento do motorista.',
-                            
-                        },
-                        'locacao.motorista.registroGeral': {
-                            required: 'Informe o RG do motorista.',
+                        'cliente.registroGeral': {
+                            required: 'Informe o RG do cliente.',
                             minlength: 'O RG deve conter 7 dígitos',
-                            pattern : 'Informe apenas números.'
+                            pattern : 'Preencha o RG apenas com números'
                         },
-                        'locacao.motorista.cpf': {
+                        'cliente.cpfCnpj': {
                             required: 'Informe o CPF do motorista.',
-                            minlength: 'O CPF deve conter 11 dígitos',
-                            pattern : 'Informe apenas números.'
                         },
-                        'locacao.motorista.registroCNH': {
-                            required: 'Informe o registro da CNH do motorista.',
-                            minlength: 'O registro deve conter 10 dígitos',
-                            pattern : 'Informe apenas números.'
+                        'endereco.descricao': {
+                            required: 'Preencha o endereço do cliente.',
+                            minlength: 'A descrição do endereço deverá conter pelo menos 4 caracteres.',
+                            pattern : 'Informe o endereço apenas com números ou letras.'
                         },
-                        'locacao.motorista.categoriaCNH': {
-                            required: 'Informe a categoria da CNH do motorista.',
-                            minlength: 'O registro deve conter no mínimo 1 dígito',
-                            pattern : 'Informe apenas números.'
+                        'endereco.cep': {
+                            required: 'Informe o CEP do motorista.',
+                            minlength: 'O CEP deverá conter 8 números',
+                            pattern : 'Informe o CEP apenas com  números.'
                         },
-                        "locacao.veiculo.id": "Selecione um veículo para ser locado.",
-                        'locacao.apolice.dataInicio': {
-                            required: 'Preencha a data de início da apólice.',
-                            
+                        'endereco.logradouro': {
+                            required: 'Preencha o logradouro do cliente.',
+                            minlength: 'O lougradoro deverá conter pelo menos 4 caracteres.',
+                            pattern : 'Informe o logradouro apenas com números ou letras.'
                         },
-                        'locacao.apolice.dataFim': {
-                            required: 'Preencha a data do fim da apólice.',
-                            
+                        'endereco.numero': {
+                            required: 'Informe o número do endereço.',
+                            minlength: 'Número inválido',
+                            pattern : 'O número do endereço é inválido.'
                         },
-                        "locacao.apolice.valor": {
-                            required: "Informe o valor da apólice.",
-                            money: "Formato inválido"
+                        'endereco.complemento': {
+                            required: 'Preencha o complemento de endereço do cliente.',
+                            minlength: 'O complemento de endereço deverá conter pelo menos 4 caracteres.',
+                            pattern : 'Informe o complemento apenas com números ou letras.'
                         },
-                        "locacao.valorSeguro": {
-                            required: "Informe o valor do seguro.",
-                            money: "Formato inválido"
+                        'endereco.bairro': {
+                            required: 'Preencha o bairro do cliente.',
+                            minlength: 'A bairro deverá conter pelo menos 3 caracteres.',
+                            pattern : 'Informe o bairro apenas com números ou letras.'
                         },
-                        "locacao.valorCalcao": {
-                            required: "Informe o valor do calção.",
-                            money: "Formato inválido"
-                        }
+                        'endereco.cidade': {
+                            required: 'Preencha a cidade do cliente.',
+                            minlength: 'A cidade deverá conter pelo menos 3 caracteres.',
+                            pattern : 'Informe apenas letras.'
+                        },
+                        'endereco.estado': {
+                            required: 'Selecione o estado do cliente.',
+                        },
+                        'endereco.pais': {
+                            required: 'Preencha o pais do cliente.',
+                            minlength: 'O pais deverá conter pelo menos 3 caracteres.',
+                            pattern : 'Informe apenas letras.'
+                        },
+                        'endereco.tipo': 'Selecione um tipo de endereço.',
+                        'email.email': 'Preencha um email válido',
+                        'telefone.numero': {
+                            required: 'Informe o número de telefone do motorista.',
+                            minlength:'O número deverá conter no mínimo 10 dígitos'
+                        },
+                        'telefone.tipo': 'Selecione um tipo de telefone.',
+                        
                     }
                 });
                     jQuery(".js-wizard-validation").bootstrapWizard({
