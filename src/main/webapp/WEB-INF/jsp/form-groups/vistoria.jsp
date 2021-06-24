@@ -1,51 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+
+<%@ page import="br.com.alugacar.entidades.enums.StatusLocacao"%>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<div class="js-validation-form">
-	<label for="vistoria.dataRet">Data de Retirada</label> <input type="number"
-		class="form-control" id="vistoria.dataRet" name="vistoria.dataRet"
-		value="${ vistoria.dataRet}">
+<div class="form-group">
+	<label for="vistoria.locacao.id">Locação</label> <input type="text"
+		class="form-control" id="vistoria.locacao.id"
+		name="vistoria.qtdCombustivel" value="${ vistoria.locacao.id }"
+		readonly>
 </div>
 
-<div class="js-validation-form">
-	<label for="vistoria.combustivelRet">Quantidade de Combustível</label> <input type="number"
-		class="form-control" id="vistoria.combustivelRet" name="vistoria.combustivelRet"
-		value="${ vistoria.combustivelRet}">
+<div class="form-group">
+	<label for="vistoria.qtdCombustivel">Quantidade de Combustível</label>
+	<input type="text" class="form-control" id="vistoria.qtdCombustivel"
+		name="vistoria.qtdCombustivel" value="${ vistoria.qtdCombustivel }"
+		${ (!(vistoria.locacao.status eq StatusLocacao.VEICULO_RESERVADO) && entrega) || ((vistoria.locacao.status eq StatusLocacao.FINALIZADA) && devolucao) ? 'readonly' : '' }>
 </div>
 
-<div class="js-validation-form">
-	<label for="vistoria.quilometragemRet">Quilometragem</label> <input type="number"
-		class="form-control" id="vistoria.quilometragemRet" name="vistoria.quilometragemRet"
-		value="${ vistoria.quilometragemRet}">
+<div class="form-group">
+	<label for="vistoria.quilometragem">Quilometragem</label> <input
+		type="text" class="form-control" id="vistoria.quilometragem"
+		name="vistoria.quilometragem" value="${ vistoria.quilometragem }"
+		${ (!(vistoria.locacao.status eq StatusLocacao.VEICULO_RESERVADO) && entrega) || ((vistoria.locacao.status eq StatusLocacao.FINALIZADA) && devolucao) ? 'readonly' : '' }>
 </div>
 
-<div class="js-validation-form">
-	<label for="vistoria.observacaoRet">Quilometragem</label> <input type="number"
-		class="form-control" id="vistoria.observacaoRet" name="vistoria.observacaoRet"
-		value="${ vistoria.observacaoRet}">
-</div>
-
-<div class="js-validation-form">
-	<label for="vistoria.dataDev">Data de Devolução</label> <input type="number"
-		class="form-control" id="vistoria.dataDev" name="vistoria.dataDev"
-		value="${ vistoria.dataDev}">
-</div>
-
-<div class="js-validation-form">
-	<label for="vistoria.combustivelDev">Quantidade de Combustível</label> <input type="number"
-		class="form-control" id="vistoria.combustivelDev" name="vistoria.combustivelDev"
-		value="${ vistoria.combustivelDev}">
-</div>
-
-<div class="js-validation-form">
-	<label for="vistoria.quilometragemDev">Quilometragem</label> <input type="number"
-		class="form-control" id="vistoria.quilometragemDev" name="vistoria.quilometragemDev"
-		value="${ vistoria.quilometragemDev}">
-</div>
-
-<div class="js-validation-form">
-	<label for="vistoria.observacaoDev">Quilometragem</label> <input type="number"
-		class="form-control" id="vistoria.observacaoDev" name="vistoria.observacaoDev"
-		value="${ vistoria.observacaoDev}">
+<div class="form-group">
+	<label for="vistoria.observacoes">Observações</label> <input
+		type="text" class="form-control" id="vistoria.observacoes"
+		name="vistoria.observacoes" value="${ vistoria.observacoes }"
+		${ (!(vistoria.locacao.status eq StatusLocacao.VEICULO_RESERVADO) && entrega) || ((vistoria.locacao.status eq StatusLocacao.FINALIZADA) && devolucao) ? 'readonly' : '' }>
 </div>

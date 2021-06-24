@@ -118,8 +118,6 @@ public class ImplLocacaoDAO implements LocacaoDAO {
 	public Locacao atualizar(Integer id, Locacao locacao) {
 		// @formatter:off
 		final String SQL = "UPDATE  locacao SET "
-				+ "loc_data_retirada = ?, "
-				+ "loc_data_devolucao = ?, "
 				+ "loc_valor_seguro = ?, "
 				+ "loc_valor_calcao = ?, "
 				+ "loc_valor_final = ?, "
@@ -131,53 +129,33 @@ public class ImplLocacaoDAO implements LocacaoDAO {
 				+ "loc_mot_reg_cnh = ?, "
 				+ "loc_mot_cat_cnh = ?, "
 				+ "loc_mot_data_validade = ?, "
-				+ "loc_visret_data = ?, "
-				+ "loc_visret_qtd_comb = ?, "
-				+ "loc_visret_quilometragem = ?, "
-				+ "loc_vistret_obs = ?, "
-				+ "loc_visdev_data date = ?, "
-				+ "loc_visdev_qtd_comb = ?, "
-				+ "loc_visdev_quilometragem = ?, "
-				+ "loc_vistdev_obs = ?, "
 				+ "loc_apol_data_inic = ?, "
 				+ "loc_apol_data_fim = ?, "
 				+ "loc_apol_valor = ?, "
 				+ "loc_veic_id = ?, "
 				+ "loc_cli_id = ? "
-				+ " WHERE loc_id = ?";
+				+ "WHERE loc_id = ?";
 		// @formatter:on
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL)) {
-			connection.setAutoCommit(false);
-
-			ps.setDate(1, new java.sql.Date(locacao.getDataRetirada().getTime()));
-			ps.setDate(2, new java.sql.Date(locacao.getDataDevolucao().getTime()));
-			ps.setDouble(3, locacao.getValorSeguro());
-			ps.setDouble(4, locacao.getValorCalcao());
-			ps.setDouble(5, locacao.getValorFinal());
-			ps.setString(6, locacao.getStatus().name());
-			ps.setString(7, locacao.getMotorista().getCpf());
-			ps.setString(8, locacao.getMotorista().getNome());
-			ps.setString(9, locacao.getMotorista().getRegistroGeral());
-			ps.setDate(10, new java.sql.Date(locacao.getMotorista().getDataNascimento().getTime()));
-			ps.setString(11, locacao.getMotorista().getRegistroCNH());
-			ps.setString(12, locacao.getMotorista().getCategoriaCNH().name());
-			ps.setDate(13, new java.sql.Date(locacao.getMotorista().getValidadeCNH().getTime()));
-			ps.setDate(14, new java.sql.Date(locacao.getVistoriaEntrega().getData().getTime()));
-			ps.setDouble(15, locacao.getVistoriaEntrega().getQtdCombustivel());
-			ps.setDouble(16, locacao.getVistoriaEntrega().getQuilometragem());
-			ps.setString(17, locacao.getVistoriaEntrega().getObservacoes());
-			ps.setDate(18, new java.sql.Date(locacao.getVistoriaDevolucao().getData().getTime()));
-			ps.setDouble(19, locacao.getVistoriaDevolucao().getQtdCombustivel());
-			ps.setDouble(20, locacao.getVistoriaDevolucao().getQuilometragem());
-			ps.setString(21, locacao.getVistoriaDevolucao().getObservacoes());
-			ps.setDate(22, new java.sql.Date(locacao.getApolice().getDataInicio().getTime()));
-			ps.setDate(23, new java.sql.Date(locacao.getApolice().getDataFim().getTime()));
-			ps.setDouble(24, (locacao.getApolice().getValor()));
-			ps.setInt(25, (locacao.getVeiculo().getId()));
-			ps.setInt(26, (locacao.getCliente().getId()));
-			ps.setInt(27, id);
+			ps.setDouble(1, locacao.getValorSeguro());
+			ps.setDouble(2, locacao.getValorCalcao());
+			ps.setDouble(3, locacao.getValorFinal());
+			ps.setString(4, locacao.getStatus().name());
+			ps.setString(5, locacao.getMotorista().getCpf());
+			ps.setString(6, locacao.getMotorista().getNome());
+			ps.setString(7, locacao.getMotorista().getRegistroGeral());
+			ps.setDate(8, new java.sql.Date(locacao.getMotorista().getDataNascimento().getTime()));
+			ps.setString(9, locacao.getMotorista().getRegistroCNH());
+			ps.setString(10, locacao.getMotorista().getCategoriaCNH().name());
+			ps.setDate(11, new java.sql.Date(locacao.getMotorista().getValidadeCNH().getTime()));
+			ps.setDate(12, new java.sql.Date(locacao.getApolice().getDataInicio().getTime()));
+			ps.setDate(13, new java.sql.Date(locacao.getApolice().getDataFim().getTime()));
+			ps.setDouble(14, (locacao.getApolice().getValor()));
+			ps.setInt(15, (locacao.getVeiculo().getId()));
+			ps.setInt(16, (locacao.getCliente().getId()));
+			ps.setInt(17, id);
 
 			Locacao locacaoAtualizada = null;
 
@@ -186,11 +164,65 @@ public class ImplLocacaoDAO implements LocacaoDAO {
 			if (linhasAfetadas > 0) {
 				locacaoAtualizada = locacao;
 				locacaoAtualizada.setId(id);
-
 			}
-			connection.commit();
 			ConnectionFactory.closeConnection(connection, ps, rs);
 			return locacaoAtualizada;
+		} catch (SQLException e) {
+			throw new DAOException(e.getMessage());
+		}
+	}
+
+	@Override
+	public void registrarVistoriaEntrega(Integer idLocacao, Vistoria vistoria) {
+		// @formatter:off
+		final String SQL = "UPDATE  locacao SET "
+				+ "loc_data_retirada = ?, "
+				+ "loc_visret_data = ?, "
+				+ "loc_visret_qtd_comb = ?, "
+				+ "loc_visret_quilometragem = ?, "
+				+ "loc_vistret_obs = ? "
+				+ "WHERE loc_id = ?";
+		// @formatter:on
+
+		try (Connection connection = ConnectionFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(SQL)) {
+			ps.setDate(1, new java.sql.Date(vistoria.getData().getTime()));
+			ps.setDate(2, new java.sql.Date(vistoria.getData().getTime()));
+			ps.setDouble(3, vistoria.getQtdCombustivel());
+			ps.setDouble(4, vistoria.getQuilometragem());
+			ps.setString(5, vistoria.getObservacoes());
+			ps.setInt(6, idLocacao);
+			ps.executeUpdate();
+
+			ConnectionFactory.closeConnection(connection, ps);
+		} catch (SQLException e) {
+			throw new DAOException(e.getMessage());
+		}
+	}
+
+	@Override
+	public void registrarVistoriaDevolucao(Integer idLocacao, Vistoria vistoria) {
+		// @formatter:off
+		final String SQL = "UPDATE  locacao SET "
+				+ "loc_data_devolucao = ?, "
+				+ "loc_visdev_data = ?, "
+				+ "loc_visdev_qtd_comb = ?, "
+				+ "loc_visdev_quilometragem = ?, "
+				+ "loc_vistdev_obs = ? "
+				+ "WHERE loc_id = ?";
+		// @formatter:on
+
+		try (Connection connection = ConnectionFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(SQL)) {
+			ps.setDate(1, new java.sql.Date(vistoria.getData().getTime()));
+			ps.setDate(2, new java.sql.Date(vistoria.getData().getTime()));
+			ps.setDouble(3, vistoria.getQtdCombustivel());
+			ps.setDouble(4, vistoria.getQuilometragem());
+			ps.setString(5, vistoria.getObservacoes());
+			ps.setInt(6, idLocacao);
+			ps.executeUpdate();
+
+			ConnectionFactory.closeConnection(connection, ps);
 		} catch (SQLException e) {
 			throw new DAOException(e.getMessage());
 		}

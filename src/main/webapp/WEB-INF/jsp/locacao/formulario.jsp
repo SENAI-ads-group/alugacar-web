@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 
-<%@ page import="br.com.alugacar.entidades.enums.CategoriaCNH"%>
+<%@ page import="br.com.alugacar.entidades.enums.StatusLocacao"%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -86,175 +86,131 @@
 			<div class="content">
 				<!-- Quick Actions -->
 				<div class="row">
-					<div class="col-6">
+					<div class="col-6 col-lg-3">
 						<a class="block block-rounded block-link-shadow text-center"
-							href="listar">
+							href="javascript:void(0)">
 							<div class="block-content block-content-full">
-								<div class="font-size-h2 text-dark">
-									<i class="fa fa-arrow-left"></i>
+								<div class="item item-circle bg-success-light mx-auto">
+									<i class="fa fa-check text-success"></i>
 								</div>
 							</div>
 							<div class="block-content py-2 bg-body-light">
-								<p class="font-w600 font-size-sm text-muted mb-0">Voltar</p>
+								<p class="font-w600 font-size-sm text-success mb-0">Veículo
+									Reservado</p>
 							</div>
 						</a>
 					</div>
+					<c:if
+						test="${ !(locacao.status eq StatusLocacao.VEICULO_RESERVADO) }">
+						<div class="col-6 col-lg-3">
+							<a class="block block-rounded block-link-shadow text-center"
+								href="javascript:void(0)">
+								<div class="block-content block-content-full">
+									<div class="item item-circle bg-success-light mx-auto">
+										<i class="fa fa-check text-success"></i>
+									</div>
+								</div>
+								<div class="block-content py-2 bg-body-light">
+									<p class="font-w600 font-size-sm text-success mb-0">Veículo
+										Entregue</p>
+								</div>
+							</a>
+						</div>
+					</c:if>
+					<c:if test="${ locacao.status eq StatusLocacao.EM_ANDAMENTO }">
+						<div class="col-6 col-lg-3">
+							<a class="block block-rounded block-link-shadow text-center"
+								href="javascript:void(0)">
+								<div class="block-content block-content-full">
+									<div class="item item-circle bg-warning-light mx-auto">
+										<i class="fa fa-sync fa-spin text-warning"></i>
+									</div>
+								</div>
+								<div class="block-content py-2 bg-body-light">
+									<p class="font-w600 font-size-sm text-warning mb-0">Em
+										Andamento</p>
+								</div>
+							</a>
+						</div>
+					</c:if>
+					<c:if
+						test="${ locacao.status eq StatusLocacao.DATA_DEVOLUCAO_EXPIRADA }">
+						<div class="col-6 col-lg-3">
+							<a class="block block-rounded block-link-shadow text-center"
+								href="javascript:void(0)">
+								<div class="block-content block-content-full">
+									<div class="item item-circle bg-danger-light mx-auto">
+										<i class="fa fa-exclamation-triangle text-danger"></i>
+									</div>
+								</div>
+								<div class="block-content py-2 bg-body-light">
+									<p class="font-w600 font-size-sm text-danger mb-0">Data de
+										Devolução Expirada</p>
+								</div>
+							</a>
+						</div>
+					</c:if>
+					<c:if test="${ locacao.status eq StatusLocacao.FINALIZADA }">
+						<div class="col-6 col-lg-3">
+							<a class="block block-rounded block-link-shadow text-center"
+								href="javascript:void(0)">
+								<div class="block-content block-content-full">
+									<div class="item item-circle bg-success-light mx-auto">
+										<i class="fa fa-check text-success"></i>
+									</div>
+								</div>
+								<div class="block-content py-2 bg-body-light">
+									<p class="font-w600 font-size-sm text-success mb-0">Finalizada</p>
+								</div>
+							</a>
+						</div>
+					</c:if>
 				</div>
 				<!-- END Quick Actions -->
 
 				<!-- Info -->
 				<div class="block block-rounded">
 					<div class="block-header block-header-default">
-						<h3 class="block-title">Informações</h3>
+						<h3 class="block-title">Custos</h3>
 					</div>
 					<div class="block-content">
-						<div class="tab-pane active" id="wizard-passo1" role="tabpanel">
-							<div class="form-group">
-								<label for="dataRetirada">Data de Retirada</label> <input
-									class="form-control" type="date" id="dataRetirada"
-									name="dataRetirada" value="${ locacao.dataRetirada }" readonly>
-							</div>
-							<div class="form-group">
-								<label for="dataDevolucao">Data de Devolução</label> <input
-									class="form-control" type="date" id="dataDevolucao"
-									name="dataDevolucao" value="${ locacao.dataDevolucao }"
-									readonly>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="locacao.veiculo.id">Veículo</label> <select
-								class="custom-select" id="locacao.veiculo.id"
-								name="locacao.veiculo.id" style="width: 100%;" disabled>
-								<c:forEach var="veic" items="${ veiculoList }">
-									<option value="${ veic.id }"
-										${ veic.id == locacao.veiculo.id ? 'selected' : '' }>${ veic.modelo.marca.descricao }
-										${ veic.modelo.descricao } ${ veic.cor } ${ veic.placa }</option>
-								</c:forEach>
-							</select>
-						</div>
-
-						<div class="form-group">
-							<label for="locacao.cliente.id">Cliente</label> <select
-								class="custom-select" id="locacao.cliente.id"
-								name="locacao.cliente.id" style="width: 100%;" disabled>
-								<c:forEach var="cli" items="${ clienteList }">
-									<option value="${ cli.id }"
-										${ cli.id == locacao.cliente.id ? 'selected' : '' }>${ cli.nome }</option>
-								</c:forEach>
-							</select>
-						</div>
-
-						<div class="form-group">
-							<label for="dataFimApolice">Data Início Apólice</label> <input
-								class="form-control" type="date" id="locacao.apolice.dataInicio"
-								name="locacao.apolice.dataInicio"
-								value="${ locacao.apolice.dataInicio }" readonly>
-						</div>
-						<div class="form-group">
-							<label for="dataFimApolice">Data Final Apólice</label> <input
-								class="form-control" type="date" id="dataFimApolice"
-								name="dataFimApolice" value="${ locacao.apolice.dataFim }"
-								readonly>
-						</div>
-						<div class="form-group">
-							<label for="locacao.apolice.valor">Valor da Apólice</label>
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text"> R$ </span>
-								</div>
-								<input type="text" class="form-control text-center"
-									id="locacao.apolice.valor" name="locacao.apolice.valor"
-									value="${ locacao.apolice.valor }" readonly>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="locacao.valorSeguro">Valor do Seguro</label>
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text"> R$ </span>
-								</div>
-								<input type="text" class="form-control text-center"
-									id="locacao.valorSeguro" name="locacao.valorSeguro"
-									value="${ locacao.valorSeguro }" readonly>
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="locacao.valorCalcao">Valor Calção</label>
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text"> R$ </span>
-								</div>
-								<input type="text" class="form-control text-center"
-									id="locacao.valorCalcao" name="locacao.valorCalcao"
-									value="${ locacao.valorCalcao }" readonly>
-							</div>
+						<div class="table-responsive">
+							<table
+								class="table table-borderless table-striped table-vcenter font-size-sm">
+								<thead>
+									<tr>
+										<th>Item</th>
+										<th class="text-right" style="width: 10%;">Valor</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="item" items="${ custo.items }">
+										<tr>
+											<td><strong>${ item.descricao }</strong></td>
+											<td class="text-right">${ item.desconto ? '-' : '+' }
+												R$${ item.valor }</td>
+										</tr>
+									</c:forEach>
+									<tr>
+										<td colspan="1" class="text-right"><strong>Custos:</strong></td>
+										<td class="text-right">+ R$${ custo.valorCustos }</td>
+									</tr>
+									<tr>
+										<td colspan="1" class="text-right"><strong>Descontos:</strong></td>
+										<td class="text-right">+ R$${ custo.valorDescontos }</td>
+									</tr>
+									<tr class="table-success">
+										<td colspan="1" class="text-right text-uppercase"><strong>Valor
+												Total:</strong></td>
+										<td class="text-right"><strong>R$${
+												custo.valorTotal }</strong></td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
 				<!-- END Info -->
-
-				<!-- Motorista -->
-				<div class="block block-rounded">
-					<div class="block-header block-header-default">
-						<h3 class="block-title">Motorista</h3>
-					</div>
-					<div class="block-content">
-						<div class="form-group">
-							<label for="locacao.motorista.nome">Nome</label> <input
-								class="form-control" type="text" id="locacao.motorista.nome"
-								name="locacao.motorista.nome"
-								value="${ locacao.motorista.nome }" readonly>
-						</div>
-						<div class="form-group">
-							<label for="locacao.motorista.cpf">CPF</label> <input
-								class="form-control" type="text" id="locacao.motorista.cpf"
-								name="locacao.motorista.cpf" value="${ locacao.motorista.cpf }"
-								readonly>
-						</div>
-						<div class="form-group">
-							<label for="locacao.motorista.registroGeral">Registro
-								Geral</label> <input class="form-control" type="text"
-								id="locacao.motorista.registroGeral"
-								name="locacao.motorista.registroGeral"
-								value="${ locacao.motorista.registroGeral }" readonly>
-						</div>
-						<div class="form-group">
-							<label for="dataNascimento">Data de Nascimento</label> <input
-								class="form-control" type="date" id="dataNascimento"
-								name="dataNascimento"
-								value="${ locacao.motorista.dataNascimento }" readonly>
-						</div>
-						<div class="form-group">
-							<label for="locacao.motorista.registroCNH">Registro da
-								CNH</label> <input class="form-control" type="text"
-								id="locacao.motorista.registroCNH"
-								name="locacao.motorista.registroCNH"
-								value="${ locacao.motorista.registroCNH }" readonly>
-						</div>
-						<div class="form-group">
-							<label for="locacao.motorista.categoriaCNH">Categoria da
-								CNH</label> <select class="custom-select"
-								id="locacao.motorista.categoriaCNH"
-								name="locacao.motorista.categoriaCNH" style="width: 100%;"
-								disabled>
-								<c:forEach var="cat" items="${ catCNHList }">
-									<option value="${ cat }"
-										${ cat eq locacao.motorista.categoriaCNH ? 'selected' : '' }>Categoria
-										${ cat }</option>
-								</c:forEach>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="validadeCNH">Validade da CNH</label> <input
-								class="form-control" type="date" id="validadeCNH"
-								name="validadeCNH" value="${ locacao.motorista.validadeCNH }"
-								readonly>
-						</div>
-					</div>
-				</div>
-				<!-- END Motorista -->
 
 				<!-- Acessórios -->
 				<div class="block block-rounded">

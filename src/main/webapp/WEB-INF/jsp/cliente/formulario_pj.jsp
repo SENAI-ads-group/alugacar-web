@@ -99,18 +99,22 @@
 						</a>
 					</div>
 					<div class="col-6">
-						<a class="block block-rounded block-link-shadow text-center"
-							href="<c:url value="/clientes/adicionar?tipo=PESSOA_FISICA"/>">
-							<div class="block-content block-content-full">
-								<div class="font-size-h2 text-dark">
-									<i class="fa fa-people-arrows"></i>
+						<form id="form-excluir"
+							action="<c:url value="/clientes/${ cliente.id }/excluir"/>"
+							method="POST">
+							<a class="block block-rounded block-link-shadow text-center"
+								onclick="document.getElementById('form-excluir').submit()">
+								<div class="block-content block-content-full">
+									<div class="font-size-h2 text-danger">
+										<i class="fa fa-times"></i>
+									</div>
 								</div>
-							</div>
-							<div class="block-content py-2 bg-body-light">
-								<p class="font-w600 font-size-sm text-muted mb-0">Trocar
-									para Pessoa Física</p>
-							</div>
-						</a>
+								<div class="block-content py-2 bg-body-light">
+									<p class="font-w600 font-size-sm text-danger mb-0">Excluir
+										Cliente</p>
+								</div>
+							</a>
+						</form>
 					</div>
 				</div>
 				<!-- END Quick Actions -->

@@ -95,7 +95,7 @@
 						</div>
 					</div>
 					<div class="block-content">
-						<table class="table table-striped table-vcenter">
+						<table class="table table-hover table-vcenter">
 							<thead>
 								<tr>
 									<th class="text-center" style="width: 50px;">ID</th>
@@ -119,7 +119,7 @@
 										<td class="font-w600 font-size-sm"><a
 											href="<c:url value="/motoristas/${ loc.id }"/>">${ loc.motorista.nome }</a></td>
 										<td class="font-w600 font-size-sm"><a
-											href="<c:url value="/veiculos/${ loc.id }"/>">${ loc.veiculo.modelo.marca.descricao }
+											href="<c:url value="/veiculos/placa/${ loc.veiculo.placa }"/>">${ loc.veiculo.modelo.marca.descricao }
 												${ loc.veiculo.modelo.descricao } ${ loc.veiculo.cor } ${ loc.veiculo.placa }</a></td>
 										<td class="font-size-md"><c:if
 												test="${ loc.status eq StatusLocacao.VEICULO_RESERVADO }">
@@ -138,11 +138,33 @@
 											</c:if></td>
 										<td class="text-center">
 											<div class="btn-group">
-												<a class="btn btn-sm btn-alt-primary" data-toggle="tooltip"
-													title="Editar"
-													href="<c:url value="/locacoes/${ loc.id }"/>"> <i
-													class="fa fa-fw fa-pencil-alt"></i>
-												</a>
+												<div class="dropdown">
+													<button type="button"
+														class="btn btn-sm btn-alt-primary dropdown-toggle"
+														id="dropdown-default-alt-primary" data-toggle="dropdown"
+														aria-haspopup="true" aria-expanded="false"></button>
+													<div class="dropdown-menu font-size-sm"
+														aria-labelledby="dropdown-default-alt-primary">
+														<a class="dropdown-item"
+															href="<c:url value="/locacoes/${ loc.id }"/>">Visualizar
+															informações</a> <a class="dropdown-item"
+															href="<c:url value="/multas/${ loc.id }"/>">Adicionar
+															multa</a>
+														<div class="dropdown-divider"></div>
+														<c:if
+															test="${ loc.status eq StatusLocacao.VEICULO_RESERVADO }">
+															<a class="dropdown-item"
+																href="<c:url value="/locacoes/${ loc.id }/vistoria/entrega"/>">Entregar
+																veículo</a>
+														</c:if>
+														<c:if
+															test="${ loc.status eq StatusLocacao.EM_ANDAMENTO || loc.status eq StatusLocacao.DATA_DEVOLUCAO_EXPIRADA}">
+															<a class="dropdown-item"
+																href="<c:url value="/locacoes/${ loc.id }/vistoria/devolucao"/>">Devolver
+																veículo</a>
+														</c:if>
+													</div>
+												</div>
 											</div>
 										</td>
 									</tr>
