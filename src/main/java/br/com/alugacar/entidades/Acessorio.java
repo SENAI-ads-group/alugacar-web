@@ -6,11 +6,13 @@ import br.com.alugacar.entidades.enums.StatusAcessorio;
 
 public class Acessorio implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private Double valor;
 	private StatusAcessorio status;
 	private TipoAcessorio tipo;
+
+	private Locacao locacao;
 
 	public Acessorio() {
 	}
@@ -52,6 +54,14 @@ public class Acessorio implements Serializable {
 
 	public void setTipo(TipoAcessorio tipo) {
 		this.tipo = tipo;
+	}
+
+	public Locacao getLocacao() {
+		return locacao;
+	}
+
+	public void setLocacao(Locacao locacao) {
+		this.locacao = locacao;
 	}
 
 	@Override

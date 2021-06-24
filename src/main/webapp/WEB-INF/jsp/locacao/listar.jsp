@@ -147,23 +147,29 @@
 														aria-labelledby="dropdown-default-alt-primary">
 														<a class="dropdown-item"
 															href="<c:url value="/locacoes/${ loc.id }"/>">Visualizar
-															informações</a> <a class="dropdown-item"
-															href="<c:url value="/multas/${ loc.id }"/>">Adicionar
-															multa</a>
-														<div class="dropdown-divider"></div>
+															informações</a>
 														<c:if
 															test="${ loc.status eq StatusLocacao.VEICULO_RESERVADO }">
+															<div class="dropdown-divider"></div>
 															<a class="dropdown-item"
 																href="<c:url value="/locacoes/${ loc.id }/vistoria/entrega"/>">Entregar
 																veículo</a>
 														</c:if>
 														<c:if
 															test="${ loc.status eq StatusLocacao.EM_ANDAMENTO || loc.status eq StatusLocacao.DATA_DEVOLUCAO_EXPIRADA}">
+															<div class="dropdown-divider"></div>
 															<a class="dropdown-item"
 																href="<c:url value="/locacoes/${ loc.id }/vistoria/devolucao"/>">Devolver
 																veículo</a>
+															<a class="dropdown-item"
+																href="<c:url value="/locacoes/${ loc.id }/multa"/>">Adicionar
+																multa</a>
+															<a type="button" class="dropdown-item"
+																href="<c:url value="/locacoes/${ loc.id }/acessorio"/>">Adicionar
+																Acessório</a>
 														</c:if>
 													</div>
+
 												</div>
 											</div>
 										</td>
@@ -183,6 +189,49 @@
 
 	</div>
 	<!-- END Page Container -->
+
+	<div class="modal fade" id="adicionar-acessorio-form-modal"
+		tabindex="-1" role="dialog" aria-labelledby="modal-block-vcenter"
+		aria-hidden="true" style="display: none;">
+		<div class="modal-dialog modal-md modal-dialog-centered"
+			role="document">
+			<div class="modal-content">
+				<div class="block block-rounded block-themed block-transparent mb-0">
+					<div class="block-header bg-primary-dark">
+						<h3 class="block-title">Acessório a ser adicionado</h3>
+						<div class="block-options">
+							<button type="button" class="btn-block-option"
+								data-dismiss="modal" aria-label="Close">
+								<i class="si si-close"></i>
+							</button>
+						</div>
+					</div>
+					<form id="form-adicionar-acessorio"
+						action="<c:url value="/locacoes/${ locacao.id }/acessorio"/>"
+						method="POST">
+						<div class="block-content font-size-sm">
+							<div class="form-group">
+								<select class="custom-select" id="tipo" name="tipo">
+									<option value="0">Selecione o acessório</option>
+									<c:forEach var="aces" items="${ acessorioList }">
+										<option value="${ aces.id }">${ aces.id }${ aces.tipo.descricao }
+											${ aces.valor }</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+						<div
+							class="block-content block-content-full text-right border-top">
+							<a class="btn btn-alt-primary mr-1" data-dismiss="modal" href="">Cancelar</a>
+
+							<a class="btn btn-primary" data-dismiss="modal"
+								onclick="document.getElementById('form-adicionar-acessorio').submit()">OK</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<script src="<c:url value="/assets/js/oneui.core.min.js"/>"></script>
 	<script src="<c:url value="/assets/js/oneui.app.min.js"/>"></script>

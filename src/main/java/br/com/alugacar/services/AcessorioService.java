@@ -1,6 +1,7 @@
 package br.com.alugacar.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -21,6 +22,11 @@ public class AcessorioService {
 		} catch (DAOException e) {
 			throw new ServiceException(e.getClass().getSimpleName() + " -> " + e.getMessage());
 		}
+	}
+	
+	public List<Acessorio> getStatus(StatusAcessorio status){
+		List<Acessorio> lista = dao.buscarTodas();
+		return lista.stream().filter(a-> a.getStatus().equals(status)).collect(Collectors.toList());
 	}
 
 	public Acessorio inserir(Acessorio acessorio) {

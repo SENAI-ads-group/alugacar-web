@@ -1,16 +1,19 @@
 package br.com.alugacar.controllers;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import br.com.alugacar.annotations.AutenticacaoNecessaria;
+import br.com.alugacar.entidades.Acessorio;
 import br.com.alugacar.entidades.Locacao;
+import br.com.alugacar.entidades.Multa;
 import br.com.alugacar.entidades.Vistoria;
 import br.com.alugacar.entidades.enums.CategoriaCNH;
+import br.com.alugacar.entidades.enums.GravidadeMulta;
+import br.com.alugacar.entidades.enums.StatusAcessorio;
 import br.com.alugacar.entidades.enums.StatusVeiculo;
+import br.com.alugacar.services.AcessorioService;
 import br.com.alugacar.services.ClienteService;
 import br.com.alugacar.services.CustoLocacao;
 import br.com.alugacar.services.LocacaoService;
@@ -24,6 +27,7 @@ import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.interceptor.IncludeParameters;
 import br.com.caelum.vraptor.validator.SimpleMessage;
 import br.com.caelum.vraptor.validator.Validator;
 
@@ -46,6 +50,9 @@ public class LocacaoController {
 	@Inject
 	private LocacaoService locacaoService;
 
+	@Inject
+	private AcessorioService acessorioService;
+
 	@AutenticacaoNecessaria
 	@Get
 	public void adicionar() {
@@ -65,6 +72,7 @@ public class LocacaoController {
 		Vistoria vist = locacao.getVistoriaEntrega();
 		result.include("entrega", true);
 		vist.setLocacao(locacao);
+		vist.setQuilometragem(locacao.getVeiculo().getQuilometragem());
 		return vist;
 	}
 
@@ -75,7 +83,29 @@ public class LocacaoController {
 		Vistoria vist = locacao.getVistoriaDevolucao();
 		result.include("devolucao", true);
 		vist.setLocacao(locacao);
+		vist.setQuilometragem(locacao.getVistoriaEntrega().getQuilometragem());
+		vist.setQtdCombustivel(locacao.getVistoriaEntrega().getQtdCombustivel());
 		return vist;
+	}
+
+	@AutenticacaoNecessaria
+	@Get("{locacao.id}/multa")
+	public Multa formularioMulta(Locacao locacao) {
+		locacao = locacaoService.getId(locacao.getId());
+		result.include("gravidadeMultaList", GravidadeMulta.values());
+		Multa multa = new Multa();
+		multa.setLocacao(locacao);
+		return multa;
+	}
+
+	@AutenticacaoNecessaria
+	@Get("{locacao.id}/acessorio")
+	public Acessorio formularioAcessorio(Locacao locacao) {
+		locacao = locacaoService.getId(locacao.getId());
+		result.include("acessorioList", acessorioService.getStatus(StatusAcessorio.DISPONIVEL_PARA_ALUGAR));
+		Acessorio acessorio = new Acessorio();
+		acessorio.setLocacao(locacao);
+		return acessorio;
 	}
 
 	@AutenticacaoNecessaria
@@ -91,15 +121,9 @@ public class LocacaoController {
 
 	@AutenticacaoNecessaria
 	@Post
-	public void cadastrar(Locacao locacao, String dataRetirada, String dataDevolucao, String dataNascimento,
-			String validadeCNH, String dataFimApolice) throws ParseException {
+	public void cadastrar(Locacao locacao) {
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			locacao.setDataRetirada(sdf.parse(dataRetirada));
-			locacao.setDataDevolucao(sdf.parse(dataDevolucao));
-			locacao.getMotorista().setDataNascimento(sdf.parse(dataNascimento));
-			locacao.getMotorista().setValidadeCNH(sdf.parse(validadeCNH));
-			locacao.getApolice().setDataFim(sdf.parse(dataFimApolice));
+			System.out.println(locacao.getDataDevolucao());
 			locacao = locacaoService.inserir(locacao);
 
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Locação adicionada com sucesso!", "",
@@ -115,6 +139,7 @@ public class LocacaoController {
 
 	}
 
+	@IncludeParameters
 	@AutenticacaoNecessaria
 	@Post("{locacao.id}/vistoria/entrega")
 	public void cadastrarVistoriaEntrega(Locacao locacao, Vistoria vistoria) {
@@ -134,6 +159,7 @@ public class LocacaoController {
 		}
 	}
 
+	@IncludeParameters
 	@AutenticacaoNecessaria
 	@Post("{locacao.id}/vistoria/devolucao")
 	public void cadastrarVistoriaDevolucao(Locacao locacao, Vistoria vistoria) {
@@ -151,9 +177,29 @@ public class LocacaoController {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao registrar vistoria de devolução", e.getMessage());
 
 			validator.add(mensagemErro);
-			validator.onErrorRedirectTo(this).listar();
+			validator.onErrorRedirectTo(this).formularioVistoriaDevolucao(locacao);
 		}
 	}
-	
-	
+
+	@AutenticacaoNecessaria
+	@Post("{locacao.id}/multa")
+	public void adicionarMulta(Locacao locacao, Multa multa) {
+		locacao = locacaoService.getId(locacao.getId());
+		multa.setLocacao(locacao);
+		locacaoService.adicionarMulta(multa);
+		result.redirectTo(this).listar();
+	}
+
+	@AutenticacaoNecessaria
+	@Post("{locacao.id}/acessorio")
+	public void adicionarAcessorio(Locacao locacao, Acessorio acessorio) {
+		locacao = locacaoService.getId(locacao.getId());
+		acessorio.setLocacao(locacao);
+		locacaoService.adicionarAcessorio(acessorio);
+		acessorio = acessorioService.getId(acessorio.getId());
+		acessorio.setStatus(StatusAcessorio.PENDENTE_DE_DEVOLUCAO);
+		acessorioService.atualizar(acessorio.getId(), acessorio);
+		result.redirectTo(this).listar();
+	}
+
 }

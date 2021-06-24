@@ -84,17 +84,6 @@ public class VeiculoService {
 		return obj;
 	}
 
-	public Veiculo adicionarQuilometragem(Integer idVeiculo, int quilometragem) {
-		Veiculo obj = dao.buscarId(idVeiculo);
-		if (obj == null)
-			throw new ServiceException("Não foi possível encontrar um veículo com o ID " + idVeiculo);
-		int novaQuilometragem = obj.getQuilometragem() + quilometragem;
-		obj.setQuilometragem(novaQuilometragem);
-
-		obj = atualizar(obj.getId(), obj);
-		return obj;
-	}
-
 	public Veiculo atualizarExtras(Veiculo veiculo) {
 		Veiculo obj = getId(veiculo.getId());
 		obj.setPrecoCompra(veiculo.getPrecoCompra());

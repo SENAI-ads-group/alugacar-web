@@ -137,14 +137,14 @@
 							<!-- Step 1 -->
 							<div class="tab-pane active" id="wizard-passo1" role="tabpanel">
 								<div class="form-group">
-									<label for="dataRetirada">Data de Retirada</label> <input
-										class="form-control" type="date" id="dataRetirada"
-										name="dataRetirada">
+									<label for="locacao.dataRetirada">Data de Retirada</label> <input
+										class="form-control" type="date" id="locacao.dataRetirada"
+										name="locacao.dataRetirada">
 								</div>
 								<div class="form-group">
-									<label for="dataDevolucao">Data de Devolução</label> <input
-										class="form-control" type="date" id="dataDevolucao"
-										name="dataDevolucao">
+									<label for="locacao.dataDevolucao">Data de Devolução</label> <input
+										class="form-control" type="date" id="locacao.dataDevolucao"
+										name="locacao.dataDevolucao">
 								</div>
 							</div>
 							<!-- END Step 1 -->
@@ -194,9 +194,9 @@
 										name="locacao.apolice.dataInicio" hidden="true">
 								</div>
 								<div class="form-group">
-									<label for="dataFimApolice">Data Final</label> <input
-										class="form-control" type="date" id="dataFimApolice"
-										name="dataFimApolice">
+									<label for="locacao.apolice.dataFim">Data Final</label> <input
+										class="form-control" type="date" id="locacao.apolice.dataFim"
+										name="locacao.apolice.dataFim">
 								</div>
 								<div class="form-group">
 									<label for="locacao.apolice.valor">Valor</label>

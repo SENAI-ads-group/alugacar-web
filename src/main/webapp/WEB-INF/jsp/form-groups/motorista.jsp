@@ -18,9 +18,9 @@
 		name="locacao.motorista.registroGeral">
 </div>
 <div class="form-group">
-	<label for="dataNascimento">Data de Nascimento</label> <input
-		class="form-control" type="date" id="dataNascimento"
-		name="dataNascimento">
+	<label for="locacao.motorista.dataNascimento">Data de Nascimento</label> <input
+		class="form-control" type="date" id="locacao.motorista.dataNascimento"
+		name="locacao.motorista.dataNascimento">
 </div>
 <div class="form-group">
 	<label for="locacao.motorista.registroCNH">Registro da CNH</label> <input
@@ -38,6 +38,6 @@
 	</select>
 </div>
 <div class="form-group">
-	<label for="validadeCNH">Validade da CNH</label> <input
-		class="form-control" type="date" id="validadeCNH" name="validadeCNH">
+	<label for="locacao.motorista.validadeCNH">Validade da CNH</label> <input
+		class="form-control" type="date" id="locacao.motorista.validadeCNH" name="locacao.motorista.validadeCNH">
 </div>

@@ -1,7 +1,7 @@
 package br.com.alugacar.entidades;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import br.com.alugacar.entidades.enums.GravidadeMulta;
 
@@ -10,12 +10,23 @@ public class Multa implements Serializable {
 
 	private Integer id;
 	private String descricao;
-	private Date data_autuacao;
+	private Date dataAutuacao;
 	private Double valor;
-	private GravidadeMulta tipo;
-	private Boolean excluido;
+	private GravidadeMulta gravidade;
+
+	private Locacao locacao;
 
 	public Multa() {
+	}
+
+	public Multa(Integer id, String descricao, Date dataAutuacao, Double valor, GravidadeMulta gravidade,
+			Locacao locacao) {
+		this.id = id;
+		this.descricao = descricao;
+		this.dataAutuacao = dataAutuacao;
+		this.valor = valor;
+		this.gravidade = gravidade;
+		this.locacao = locacao;
 	}
 
 	public Integer getId() {
@@ -34,12 +45,12 @@ public class Multa implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public Date getData_autuacao() {
-		return data_autuacao;
+	public Date getDataAutuacao() {
+		return dataAutuacao;
 	}
 
-	public void setData_autuacao(Date data_autuacao) {
-		this.data_autuacao = data_autuacao;
+	public void setDataAutuacao(Date dataAutuacao) {
+		this.dataAutuacao = dataAutuacao;
 	}
 
 	public Double getValor() {
@@ -50,59 +61,20 @@ public class Multa implements Serializable {
 		this.valor = valor;
 	}
 
-	public GravidadeMulta getTipo() {
-		return tipo;
+	public GravidadeMulta getGravidade() {
+		return gravidade;
 	}
 
-	public void setTipo(GravidadeMulta tipo) {
-		this.tipo = tipo;
+	public void setGravidade(GravidadeMulta gravidade) {
+		this.gravidade = gravidade;
 	}
 
-	public Boolean getExcluido() {
-		return excluido;
+	public Locacao getLocacao() {
+		return locacao;
 	}
 
-	public void setExcluido(Boolean excluido) {
-		this.excluido = excluido;
+	public void setLocacao(Locacao locacao) {
+		this.locacao = locacao;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public Multa(Integer id, String descricao, Date data_autuacao, String gravidade, Double valor, GravidadeMulta tipo,
-			Boolean excluido) {
-		super();
-		this.id = id;
-		this.descricao = descricao;
-		this.data_autuacao = data_autuacao;
-		this.valor = valor;
-		this.tipo = tipo;
-		this.excluido = excluido;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Multa other = (Multa) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
 }

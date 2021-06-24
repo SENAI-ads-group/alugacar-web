@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 
-<%@ page import="br.com.alugacar.entidades.enums.StatusLocacao"%>
+<%@ page import="br.com.alugacar.entidades.enums.CategoriaCNH"%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -12,7 +12,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<title>Alugacar | Locação</title>
+<title>Alugacar | Acessório</title>
 
 <meta name="description"
 	content="Alugacar - Gerenciador de Locações de Veículos &amp; Projeto Integrador 3° Período 2021-1 ADS">
@@ -63,9 +63,8 @@
 					<div
 						class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
 						<h1 class="flex-sm-fill h3 my-2">
-							Locação de veículo <small
-								class="d-block d-sm-inline-block mt-2 mt-sm-0 font-size-base font-w400 text-muted">Visualizaçãao
-								da locação</small>
+							Acessório de locação <small
+								class="d-block d-sm-inline-block mt-2 mt-sm-0 font-size-base font-w400 text-muted">Acessório</small>
 						</h1>
 						<nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
 							<ol class="breadcrumb breadcrumb-alt">
@@ -75,7 +74,9 @@
 									class="link-fx" href="<c:url value="/locacoes/listar"/>">Locação</a></li>
 								<li class="breadcrumb-item" aria-current="page"><a
 									class="link-fx"
-									href="<c:url value="/locacoes/${ locacao.id }"/>">${ locacao.id }</a></li>
+									href="<c:url value="/locacoes/${ acessorio.locacao.id }"/>">${ acessorio.locacao.id }</a></li>
+								<li class="breadcrumb-item" aria-current="page"><a
+									class="link-fx" href="">Acessório</a></li>
 							</ol>
 						</nav>
 					</div>
@@ -86,132 +87,47 @@
 			<div class="content">
 				<!-- Quick Actions -->
 				<div class="row">
-					<div class="col-6 col-lg-3">
+					<div class="col-6">
 						<a class="block block-rounded block-link-shadow text-center"
-							href="javascript:void(0)">
+							href="<c:url value="/locacaoes/listar"/>">
 							<div class="block-content block-content-full">
-								<div class="item item-circle bg-success-light mx-auto">
-									<i class="fa fa-check text-success"></i>
+								<div class="font-size-h2 text-dark">
+									<i class="fa fa-arrow-left"></i>
 								</div>
 							</div>
 							<div class="block-content py-2 bg-body-light">
-								<p class="font-w600 font-size-sm text-success mb-0">Veículo
-									Reservado</p>
+								<p class="font-w600 font-size-sm text-muted mb-0">Voltar</p>
 							</div>
 						</a>
 					</div>
-					<c:if
-						test="${ !(locacao.status eq StatusLocacao.VEICULO_RESERVADO) }">
-						<div class="col-6 col-lg-3">
-							<a class="block block-rounded block-link-shadow text-center"
-								href="javascript:void(0)">
-								<div class="block-content block-content-full">
-									<div class="item item-circle bg-success-light mx-auto">
-										<i class="fa fa-check text-success"></i>
-									</div>
-								</div>
-								<div class="block-content py-2 bg-body-light">
-									<p class="font-w600 font-size-sm text-success mb-0">Veículo
-										Entregue</p>
-								</div>
-							</a>
-						</div>
-					</c:if>
-					<c:if test="${ locacao.status eq StatusLocacao.EM_ANDAMENTO }">
-						<div class="col-6 col-lg-3">
-							<a class="block block-rounded block-link-shadow text-center"
-								href="javascript:void(0)">
-								<div class="block-content block-content-full">
-									<div class="item item-circle bg-warning-light mx-auto">
-										<i class="fa fa-sync fa-spin text-warning"></i>
-									</div>
-								</div>
-								<div class="block-content py-2 bg-body-light">
-									<p class="font-w600 font-size-sm text-warning mb-0">Em
-										Andamento</p>
-								</div>
-							</a>
-						</div>
-					</c:if>
-					<c:if
-						test="${ locacao.status eq StatusLocacao.DATA_DEVOLUCAO_EXPIRADA }">
-						<div class="col-6 col-lg-3">
-							<a class="block block-rounded block-link-shadow text-center"
-								href="javascript:void(0)">
-								<div class="block-content block-content-full">
-									<div class="item item-circle bg-danger-light mx-auto">
-										<i class="fa fa-exclamation-triangle text-danger"></i>
-									</div>
-								</div>
-								<div class="block-content py-2 bg-body-light">
-									<p class="font-w600 font-size-sm text-danger mb-0">Data de
-										Devolução Expirada</p>
-								</div>
-							</a>
-						</div>
-					</c:if>
-					<c:if test="${ locacao.status eq StatusLocacao.FINALIZADA }">
-						<div class="col-6 col-lg-3">
-							<a class="block block-rounded block-link-shadow text-center"
-								href="javascript:void(0)">
-								<div class="block-content block-content-full">
-									<div class="item item-circle bg-success-light mx-auto">
-										<i class="fa fa-check text-success"></i>
-									</div>
-								</div>
-								<div class="block-content py-2 bg-body-light">
-									<p class="font-w600 font-size-sm text-success mb-0">Finalizada</p>
-								</div>
-							</a>
-						</div>
-					</c:if>
 				</div>
 				<!-- END Quick Actions -->
 
 				<!-- Info -->
 				<div class="block block-rounded">
 					<div class="block-header block-header-default">
-						<h3 class="block-title">Custos</h3>
+						<h3 class="block-title">Dados do acessório</h3>
 					</div>
 					<div class="block-content">
-						<div class="table-responsive">
-							<table
-								class="table table-borderless table-striped table-vcenter font-size-sm">
-								<thead>
-									<tr>
-										<th>Item</th>
-										<th class="text-right" style="width: 10%;">Valor</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach var="item" items="${ custo.items }">
-										<tr>
-											<td><strong>${ item.descricao }</strong></td>
-											<td class="text-right">${ item.desconto ? '-' : '+' }
-												R$${ item.valor }</td>
-										</tr>
+						<form
+							action="<c:url value="/locacoes/${ acessorio.locacao.id }/acessorio"/>"
+							method="POST">
+							<div class="form-group">
+								<label for="acessorio.id">Acessório</label> <select
+									class="custom-select" id="acessorio.id" name="acessorio.id">
+									<option value="0">Selecione...</option>
+									<c:forEach var="aces" items="${ acessorioList }">
+										<option value="${ aces.id }">${ aces.id } ${ aces.tipo.descricao }</option>
 									</c:forEach>
-									<tr>
-										<td colspan="1" class="text-right"><strong>Custos:</strong></td>
-										<td class="text-right">+ R$${ custo.valorCustos }</td>
-									</tr>
-									<tr>
-										<td colspan="1" class="text-right"><strong>Descontos:</strong></td>
-										<td class="text-right">- R$${ custo.valorDescontos }</td>
-									</tr>
-									<tr class="table-success">
-										<td colspan="1" class="text-right text-uppercase"><strong>Valor
-												Total:</strong></td>
-										<td class="text-right"><strong>R$${
-												custo.valorTotal }</strong></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+								</select>
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-alt-success">Adicionar</button>
+							</div>
+						</form>
 					</div>
 				</div>
 				<!-- END Info -->
-
 			</div>
 			<!-- END Page Content -->
 		</main>
