@@ -34,7 +34,7 @@ public class AcessorioService {
 			acessorio.setStatus(StatusAcessorio.DISPONIVEL_PARA_ALUGAR);
 			Acessorio ac = dao.inserir(acessorio);
 			if (ac == null) {
-				throw new ServiceException("Acessório " + ac.getTipo().getDescricao() + " não foi inserido!");
+				throw new ServiceException("Acessório " + acessorio.getTipo().getDescricao() + " não foi inserido!");
 			}
 			return ac;
 		} catch (DAOException e) {
