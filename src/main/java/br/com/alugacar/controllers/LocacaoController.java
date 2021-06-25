@@ -123,7 +123,6 @@ public class LocacaoController {
 	@Post
 	public void cadastrar(Locacao locacao) {
 		try {
-			System.out.println(locacao.getDataDevolucao());
 			locacao = locacaoService.inserir(locacao);
 
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Locação adicionada com sucesso!", "",
@@ -187,6 +186,11 @@ public class LocacaoController {
 		locacao = locacaoService.getId(locacao.getId());
 		multa.setLocacao(locacao);
 		locacaoService.adicionarMulta(multa);
+
+		Notificacao notificacao = NotificacaoUtil.criarNotificacao("Multa adicionada",
+				"Uma multa foi adicionado à locação " + locacao.getId(),
+				TipoNotificacao.INFORMACAO);
+		NotificacaoUtil.adicionarNotificacao(result, notificacao);
 		result.redirectTo(this).listar();
 	}
 
@@ -199,6 +203,11 @@ public class LocacaoController {
 		acessorio = acessorioService.getId(acessorio.getId());
 		acessorio.setStatus(StatusAcessorio.PENDENTE_DE_DEVOLUCAO);
 		acessorioService.atualizar(acessorio.getId(), acessorio);
+
+		Notificacao notificacao = NotificacaoUtil.criarNotificacao("Acessório adicionado",
+				"O acessório " + acessorio.getId() + " foi adicionado à locação " + locacao.getId(),
+				TipoNotificacao.INFORMACAO);
+		NotificacaoUtil.adicionarNotificacao(result, notificacao);
 		result.redirectTo(this).listar();
 	}
 

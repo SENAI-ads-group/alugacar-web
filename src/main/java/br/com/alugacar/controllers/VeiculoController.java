@@ -70,6 +70,7 @@ public class VeiculoController {
 		result.include("combustivelList", Combustivel.values());
 	}
 
+	@IncludeParameters
 	@AutenticacaoNecessaria
 	@Post
 	public void cadastrar(Veiculo veiculo) {
@@ -85,7 +86,7 @@ public class VeiculoController {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao inserir veículo", e.getMessage());
 
 			validator.add(mensagemErro);
-			validator.onErrorRedirectTo(DashboardController.class).dashboard();
+			validator.onErrorRedirectTo(this).adicionar();
 		}
 	}
 

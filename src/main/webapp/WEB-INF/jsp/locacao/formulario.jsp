@@ -1,9 +1,11 @@
+
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 
 <%@ page import="br.com.alugacar.entidades.enums.StatusLocacao"%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!doctype html>
 <html lang="pt-BR">
@@ -187,23 +189,25 @@
 									<c:forEach var="item" items="${ custo.items }">
 										<tr>
 											<td><strong>${ item.descricao }</strong></td>
-											<td class="text-right">${ item.desconto ? '-' : '+' }
-												R$${ item.valor }</td>
+											<td class="text-right">${ item.desconto ? '-' : '+' }<fmt:formatNumber
+													type="currency" value="${ item.valor }" /></td>
 										</tr>
 									</c:forEach>
 									<tr>
 										<td colspan="1" class="text-right"><strong>Custos:</strong></td>
-										<td class="text-right">+ R$${ custo.valorCustos }</td>
+										<td class="text-right"><fmt:formatNumber type="currency"
+												value="${ custo.valorCustos }" /></td>
 									</tr>
 									<tr>
 										<td colspan="1" class="text-right"><strong>Descontos:</strong></td>
-										<td class="text-right">- R$${ custo.valorDescontos }</td>
+										<td class="text-right"><fmt:formatNumber type="currency"
+												value="${ custo.valorDescontos }" /></td>
 									</tr>
 									<tr class="table-success">
 										<td colspan="1" class="text-right text-uppercase"><strong>Valor
 												Total:</strong></td>
-										<td class="text-right"><strong>R$${
-												custo.valorTotal }</strong></td>
+										<td class="text-right"><strong><fmt:formatNumber type="currency"
+												value="${ custo.valorTotal }" /></strong></td>
 									</tr>
 								</tbody>
 							</table>

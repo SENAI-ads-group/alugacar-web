@@ -102,16 +102,16 @@
 						<div class="block-content text-center">
 							<div class="py-4">
 								<div class="mb-3">
-									<img class="img-avatar"
-										src="<c:url value ="/assets/media/avatars/avatar13.jpg "/>"
-										alt="">
+									<img class="img-avatar" alt=""
+										src="<c:url value="/marcas/foto/${ marca.id }"/>" />
 								</div>
 								<h1 class="font-size-lg mb-0">${ marca.descricao }</h1>
 							</div>
 						</div>
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form class="js-validation-form"  action="<c:url value = "atualizar"/>" method="POST">
+								<form class="js-validation-form"
+									action="<c:url value = "atualizar"/>" method="POST">
 									<div class="form-group">
 										<label for="marca.id">ID</label> <input type="text"
 											class="form-control" id="marca.id" name="marca.id"
@@ -132,6 +132,40 @@
 					</div>
 				</div>
 				<!-- END Info -->
+				
+				<!-- Logomarca -->
+				<div class="block block-rounded">
+					<div class="block-header block-header-default">
+						<h3 class="block-title">Logomarca</h3>
+					</div>
+					<div class="block-content">
+						<div class="row justify-content-center">
+							<div class="col-md-10 col-lg-8">
+								<form
+									action="<c:url value="/marcas/atualizar/foto/${ marca.id }"/>"
+									enctype="multipart/form-data" method="POST">
+									<div class="form-group">
+										<div class="push">
+											<img class="img-avatar" alt=""
+												src="<c:url value="/marcas/foto/${ marca.id }"/>" />
+										</div>
+										<div class="custom-file">
+											<!-- Populating custom file input label with the selected filename (data-toggle="custom-file-input" is initialized in Helpers.coreBootstrapCustomFileInput()) -->
+											<input type="file" accept="image/*" class="custom-file-input"
+												data-toggle="custom-file-input" id="foto" name="foto"
+												multiple> <label class="custom-file-label"
+												for="foto">Escolha a nova foto</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<button type="submit" class="btn btn-alt-success">Atualizar</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- END Logomarca -->
 
 			</div>
 			<!-- END Page Content -->
@@ -145,7 +179,7 @@
 
 	<script src="<c:url value="/assets/js/oneui.core.min.js"/>"></script>
 	<script src="<c:url value="/assets/js/oneui.app.min.js"/>"></script>
-	
+
 	<!-- Notifications JS Plugin -->
 	<script
 		src="<c:url value="/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"/>"></script>

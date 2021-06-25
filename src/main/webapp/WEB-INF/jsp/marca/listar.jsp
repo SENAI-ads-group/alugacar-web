@@ -102,7 +102,7 @@
 						<table class="table table-striped table-vcenter">
 							<thead>
 								<tr>
-									<th class="text-center" style="width: 50px;">ID</th>
+									<th class="text-center" style="width: 80px;"></th>
 									<th>Descrição</th>
 									<th class="text-center" style="width: 100px;">Ações</th>
 								</tr>
@@ -110,7 +110,8 @@
 							<tbody>
 								<c:forEach var="m" items="${ marcaList }">
 									<tr>
-										<th class="text-center" scope="row">${ m.id }</th>
+										<td class="text-center"><img class="img-avatar" alt=""
+											src="<c:url value="/marcas/foto/${ m.id }"/>" /></td>
 										<td class="font-w600 font-size-sm"><a
 											href="<c:url value="/marcas/${ m.id }"/>">${ m.descricao }</a></td>
 										<td class="text-center">

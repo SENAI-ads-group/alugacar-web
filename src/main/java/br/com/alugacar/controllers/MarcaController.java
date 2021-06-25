@@ -1,5 +1,6 @@
 package br.com.alugacar.controllers;
 
+import java.io.File;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -9,13 +10,15 @@ import br.com.alugacar.entidades.Marca;
 import br.com.alugacar.services.MarcaService;
 import br.com.alugacar.services.exceptions.ServiceException;
 import br.com.alugacar.util.Notificacao;
-import br.com.alugacar.util.NotificacaoUtil;
 import br.com.alugacar.util.Notificacao.TipoNotificacao;
+import br.com.alugacar.util.NotificacaoUtil;
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.observer.upload.UploadSizeLimit;
+import br.com.caelum.vraptor.observer.upload.UploadedFile;
 import br.com.caelum.vraptor.validator.SimpleMessage;
 import br.com.caelum.vraptor.validator.Validator;
 
@@ -100,6 +103,33 @@ public class MarcaController {
 			result.redirectTo(this).listar();
 		} catch (Exception e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar marca", e.getMessage());
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(this).listar();
+		}
+	}
+	
+	@AutenticacaoNecessaria
+	@Get("foto/{marca.id}")
+	public File foto(Marca marca) {
+		File foto = service.getFoto(marca);
+		return foto;
+	}
+
+	@AutenticacaoNecessaria
+	@Post("atualizar/foto/{marca.id}")
+	@UploadSizeLimit(sizeLimit = 50 * 1024 * 1024, fileSizeLimit = 30 * 1024 * 1024)
+	public void atualizarFoto(Marca marca, UploadedFile foto) {
+		try {
+			service.associarFoto(marca, foto);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Atualização da logomarca!",
+					"Logomarca atualizada com sucesso!", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar foto", e.getMessage());
 
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).listar();

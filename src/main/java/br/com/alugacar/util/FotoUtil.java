@@ -29,14 +29,11 @@ public class FotoUtil {
 
 	public static boolean validarFotoUpload(UploadedFile foto) {
 		String nomeFoto = foto.getFileName().toUpperCase();
-		boolean isValida = false;
 		for (ExtensaoFoto extensao : ExtensaoFoto.values()) {
-			if (nomeFoto.contains("." + extensao.name())) {
-				isValida = true;
-				break;
-			}
+			if (nomeFoto.contains("." + extensao.name()))
+				return true;
 		}
-		return isValida;
+		return false;
 	}
 
 	public enum ExtensaoFoto {

@@ -1,6 +1,7 @@
 package br.com.alugacar.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -12,6 +13,7 @@ import br.com.alugacar.entidades.Email;
 import br.com.alugacar.entidades.EmailCliente;
 import br.com.alugacar.entidades.Endereco;
 import br.com.alugacar.entidades.EnderecoCliente;
+import br.com.alugacar.entidades.Locacao;
 import br.com.alugacar.entidades.Telefone;
 import br.com.alugacar.entidades.TelefoneCliente;
 import br.com.alugacar.services.exceptions.ServiceException;
@@ -20,6 +22,9 @@ public class ClienteService {
 
 	@Inject
 	private ClienteDAO dao;
+
+	@Inject
+	private LocacaoService locacaoService;
 
 	public Cliente inserir(Cliente cliente) {
 		cliente.setExcluido(false);
@@ -72,6 +77,7 @@ public class ClienteService {
 		if (obj == null)
 			throw new ServiceException("Não foi possível encontrar cliente com o ID " + cliente.getId());
 		atualizarDados(cliente, obj);
+		System.out.println((((ClientePessoaJuridica) obj)).getRazaoSocial());
 		obj = dao.atualizar(obj.getId(), obj);
 		if (obj == null)
 			throw new ServiceException("Não foi possível atualizar o cliente");
@@ -100,8 +106,6 @@ public class ClienteService {
 		telefone.setNumero(telefone.getNumero().trim());
 		TelefoneCliente t = (TelefoneCliente) dao.telefoneDAO().atualizarTelefone(cliente.getId(), strTelefone,
 				telefone);
-		if (t == null)
-			throw new ServiceException("Não foi possível atualizar o telefone");
 		return t;
 	}
 
@@ -109,6 +113,12 @@ public class ClienteService {
 		Cliente c = dao.buscarId(cliente.getId());
 		if (c == null)
 			throw new ServiceException("Não existe cliente com o ID " + cliente.getId());
+
+		List<Locacao> locacoes = locacaoService.getTodas().stream()
+				.filter(loc -> loc.getCliente().getId() == cliente.getId()).collect(Collectors.toList());
+		if (locacoes.size() > 0)
+			throw new ServiceException("Não foi possível excluir o cliente, pois existem locações associadas.");
+
 		c.setExcluido(true);
 		c = dao.atualizar(cliente.getId(), c);
 		if (c == null)
@@ -133,7 +143,7 @@ public class ClienteService {
 
 		if (origem instanceof ClientePessoaFisica && destino instanceof ClientePessoaFisica)
 			((ClientePessoaFisica) destino).setRegistroGeral(((ClientePessoaFisica) origem).getRegistroGeral());
-		else if (origem instanceof ClientePessoaFisica && destino instanceof ClientePessoaJuridica)
+		else if (origem instanceof ClientePessoaJuridica && destino instanceof ClientePessoaJuridica)
 			((ClientePessoaJuridica) destino).setRazaoSocial(((ClientePessoaJuridica) origem).getRazaoSocial());
 	}
 

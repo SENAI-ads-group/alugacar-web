@@ -133,12 +133,12 @@
 								<div class="form-group">
 									<label for="veiculo.placa">Placa</label> <input
 										class="form-control" type="text" id="veiculo.placa"
-										name="veiculo.placa">
+										name="veiculo.placa" value=${ veiculo.placa }>
 								</div>
 								<div class="form-group">
 									<label for="veiculo.renavam">Renavam</label> <input
 										class="form-control" type="text" id="veiculo.renavam"
-										name="veiculo.renavam">
+										name="veiculo.renavam" value=${ veiculo.renavam }>
 								</div>
 								<div class="form-group">
 									<label for="">Modelo</label> <select class="custom-select"
@@ -178,23 +178,26 @@
 								<div class="form-group">
 									<label for="veiculo.qtdPassageiros">Quantidade de
 										Passageiros</label> <input class="form-control" type="text"
-										id="veiculo.qtdPassageiros" name="veiculo.qtdPassageiros">
+										id="veiculo.qtdPassageiros" name="veiculo.qtdPassageiros"
+										value="${ veiculo.qtdPassageiros }">
 								</div>
 								<div class="form-group">
 									<label for="veiculo.anoFabricacao">Ano de Fabricação</label> <input
 										class="form-control" type="text" id="veiculo.anoFabricacao"
-										name="veiculo.anoFabricacao">
+										name="veiculo.anoFabricacao"
+										value="${ veiculo.anoFabricacao }">
 								</div>
 								<div class="form-group">
 									<label for="veiculo.anoModelo">Ano do Modelo</label> <input
 										class="form-control" type="text" id="veiculo.anoModelo"
-										name="veiculo.anoModelo">
+										name="veiculo.anoModelo" value="${ veiculo.anoModelo }">
 								</div>
 								<div class="form-group">
 									<label for="veiculo.quilometragem">Quilometragem</label>
 									<div class="input-group">
 										<input class="form-control" type="text"
-											id="veiculo.quilometragem" name="veiculo.quilometragem">
+											id="veiculo.quilometragem" name="veiculo.quilometragem"
+											value="${ veiculo.quilometragem }">
 										<div class="input-group-prepend">
 											<span class="input-group-text"> KM </span>
 										</div>
@@ -203,7 +206,7 @@
 								<div class="form-group">
 									<label for="veiculo.cor">Cor</label> <input
 										class="form-control" type="text" id="veiculo.cor"
-										name="veiculo.cor">
+										name="veiculo.cor" value="${ veiculo.cor }">
 								</div>
 								<div class="form-group">
 									<label for="">Tipo de Combustível</label> <select
@@ -220,7 +223,8 @@
 										Tanque</label>
 									<div class="input-group">
 										<input class="form-control" type="text"
-											id="veiculo.capacidadeTanque" name="veiculo.capacidadeTanque">
+											id="veiculo.capacidadeTanque" name="veiculo.capacidadeTanque"
+											value="${ veiculo.capacidadeTanque }">
 										<div class="input-group-prepend">
 											<span class="input-group-text"> L </span>
 										</div>
@@ -239,7 +243,7 @@
 										</div>
 										<input type="text" class="form-control text-center"
 											id="veiculo.precoCompra" name="veiculo.precoCompra"
-											placeholder="0,00">
+											placeholder="0,00" value="${ veiculo.precoCompra }">
 									</div>
 								</div>
 								<div class="form-group">
@@ -250,7 +254,7 @@
 										</div>
 										<input type="text" class="form-control text-center"
 											id="veiculo.precoVenda" name="veiculo.precoVenda"
-											placeholder="0,00">
+											placeholder="0,00" value="${ veiculo.precoVenda }">
 									</div>
 								</div>
 								<div class="form-group">
@@ -261,7 +265,7 @@
 										</div>
 										<input type="text" class="form-control text-center"
 											id="veiculo.precoDiaria" name="veiculo.precoDiaria"
-											placeholder="0,00">
+											placeholder="0,00" value="${ veiculo.precoDiaria }">
 									</div>
 								</div>
 							</div>
@@ -324,7 +328,7 @@
 	<!-- Page JS Code -->
 	<script src="<c:url value="/assets/js/pages/veiculo_adicionar.js"/>"></script>
 	<script src="<c:url value="/assets/js/pages/veiculo_form.js"/>"></script>
-	
+
 	<c:forEach var="error" items="${ errors }">
 		<script>
 			$.notify({

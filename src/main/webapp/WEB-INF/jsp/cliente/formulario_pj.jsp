@@ -103,7 +103,8 @@
 							action="<c:url value="/clientes/${ cliente.id }/excluir"/>"
 							method="POST">
 							<a class="block block-rounded block-link-shadow text-center"
-								onclick="document.getElementById('form-excluir').submit()">
+								onclick="document.getElementById('form-excluir').submit()"
+								${ usuarioLogado.usuario.tipo.administrador ? '' : 'hidden' }>
 								<div class="block-content block-content-full">
 									<div class="font-size-h2 text-danger">
 										<i class="fa fa-times"></i>
@@ -126,7 +127,7 @@
 					</div>
 					<div class="block-content">
 						<form
-							action="<c:url value="/clientes/${ cliente.id }/atualizar"/>"
+							action="<c:url value="/clientes/${ cliente.id }/atualizar/pj"/>"
 							method="POST">
 							<div class="form-group">
 								<label for="cliente.nome">Nome</label> <input type="text"
@@ -340,7 +341,8 @@
 		src="<c:url value="/assets/js/plugins/jquery-validation/additional-methods.js"/>"></script>
 
 	<!-- Page JS Code -->
-	<script src="<c:url value="/assets/js/pages/cliente_adicionar_juridica.js"/>"></script>
+	<script
+		src="<c:url value="/assets/js/pages/cliente_adicionar_juridica.js"/>"></script>
 
 	<c:forEach var="error" items="${ errors }">
 		<script>

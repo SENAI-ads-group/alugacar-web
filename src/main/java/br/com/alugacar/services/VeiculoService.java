@@ -33,7 +33,10 @@ public class VeiculoService {
 	public Veiculo inserir(Veiculo veiculo) {
 		veiculo.setStatus(StatusVeiculo.DISPONIVEL_PARA_ALUGAR);
 		veiculo.setExcluido(false);
-
+		
+		if(dao.buscarPlaca(veiculo.getPlaca()) != null)
+			throw new ServiceException("Já existe um veículo com a placa " + veiculo.getPlaca());
+		
 		Veiculo v = dao.inserir(veiculo);
 		if (v == null)
 			throw new ServiceException("Não foi possível inserir o veículo");

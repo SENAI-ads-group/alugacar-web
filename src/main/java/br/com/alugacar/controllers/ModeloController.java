@@ -1,5 +1,6 @@
 package br.com.alugacar.controllers;
 
+import java.io.File;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -19,6 +20,8 @@ import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.observer.upload.UploadSizeLimit;
+import br.com.caelum.vraptor.observer.upload.UploadedFile;
 import br.com.caelum.vraptor.validator.SimpleMessage;
 import br.com.caelum.vraptor.validator.Validator;
 
@@ -58,9 +61,17 @@ public class ModeloController {
 	public void listarModelosMarca(Marca marca) {
 		try {
 			List<Modelo> modelos = service.getModelosMarca(marca);
-			result.include("modeloExcluidoList", service.getExcluidos());
-			result.include("modeloList", modelos);
-			result.forwardTo("/WEB-INF/jsp/modelo/listar.jsp");
+			if (modelos.size() < 1) {
+				Notificacao notificacao = NotificacaoUtil.criarNotificacao("Nenhum modelo para mostrar",
+						"Não existe nenhum modelo associado à esta marca.", TipoNotificacao.AVISO);
+				NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+				result.redirectTo(MarcaController.class).listar();
+			} else {
+				result.include("modeloExcluidoList", service.getExcluidos());
+				result.include("modeloList", modelos);
+				result.forwardTo("/WEB-INF/jsp/modelo/listar.jsp");
+			}
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao listar modelos", e.getMessage());
 
@@ -83,7 +94,6 @@ public class ModeloController {
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Nada feito!",
 					"Nenhum modelo foi adicionado, pois a descrição não foi informada.", TipoNotificacao.AVISO);
 			NotificacaoUtil.adicionarNotificacao(result, notificacao);
-
 			result.redirectTo(this).listar();
 			return;
 		}
@@ -135,6 +145,33 @@ public class ModeloController {
 			result.redirectTo(this).listar();
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar modelo", e.getMessage());
+
+			validator.add(mensagemErro);
+			validator.onErrorRedirectTo(this).listar();
+		}
+	}
+
+	@AutenticacaoNecessaria
+	@Get("foto/{modelo.id}")
+	public File foto(Modelo modelo) {
+		File foto = service.getFoto(modelo);
+		return foto;
+	}
+
+	@AutenticacaoNecessaria
+	@Post("atualizar/foto/{modelo.id}")
+	@UploadSizeLimit(sizeLimit = 50 * 1024 * 1024, fileSizeLimit = 30 * 1024 * 1024)
+	public void atualizarFoto(Modelo modelo, UploadedFile foto) {
+		try {
+			service.associarFoto(modelo, foto);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Atualização de imagem!",
+					"Imagem do modelo atualizada com sucesso!", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar imagem", e.getMessage());
 
 			validator.add(mensagemErro);
 			validator.onErrorRedirectTo(this).listar();

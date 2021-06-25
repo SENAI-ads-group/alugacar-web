@@ -87,7 +87,6 @@ public class ImplTelefoneClienteDAO implements TelefoneDAO<Cliente> {
 			ps.setString(2, telefone.getTipo().name());
 			ps.setInt(3, idobj);
 			ps.setString(4, numeroTelefone);
-			ps.executeUpdate();
 
 			TelefoneCliente telefoneAtualizado = null;
 

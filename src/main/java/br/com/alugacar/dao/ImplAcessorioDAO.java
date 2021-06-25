@@ -53,14 +53,15 @@ public class ImplAcessorioDAO implements AcessorioDAO {
 
 	@Override
 	public Acessorio atualizar(Integer id, Acessorio acessorio) {
-		final String SQL = "UPDATE acessorio SET aces_valor  = ?,  aces_tpaces_id=? WHERE aces_id  = ?";
+		final String SQL = "UPDATE acessorio SET aces_valor  = ?,  aces_tpaces_id=?, aces_status = ? WHERE aces_id  = ?";
 
 		try (Connection connection = ConnectionFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
 			ps.setDouble(1, acessorio.getValor());
 			ps.setInt(2, acessorio.getTipo().getId());
-			ps.setInt(3, id);
+			ps.setString(3, acessorio.getStatus().name());
+			ps.setInt(4, id);
 
 			Acessorio acessorioInserido = null;
 

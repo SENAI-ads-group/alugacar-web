@@ -127,7 +127,7 @@
 					</div>
 					<div class="block-content">
 						<form class="js-validation-form"
-							action="<c:url value="/clientes/${ cliente.id }/atualizar"/>"
+							action="<c:url value="/clientes/${ cliente.id }/atualizar/pf"/>"
 							method="POST">
 							<div class="form-group">
 								<label for="cliente.nome">Nome</label> <input type="text"

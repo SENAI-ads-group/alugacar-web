@@ -51,7 +51,6 @@ public class ClienteController {
 		result.include("tipoClienteList", TipoCliente.values());
 		result.include("cliExcluidoList", service.getExcluidos());
 
-		validator.onErrorRedirectTo(DashboardController.class).dashboard();
 		return service.getAtivos();
 	}
 
@@ -144,7 +143,7 @@ public class ClienteController {
 			cliente = service.getId(cliente.getId());
 			result.include("cliente", cliente);
 			result.include("tipoTelList", TipoTelefone.values());
-
+			
 			return service.getTelefone(cliente, telefone.getNumero());
 		} catch (ServiceException e) {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao carregar o formulário de telefone", e.getMessage());
@@ -235,8 +234,26 @@ public class ClienteController {
 	}
 
 	@AutenticacaoNecessaria
-	@Post("{cliente.id}/atualizar")
-	public void atualizar(Cliente cliente) {
+	@Post("{cliente.id}/atualizar/pf")
+	public void atualizarPf(ClientePessoaFisica cliente) {
+		try {
+			service.atualizar(cliente);
+
+			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Cliente atualizado",
+					"O cliente foi atualizado com sucesso.", TipoNotificacao.SUCESSO);
+			NotificacaoUtil.adicionarNotificacao(result, notificacao);
+
+			result.redirectTo(this).listar();
+		} catch (ServiceException e) {
+			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar cliente", e.getMessage());
+			validator.add(mensagemErro);
+		}
+		validator.onErrorRedirectTo(this).formulario(cliente);
+	}
+	
+	@AutenticacaoNecessaria
+	@Post("{cliente.id}/atualizar/pj")
+	public void atualizarPj(ClientePessoaJuridica cliente) {
 		try {
 			service.atualizar(cliente);
 
@@ -285,6 +302,7 @@ public class ClienteController {
 			SimpleMessage mensagemErro = new SimpleMessage("Erro ao atualizar telefone", e.getMessage());
 			validator.add(mensagemErro);
 		}
+		validator.onErrorRedirectTo(this).formulario(cliente);
 	}
 
 	@AutenticacaoNecessaria
