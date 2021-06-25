@@ -89,8 +89,10 @@
 							<div class="btn-group" role="group">
 								<a type="button" class="btn btn-sm btn-alt-dark mr-1 mb-3"
 									data-toggle="modal" data-target="#recuperacao-form-modal"
-									href=""> <i class="fa fa-fw fa fa-trash-restore mr-1"></i>
-									Recuperar Exclusão
+									href=""
+									${ !usuarioLogado.usuario.tipo.administrador ? 'hidden' : '' }>
+									<i class="fa fa-fw fa fa-trash-restore mr-1"></i> Recuperar
+									Exclusão
 								</a> <a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
 									href="<c:url value="adicionar"/>"><i
 									class="fa fa-fw fa-plus mr-1"></i>Adicionar </a>
@@ -119,13 +121,16 @@
 													href="<c:url value="/categorias/${ cat.id }"/>"> <i
 													class="fa fa-fw fa-pencil-alt"></i>
 												</a>
-												<form id="form-excluir" method="POST"
-													action="<c:url value="excluir/${ cat.id }"/>">
-													<button type="submit" class="btn btn-sm btn-alt-primary"
-														data-toggle="tooltip" title="Excluir">
-														<i class="fa fa-fw fa-times"></i>
-													</button>
-												</form>
+												<c:if
+													test="${ usuarioLogado.usuario.tipo.administrador && usuarioLogado.usuario.id != u.id }">
+													<form id="form-excluir" method="POST"
+														action="<c:url value="excluir/${ cat.id }"/>">
+														<button type="submit" class="btn btn-sm btn-alt-primary"
+															data-toggle="tooltip" title="Excluir">
+															<i class="fa fa-fw fa-times"></i>
+														</button>
+													</form>
+												</c:if>
 											</div>
 										</td>
 									</tr>

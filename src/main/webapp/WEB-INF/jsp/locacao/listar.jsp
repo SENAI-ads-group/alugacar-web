@@ -4,6 +4,7 @@
 <%@ page import="br.com.alugacar.entidades.enums.StatusLocacao"%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!doctype html>
 <html lang="pt-BR">
@@ -112,8 +113,10 @@
 								<c:forEach var="loc" items="${ locacaoList }">
 									<tr>
 										<th class="text-center" style="width: 50px;">${ loc.id }</th>
-										<td class="font-w600 font-size-sm">${ loc.dataRetirada }</td>
-										<td class="font-w600 font-size-sm">${ loc.dataDevolucao }</td>
+										<td class="font-w600 font-size-sm"><fmt:formatDate
+												value="${ loc.dataRetirada }" /></td>
+										<td class="font-w600 font-size-sm"><fmt:formatDate
+												value="${ loc.dataDevolucao }" /></td>
 										<td class="font-w600 font-size-sm"><a
 											href="<c:url value="/clientes/${ loc.cliente.id }"/>">${ loc.cliente.nome }</a></td>
 										<td class="font-w600 font-size-sm"><a

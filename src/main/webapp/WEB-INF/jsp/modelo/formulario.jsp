@@ -111,7 +111,8 @@
 						</div>
 						<div class="row justify-content-center">
 							<div class="col-md-10 col-lg-8">
-								<form class="js-validation-form"  action="atualizar" method="POST">
+								<form class="js-validation-form" action="atualizar"
+									method="POST">
 									<div class="form-group">
 										<label for="modelo.id">ID</label> <input type="text"
 											class="form-control" id="modelo.id" name="modelo.id"
@@ -125,8 +126,8 @@
 									<div class="form-group">
 										<label for="">Marca</label> <select class="custom-select"
 											id="modelo.marca.id" name="modelo.marca.id"
-											style="width: 100%;" data-placeholder="Escolha uma marca"
-											${ usuarioLogado.usuario.tipo.administrador ? '' : 'disabled' }>
+											data-placeholder="Escolha uma marca"
+											${ usuarioLogado.usuario.tipo.administrador ? 'style="width: 100%;"' : 'style="pointer-events: none;touch-action: none; width: 100%;" aria-disabled="true" tabindex="-1"' }>
 											<c:forEach var="mar" items="${ marcaList }">
 												<option value="${ mar.id }"
 													${ modelo.marca.id == mar.id ? 'selected' : ''  }>${ mar.descricao }</option>
@@ -170,9 +171,9 @@
 	<c:forEach var="error" items="${ errors }">
 		<script>
 			$.notify({
-				title : `<b><c:url value="${ error.category }"/></b>`,
+				title : `_$t_$tag________________________________$ta`,
 				icon : `fa fa-times mr-1`,
-				message : `<br><c:out value="${ error.message }"/>`
+				message : `_$ta_$tag______________________________`
 			}, {
 				type : 'danger'
 			});

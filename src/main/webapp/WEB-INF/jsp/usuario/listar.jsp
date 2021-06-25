@@ -87,8 +87,10 @@
 						<div class="block-options">
 							<a type="button" class="btn btn-sm btn-alt-dark mr-1 mb-3"
 								data-toggle="modal" data-target="#recuperacao-form-modal"
-								href=""> <i class="fa fa-fw fa fa-trash-restore mr-1"></i>
-								Recuperar Exclusão
+								href=""
+								${ !usuarioLogado.usuario.tipo.administrador ? 'hidden' : '' }>
+								<i class="fa fa-fw fa fa-trash-restore mr-1"></i> Recuperar
+								Exclusão
 							</a>
 						</div>
 					</div>

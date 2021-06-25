@@ -39,7 +39,7 @@
 		<div class="content-side">
 			<ul class="nav-main">
 				<!-- Dashboard -->
-				<li class="nav-main-item"><a class="nav-main-link" href="">
+				<li class="nav-main-item"><a class="nav-main-link" href="<c:url value="/dashboard"/>">
 						<i class="nav-main-link-icon fa fa-layer-group"></i> <span
 						class="nav-main-link-name">Dashboard</span>
 				</a></li>

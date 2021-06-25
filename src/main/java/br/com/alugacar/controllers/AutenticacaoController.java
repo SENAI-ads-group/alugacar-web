@@ -14,6 +14,7 @@ import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.interceptor.IncludeParameters;
 import br.com.caelum.vraptor.validator.SimpleMessage;
 import br.com.caelum.vraptor.validator.Validator;
 
@@ -38,9 +39,11 @@ public class AutenticacaoController {
 	public void cadastrar() {
 	}
 
+	@IncludeParameters
 	@Post("entrar")
 	public void entrar(Usuario usuario) {
 		try {
+			
 			usuario = service.tryLogin(usuario);
 			Notificacao notificacao = NotificacaoUtil.criarNotificacao("Login efetuado com sucesso!",
 					"Olá " + usuario.getNome() + ", seja bem vindo(a)!", TipoNotificacao.SUCESSO);

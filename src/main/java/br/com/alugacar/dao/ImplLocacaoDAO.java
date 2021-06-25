@@ -444,15 +444,16 @@ public class ImplLocacaoDAO implements LocacaoDAO {
 
 			Acessorio acessorio = instanciarAcessorio(rs, tipo);
 			Integer idLocacao = rs.getInt("loc_id");
+			System.out.println("ID ACESSORIO " + idAcessorio);
 			if (!acesMap.containsKey(idLocacao))
 				acesMap.put(idLocacao, new HashMap<>());
-			if (!(acesMap.get(idLocacao).containsKey(idAcessorio)))
+			if (!(acesMap.get(idLocacao).containsKey(idAcessorio)) && idAcessorio != null && idAcessorio !=0)
 				acesMap.get(idLocacao).put(idAcessorio, acessorio);
 
 			Multa multa = instanciarMulta(rs);
 			if (!multaMap.containsKey(idLocacao))
 				multaMap.put(idLocacao, new HashMap<>());
-			if (!(multaMap.get(idLocacao).containsKey(idMulta)))
+			if (!(multaMap.get(idLocacao).containsKey(idMulta)) && idMulta != null && idMulta !=0)
 				multaMap.get(idLocacao).put(idMulta, multa);
 
 			if (!idSet.contains(idLocacao)) {

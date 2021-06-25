@@ -90,8 +90,10 @@
 							<div class="btn-group" role="group">
 								<a type="button" class="btn btn-sm btn-alt-dark mr-1 mb-3"
 									data-toggle="modal" data-target="#recuperacao-form-modal"
-									href=""> <i class="fa fa-fw fa fa-trash-restore mr-1"></i>
-									Recuperar Exclusão
+									href=""
+									${ !usuarioLogado.usuario.tipo.administrador ? 'hidden' : '' }>
+									<i class="fa fa-fw fa fa-trash-restore mr-1"></i> Recuperar
+									Exclusão
 								</a> <a type="button" class="btn btn-sm btn-alt-success mr-1 mb-3"
 									href="<c:url value="adicionar"/>"><i
 									class="fa fa-fw fa-plus mr-1"></i>Adicionar </a>
@@ -105,13 +107,13 @@
 									<th class="text-center" style="width: 50px;">Placa</th>
 									<th>Modelo</th>
 									<th>Ano</th>
+									<th>Diária</th>
 									<th>Cor</th>
 									<th>Combustível</th>
 									<th>Quilometragem</th>
 									<th>Categoria</th>
 									<th>Tipo</th>
 									<th>Status</th>
-									<th>Diária</th>
 									<th class="text-center" style="width: 100px;">Ações</th>
 								</tr>
 							</thead>
@@ -122,23 +124,26 @@
 										<td class="font-w600 font-size-sm"><a
 											href="<c:url value="/modelos/${ v.modelo.id }"/>">${ v.modelo.descricao }</a></td>
 										<td class="font-size-sm">${ v.anoFabricacao }/${ v.anoModelo }</td>
-										<td class="font-size-sm">${ v.precoDiaria }</td>
+										<td class="font-size-sm">R$${ v.precoDiaria }</td>
 										<td class="font-size-sm">${ v.cor }</td>
 										<td class="font-size-sm">${ v.combustivel.nomeFormatado }</td>
-										<td class="font-size-sm">${ v.quilometragem } KM</td>
+										<td class="font-size-sm">${ v.quilometragem }KM</td>
 										<td class="font-w600 font-size-sm"><a
 											href="<c:url value="/categorias/${ v.categoria.id }"/>">${ v.categoria.descricao }</a></td>
 										<td class="font-size-sm">${ v.tipo.nomeFormatado }</td>
 										<td class="font-size-md"><c:if
 												test="${ v.status eq StatusVeiculo.DISPONIVEL_PARA_ALUGAR }">
-												<span class="font-size-sm font-w600 px-2 py-1 rounded  bg-success-light text-success">${ v.status.nomeFormatado }</span>
-											</c:if> <c:if
-												test="${ v.status eq StatusVeiculo.EM_LOCACAO }">
-												<span class="font-size-sm font-w600 px-2 py-1 rounded  bg-warning-light text-warning">${ v.status.nomeFormatado }</span>
+												<span
+													class="font-size-sm font-w600 px-2 py-1 rounded  bg-success-light text-success">${ v.status.nomeFormatado }</span>
+											</c:if> <c:if test="${ v.status eq StatusVeiculo.EM_LOCACAO }">
+												<span
+													class="font-size-sm font-w600 px-2 py-1 rounded  bg-warning-light text-warning">${ v.status.nomeFormatado }</span>
 											</c:if> <c:if test="${ v.status eq StatusVeiculo.EM_MANUTENCAO }">
-												<span class="font-size-sm font-w600 px-2 py-1 rounded  bg-danger-light text-danger">${ v.status.nomeFormatado }</span>
+												<span
+													class="font-size-sm font-w600 px-2 py-1 rounded  bg-danger-light text-danger">${ v.status.nomeFormatado }</span>
 											</c:if> <c:if test="${ v.status eq StatusVeiculo.VENDIDO }">
-												<span class="font-size-sm font-w600 px-2 py-1 rounded  bg-info-light text-info">${ v.status.nomeFormatado }</span>
+												<span
+													class="font-size-sm font-w600 px-2 py-1 rounded  bg-info-light text-info">${ v.status.nomeFormatado }</span>
 											</c:if></td>
 										<td class="text-center">
 											<div class="btn-group">
@@ -147,13 +152,15 @@
 													href="<c:url value="/veiculos/placa/${ v.placa }"/>"> <i
 													class="fa fa-fw fa-pencil-alt"></i>
 												</a>
-												<form method="POST"
-													action="<c:url value="excluir/${ v.id }"/>">
-													<button type="submit" class="btn btn-sm btn-alt-primary"
-														data-toggle="tooltip" title="Excluir">
-														<i class="fa fa-fw fa-times"></i>
-													</button>
-												</form>
+												<c:if test="${ usuarioLogado.usuario.tipo.administrador }">
+													<form method="POST"
+														action="<c:url value="excluir/${ v.id }"/>">
+														<button type="submit" class="btn btn-sm btn-alt-primary"
+															data-toggle="tooltip" title="Excluir">
+															<i class="fa fa-fw fa-times"></i>
+														</button>
+													</form>
+												</c:if>
 											</div>
 										</td>
 									</tr>
@@ -196,7 +203,8 @@
 								<select class="custom-select" id="veiculo.id" name="veiculo.id">
 									<option value="0">Selecione um veículo</option>
 									<c:forEach var="v" items="${ veicExcluidoList }">
-										<option value="${ v.id }">${ v.modelo.marca.descricao } ${ v.modelo.descricao } ${ v.cor } ${ v.placa }</option>
+										<option value="${ v.id }">${ v.modelo.marca.descricao }
+											${ v.modelo.descricao } ${ v.cor } ${ v.placa }</option>
 									</c:forEach>
 								</select>
 							</div>

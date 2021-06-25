@@ -36,7 +36,7 @@
                             rules: {
                                 'categoria.descricao': {
                                     required: true,
-                                    minlength: 4
+                                    minlength: 3
                                 }
                             },
                             messages: {

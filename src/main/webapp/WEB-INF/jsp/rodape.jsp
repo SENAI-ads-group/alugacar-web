@@ -15,7 +15,7 @@
 			<div class="col-sm-6 order-sm-1 py-1 text-center text-sm-left">
 				<a class="font-w600"
 					href="https://github.com/SENAI-ads-group/gerenciador-de-locacoes-de-veiculos-web"
-					target="_blank">Gerenciador de Locações de Veículos</a> &copy; <span
+					target="_blank">Gerenciador de Locações de Veículos v0.01 BETA</a> &copy; <span
 					data-toggle="year-copy"></span>
 			</div>
 		</div>

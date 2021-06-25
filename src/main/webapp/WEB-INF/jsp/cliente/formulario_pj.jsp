@@ -126,7 +126,7 @@
 					</div>
 					<div class="block-content">
 						<form
-							action="<c:url value="/clientes/atualizar/${ cliente.id }"/>"
+							action="<c:url value="/clientes/${ cliente.id }/atualizar"/>"
 							method="POST">
 							<div class="form-group">
 								<label for="cliente.nome">Nome</label> <input type="text"

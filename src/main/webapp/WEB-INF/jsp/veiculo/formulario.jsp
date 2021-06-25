@@ -318,7 +318,7 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="veiculo.precoDiaria">Preço de Venda</label>
+										<label for="veiculo.precoDiaria">Preço da Diária</label>
 										<div class="input-group">
 											<div class="input-group-prepend">
 												<span class="input-group-text"> R$ </span>
