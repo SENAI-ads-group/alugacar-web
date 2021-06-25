@@ -15,6 +15,33 @@
 
     var e = {};
 
+    jQuery.validator.addMethod("validaRenavam", function ( renavam ) {
+        var d = renavam.split("");
+        soma = 0,
+        valor = 0,
+        digito = 0,
+        x = 0;
+      
+        for (var i = 5; i >= 2; i--) {
+          soma += d[x] * i;
+          x++;
+        }
+      
+        valor = soma % 11;
+      
+        if (valor == 11 || valor == 0 || valor >= 10) {
+          digito = 0;
+        } else {
+          digito = valor;
+        }
+      
+        if (digito == d[4]) {
+          return true;
+        } else {
+          return false;
+        }
+      }, "Por favor, informe um renavam válido!" );
+
     function i(t) { if (e[t]) return e[t].exports; var r = e[t] = { i: t, l: !1, exports: {} }; return a[t].call(r.exports, r, r.exports, i), r.l = !0, r.exports }
     i.m = a, i.c = e, i.d = function(a, e, t) { i.o(a, e) || Object.defineProperty(a, e, { enumerable: !0, get: t }) }, i.r = function(a) { "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(a, Symbol.toStringTag, { value: "Module" }), Object.defineProperty(a, "__esModule", { value: !0 }) }, i.t = function(a, e) {
         if (1 & e && (a = i(a)), 8 & e) return a;
@@ -67,6 +94,7 @@
                             "veiculo.renavam": {
                                 required: !0,
                                 minlength: 11,
+                                validaRenavam: true,
                                 maxlength: 11,
                                 pattern: "[0-9]{11}"
                             },
