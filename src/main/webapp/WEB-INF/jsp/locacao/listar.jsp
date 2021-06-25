@@ -157,6 +157,10 @@
 															<a class="dropdown-item"
 																href="<c:url value="/locacoes/${ loc.id }/vistoria/entrega"/>">Entregar
 																veículo</a>
+															<div class="dropdown-divider"></div>
+															<a type="button" class="dropdown-item"
+																href="<c:url value="/locacoes/${ loc.id }/acessorio"/>">Adicionar
+																Acessório</a>
 														</c:if>
 														<c:if
 															test="${ loc.status eq StatusLocacao.EM_ANDAMENTO || loc.status eq StatusLocacao.DATA_DEVOLUCAO_EXPIRADA}">
