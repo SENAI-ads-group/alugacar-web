@@ -78,7 +78,6 @@
                                 "veiculo.renavam": {
                                     required: !0,
                                     minlength: 11,
-                                    validaRenavam: true,
                                     maxlength: 11,
                                     pattern: "[0-9]{11}"
                                 },
