@@ -160,6 +160,38 @@
         return false;
      },"Idade mínima não atingida");
 
+     jQuery.validator.addMethod("validaData", function(value) {
+       
+        let parts = value.split('-') // separa a data pelo caracter '/'
+        let today = new Date()      // pega a data atual
+        
+        date = new Date(parts[0], parts[1] - 1, parts[2]) // formata 'date'
+        
+    
+        // compara se a data informada é maior que a data atual
+        // e retorna true ou false
+        return today <= date  ? true : false
+
+
+      },"A data não pode ser menor que a atual.");
+
+      jQuery.validator.addMethod("validaValidade", function(value) {
+       
+        let parts = value.split('-') // separa a data pelo caracter '/'
+        let today = new Date()      // pega a data atual
+        
+        date = new Date(parts[0], parts[1] - 1, parts[2]) // formata 'date'
+        
+    
+        // compara se a data informada é maior que a data atual
+        // e retorna true ou false
+        return today <= date  ? true : false
+
+
+      },"A validade da CNH do motorista está vencida.");
+
+
+
     function i(t) { if (e[t]) return e[t].exports; var r = e[t] = { i: t, l: !1, exports: {} }; return a[t].call(r.exports, r, r.exports, i), r.l = !0, r.exports }
     i.m = a, i.c = e, i.d = function(a, e, t) { i.o(a, e) || Object.defineProperty(a, e, { enumerable: !0, get: t }) }, i.r = function(a) { "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(a, Symbol.toStringTag, { value: "Module" }), Object.defineProperty(a, "__esModule", { value: !0 }) }, i.t = function(a, e) {
         if (1 & e && (a = i(a)), 8 & e) return a;
@@ -204,10 +236,12 @@
                     var i = a.validate({
                         rules: {
                         'locacao.dataRetirada': {
-                           required: true                                                            
+                           required: true, 
+                           validaData: true                                                          
                         },
                         'locacao.dataDevolucao': {
-                            required: true     
+                            required: true,
+                            validaData: true    
                         },
                         'locacao.motorista.nome': {
                             required: true,
@@ -230,14 +264,13 @@
                             registroCNH : true
                         },
                         'locacao.motorista.categoriaCNH': {
-                            required: true,
-                            minlength: 1,
-                            pattern: "[A-Z]+"
+                            required: !0,
+                            minlength: 1
                         },
                         'locacao.motorista.validadeCNH': {
                             required: true,
+                            validaValidade: true
                             
-
                         },
                         'locacao.motorista.cpf': {
                             required: true,
@@ -299,8 +332,7 @@
                         },
                         'locacao.motorista.categoriaCNH': {
                             required: 'Informe a categoria da CNH do motorista.',
-                            minlength: 'O registro deve conter no mínimo 1 dígito',
-                            pattern : 'Informe apenas números.'
+                            minlength: 'A'
                         },
                         "locacao.veiculo.id": "Selecione um veículo para ser locado.",
                         'locacao.apolice.dataInicio': {

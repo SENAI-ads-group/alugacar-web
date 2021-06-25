@@ -323,7 +323,8 @@
 
 	<!-- Page JS Code -->
 	<script src="<c:url value="/assets/js/pages/veiculo_adicionar.js"/>"></script>
-
+	<script src="<c:url value="/assets/js/pages/veiculo_form.js"/>"></script>
+	
 	<c:forEach var="error" items="${ errors }">
 		<script>
 			$.notify({
