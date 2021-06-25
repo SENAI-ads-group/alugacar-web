@@ -22,3 +22,13 @@ A aplicação consiste em uma ferramenta para gerenciamento de locação de veí
 - Maven 3.8.1
 ### Banco de dados
 - PostgresSQL 13.2
+
+### Gráfico de Gantt
+![Gráfico de Gantt](https://github.com/SENAI-ads-group/gerenciador-de-locacoes-de-veiculos-web/blob/master/assets/grafico-de-gantt.JPG)
+### 5w2h
+![5w2h](https://github.com/SENAI-ads-group/gerenciador-de-locacoes-de-veiculos-web/blob/master/assets/5w2h.JPG)
+
+## Layout
+![login](https://github.com/SENAI-ads-group/gerenciador-de-locacoes-de-veiculos-web/blob/master/assets/layout-login.png)
+![dashboard](https://github.com/SENAI-ads-group/gerenciador-de-locacoes-de-veiculos-web/blob/master/assets/layout-dashboard.png)
+![Validações jQuery](https://github.com/SENAI-ads-group/gerenciador-de-locacoes-de-veiculos-web/blob/master/assets/layout-validacoes.png)
